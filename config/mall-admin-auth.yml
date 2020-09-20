@@ -1,0 +1,9 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: mall-admin-auth
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin123@localhost:8761/eureka/

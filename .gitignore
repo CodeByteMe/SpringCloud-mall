@@ -1,0 +1,25 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+# IntelliJ project files
+.idea
+*.iml
+
+# Package Files #
+*.jar
+*.war
+
+# out
+mall-admin-auth/target
+mall-admin-auth/*.iml
+
+mall-common/target
+mall-common/*.iml
+
+mall-config/target
+mall-config/*.iml
+
+mall-eureka/target
+mall-eureka/*.iml
+
+mall-zuul/target
+mall-zuul/*.iml

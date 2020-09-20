@@ -1,0 +1,15 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: mall-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/besscroft/SpringCloud-mall.git
+          search-paths: config
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin123@localhost:8761/eureka
