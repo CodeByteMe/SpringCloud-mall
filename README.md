@@ -82,3 +82,28 @@ mall
 | Kibana        | 7.6.1  | https://www.elastic.co/cn/downloads/kibana                   |
 | RabbitMq      | 3.7.0  | http://www.rabbitmq.com/download.html                        |
 | nginx         | 1.18   | http://nginx.org/en/download.html                            |
+
+### 在线开发
+
+你可以使用 Gitpod 进行在线开发：
+
+<p><a href="https://gitpod.io/#https://github.com/besscroft/SpringCloud-mall" rel="nofollow"><img src="https://camo.githubusercontent.com/1eb1ddfea6092593649f0117f7262ffa8fbd3017/68747470733a2f2f676974706f642e696f2f627574746f6e2f6f70656e2d696e2d676974706f642e737667" alt="Open in Gitpod" data-canonical-src="https://gitpod.io/button/open-in-gitpod.svg" style="max-width:100%;"></a></p>
+
+或者克隆到本地开发:
+
+```
+$ git clone https://github.com/besscroft/SpringCloud-mall.git
+```
+
+#### 联系我
+
+电子邮件：besscroft@foxmail.com
+
+QQ群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=QGRHYDL2XE46mQMgl54WtIUl5pSuHVKP&jump_from=webapi"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="GitGitGo" title="GitGitGo"></a>
+
+如果您有任何建议，欢迎反馈！
+
+#### 开发人员
+
+[besscroft](https://github.com/besscroft)、[chaste boy](https://github.com/chunjieboy)、[guandoublex](https://github.com/guandoublex)、[Dongyang](https://github.com/Muyibro)
+
