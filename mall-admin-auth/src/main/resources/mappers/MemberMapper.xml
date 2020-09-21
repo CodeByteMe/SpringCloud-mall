@@ -16,7 +16,6 @@
         <result column="create_time" property="createTime"/>
         <result column="icon" property="icon"/>
         <result column="gender" property="gender"/>
-        <result column="birthday" property="birthday"/>
         <result column="city" property="city"/>
         <result column="job" property="job"/>
         <result column="personalized_signature" property="personalizedSignature"/>

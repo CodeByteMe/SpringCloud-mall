@@ -38,7 +38,6 @@ public class MemberUser {
     private String icon;
     @ApiModelProperty(value = "性别" ,dataType = "integer", required = true)
     private Integer gender;
-    private Date birthday;
     private String city;
     private String job;
     @ApiModelProperty(value = "个性签名" ,dataType = "string", required = true)
