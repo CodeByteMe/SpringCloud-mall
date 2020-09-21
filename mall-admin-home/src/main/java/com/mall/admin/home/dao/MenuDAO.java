@@ -17,13 +17,13 @@ public interface MenuDAO {
      * @param adminId
      * @return
      */
-    public List<Menu> listMenu(String adminId);
+    public List<Menu> listMenu(int adminId);
 
     /**
      * 查询父菜单的子菜单
      * @param adminId
      * @return
      */
-    public List<Menu> listMenuChildren(@Param("adminId") String adminId,
-                                       @Param("parentId") Integer parentId);
+    public List<Menu> listMenuChildren(@Param("adminId") int adminId,
+                                       @Param("parentId") int parentId);
 }

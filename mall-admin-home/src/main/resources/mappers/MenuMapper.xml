@@ -15,7 +15,7 @@
         <result column="icon" property="icon"/>
         <result column="hidden" property="hidden"/>
     </resultMap>
-<!--    public List<Menu> listMenu(String adminId);-->
+<!--    public List<Menu> listMenu(int adminId);-->
     <select id="listMenu" resultSets="java.util.List" resultMap="menuMap">
         select ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
         ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden
@@ -25,8 +25,8 @@
         inner join ums_menu on ums_role_menu_relation.menu_id = ums_menu.id
         where ums_admin.id = #{adminId} and ums_menu.level = 0;
     </select>
-<!--    public List<Menu> listMenuChildren(@Param("adminId") String adminId,
-        @Param("parentId") Integer parentId);-->
+<!--    public List<Menu> listMenuChildren(@Param("adminId") int adminId,
+        @Param("parentId") int parentId);-->
     <select id="listMenuChildren">
         select ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
         ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden

@@ -117,102 +117,37 @@
 		var vm = new Vue({
 			el:"#container",
 			data:{
-				menuData: [
-	{
-		"id": "1",
-		"parentId": 0,
-		"title": "商品",
-		"level": 0,
-		"icon": "product",
-		children: [
-			{
-				"id": "2",
-				"parentId": 0,
-				"title": "商品列表",
-				"level": 0,
-				"icon": "product"
-			},
-			{
-				"id": "3",
-				"parentId": 0,
-				"title": "添加商品",
-				"level": 0,
-				"icon": "product"
-			}
-		]
-	},
-	{
-		"id": "7",
-		"parentId": 0,
-		"title": "订单",
-		"level": 0,
-		"icon": "order",
-		children: [
-			{
-				"id": "2",
-				"parentId": 0,
-				"title": "商品列表",
-				"level": 0,
-				"icon": "product"
-			},
-			{
-				"id": "3",
-				"parentId": 0,
-				"title": "添加商品",
-				"level": 0,
-				"icon": "product"
-			}
-		]
-	},
-	{
-		"id": "12",
-		"parentId": 0,
-		"title": "营销",
-		"level": 0,
-		"icon": "sms",
-		children: [
-			{
-				"id": "2",
-				"parentId": 0,
-				"title": "商品列表",
-				"level": 0,
-				"icon": "product"
-			},
-			{
-				"id": "3",
-				"parentId": 0,
-				"title": "添加商品",
-				"level": 0,
-				"icon": "product"
-			}
-		]
-	},
-	{
-		"id": "21",
-		"parentId": 0,
-		"title": "权限",
-		"level": 0,
-		"icon": "ums",
-		children: [
-			{
-				"id": "2",
-				"parentId": 0,
-				"title": "商品列表",
-				"level": 0,
-				"icon": "product"
-			},
-			{
-				"id": "3",
-				"parentId": 0,
-				"title": "添加商品",
-				"level": 0,
-				"icon": "product"
-			}
-		]
-	}
-],
+				token: "",
+				menuData: [],
 				nickName: "冬杨"
 			},
+			beforeMount:function(){
+				var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+				axios({
+					method: 'get',
+					url: 'http://localhost:8766/home/home/list',
+					headers: {'token': tokenStr}
+				}).then(function(res) {
+					console.log(res);
+					if (res.data.code === 1) {
+						top.location = "../login.html";
+					}
+					vm.menuData = res.data.data;
+				});
+				this.token = tokenStr;
+			}
 			methods:{
 				handleOpen:function(key, keyPath){
 					console.log("handleOpen");

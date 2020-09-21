@@ -10,4 +10,5 @@ import com.mall.common.pojo.AdminUser;
  */
 public interface AdminService {
     public AdminUser loginByAdminUser(String username,String password);
+    public Integer getId(String adminId);
 }

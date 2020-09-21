@@ -10,3 +10,7 @@ eureka:
 zuul:
   routes:
     mall-admin-auth: /auth/**
+    mall-admin-home: /home/**
+    mall-product-list: /product/**
+    mall-role-list: /role/**
+    mall-user-list: /user/**
