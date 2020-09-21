@@ -12,6 +12,9 @@
 mall-admin-auth/target
 mall-admin-auth/*.iml
 
+mall-admin-home/target
+mall-admin-home/*.iml
+
 mall-common/target
 mall-common/*.iml
 
@@ -21,16 +24,14 @@ mall-config/*.iml
 mall-eureka/target
 mall-eureka/*.iml
 
-mall-zuul/target
-mall-zuul/*.iml
-
-
-mall-user-list/target
-mall-user-iist/*.iml
+mall-product-list/target
+mall-product-list/*.iml
 
 mall-role-list/target
 mall-role-iist/*.iml
 
-mall-product-list/target
-mall-product-list/*.iml
+mall-user-list/target
+mall-user-iist/*.iml
 
+mall-zuul/target
+mall-zuul/*.iml
