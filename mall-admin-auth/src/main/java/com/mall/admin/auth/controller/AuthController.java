@@ -44,10 +44,13 @@ public class AuthController {
         System.out.println(username);
         System.out.println(password);
         AdminUser adminUser = adminService.loginByAdminUser(username, password);
+        System.out.println(adminUser);
         if (adminUser != null) {
             String token = JWTUtil.encrypt(adminUser.getUsername(), adminUser.getAdminId(), "admin");
+            System.out.println("登录成功");
             return new ResultVO(0,"success",adminUser.getNickName(),token);
         } else {
+            System.out.println("登录失败");
             return new ResultVO(1,"fail",null);
         }
     }
