@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.product.list.dao.ProductListDAO">
+
+    <resultMap id="productMap" type="com.mall.common.pojo.Product">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_category_id" property="product_categoryId"/>
+        <result column="product_category_name" property="productCategoryName"/>
+        <result column="product_attribute_category_id" property="productAttributeCategoryId"/>
+        <result column="name" property="name"/>
+        <result column="pic" property="pic"/>
+        <result column="publish_status" property="publishStatus"/>
+        <result column="sort" property="sort"/>
+        <result column="sale" property="sale"/>
+        <result column="price" property="price"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="sub_title" property="subTitle"/>
+        <result column="description" property="description"/>
+        <result column="original_price" property="originalPrice"/>
+        <result column="stock" property="stock"/>
+        <result column="low_stock" property="lowStock"/>
+        <result column="unit" property="unit"/>
+        <result column="weight" property="weight"/>
+        <result column="preview_status" property="previewStatus"/>
+        <result column="keywords" property="keywords"/>
+        <result column="note" property="note"/>
+        <result column="detail_title" property="detailTitle"/>
+        <result column="detail_desc" property="detailDesc"/>
+        <result column="detail_html" property="detailHtml"/>
+        <result column="promotion_start_time" property="promotionStartTime"/>
+        <result column="promotion_end_time" property="promotionEndTime"/>
+        <result column="promotion_per_limit" property="promotionPerLimit"/>
+        <result column="promotion_type" property="promotionType"/>
+    </resultMap>
+
+<!--    public List<Product> productList();-->
+    <select id="productList" resultMap="">
+        select id,product_id,product_category_id,product_category_name,product_attribute_category_id,name,pic,publish_status,
+               sort,sale,price,promotion_price,sub_title,description,original_price,stock,low_stock,unit,weight,preview_status,
+               keywords,note,detail_title,detail_desc,detail_html,promotion_start_time,promotion_end_time,promotion_per_limit,promotion_type
+        from promotion_type
+    </select>
+
+</mapper>
