@@ -44,7 +44,8 @@ public class AuthController {
     public ResultVO adminLogin(@RequestParam String username,@RequestParam String password) {
         System.out.println(username);
         System.out.println(password);
-        AdminUser adminUser = adminService.loginByAdminUser(username, password);
+        String s = MD5Util.md5(password);
+        AdminUser adminUser = adminService.loginByAdminUser(username, s);
         System.out.println(adminUser);
         if (adminUser != null) {
             String token = JWTUtil.encrypt(adminUser.getUsername(), adminUser.getAdminId(), "admin");
@@ -63,7 +64,8 @@ public class AuthController {
             @ApiImplicitParam(name = "password", value = "登录密码",required = true, dataType = "String")
     })
     public ResultVO memberLogin(@RequestParam String username,@RequestParam String password) {
-        MemberUser memberUser = memberService.loginByMemberUser(username, password);
+        String s = MD5Util.md5(password);
+        MemberUser memberUser = memberService.loginByMemberUser(username, s);
         if (memberUser != null) {
             String token = JWTUtil.encrypt(memberUser.getUsername(), memberUser.getMemberId(), "member");
             return new ResultVO(0,"success",memberUser.getNickname(),token);
@@ -95,15 +97,20 @@ public class AuthController {
                              @RequestParam String job,
                              @RequestParam String personalizedSignature){
         String memberId = UUID.randomUUID().toString().replace("-", "");
-        System.out.println(username);
-//        System.out.println(birthday);
         String pwd = MD5Util.md5(password);
-
         int i = memberService.insertMemberUser(new MemberUser(null,memberId,username,pwd,nickname,phone,1,new Date(),null,gender,city,job,personalizedSignature));
         if (i>0) {
             return new ResultVO(0,"注册成功",null);
         } else {
             return new ResultVO(1,"注册失败",null);
         }
+    }
+
+    @RequestMapping(value = "/getId",method = RequestMethod.POST)
+    @ApiOperation(value = "服务调用接口", notes = "请求adminId，响应id")
+    @ApiImplicitParam(name = "password", value = "登录密码",required = true, dataType = "String")
+    public String getId(@RequestParam String adminId) {
+        Integer id = adminService.getId(adminId);
+        return id+"";
     }
 }

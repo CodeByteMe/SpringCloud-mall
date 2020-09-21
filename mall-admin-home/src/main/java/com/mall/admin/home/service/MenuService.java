@@ -16,12 +16,12 @@ public interface MenuService {
      * @param adminId
      * @return
      */
-    public List<Menu> listMenu(String adminId);
+    public List<Menu> listMenu(int adminId);
 
     /**
      * 查询父菜单的子菜单
      * @param adminId
      * @return
      */
-    public List<Menu> listMenuChildren(String adminId,Integer parentId);
+    public List<Menu> listMenuChildren(int adminId,int parentId);
 }

@@ -21,12 +21,12 @@ public class MenuServiceImpl implements MenuService {
     private MenuDAO menuDAO;
 
     @Override
-    public List<Menu> listMenu(String adminId) {
+    public List<Menu> listMenu(int adminId) {
         return menuDAO.listMenu(adminId);
     }
 
     @Override
-    public List<Menu> listMenuChildren(String adminId, Integer parentId) {
+    public List<Menu> listMenuChildren(int adminId, int parentId) {
         return menuDAO.listMenuChildren(adminId,parentId);
     }
 }

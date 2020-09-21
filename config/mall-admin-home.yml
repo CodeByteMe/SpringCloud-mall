@@ -1,5 +1,5 @@
 server:
-  port: 8100
+  port: 8120
 spring:
   application:
     name: mall-admin-home

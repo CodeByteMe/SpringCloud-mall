@@ -26,4 +26,8 @@
         from ums_admin
         where username = #{username} and password = #{password}
     </select>
+<!--    public Integer getId(String adminId);-->
+    <select id="getId" resultType="Integer">
+        select id from ums_admin where admin_id = #{adminId}
+    </select>
 </mapper>
