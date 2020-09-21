@@ -1,8 +1,8 @@
 server:
-  port: 8400
+  port: 8410
 spring:
   application:
-    name: mall-admin-user-list
+    name: mall-admin-role-list
   datasource:
     url: jdbc:mysql://localhost:3306/mall
     driver-class-name: com.mysql.jdbc.Driver
