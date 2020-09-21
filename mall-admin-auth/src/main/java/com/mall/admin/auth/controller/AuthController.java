@@ -1,8 +1,10 @@
 package com.mall.admin.auth.controller;
 
 import com.mall.admin.auth.service.AdminService;
+import com.mall.admin.auth.service.MemberService;
 import com.mall.common.pojo.AdminUser;
 import com.mall.common.util.JWTUtil;
+import com.mall.common.util.MD5Util;
 import com.mall.common.vo.ResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * AuthController
@@ -27,7 +31,10 @@ public class AuthController {
     @Resource
     private AdminService adminService;
 
-    @RequestMapping(value = "/adminlogin",method = RequestMethod.POST)
+    @Resource
+    private MemberService memberService;
+
+    @RequestMapping(value = "/adminLogin",method = RequestMethod.POST)
     @ApiOperation(value = "后台用户登录接口", notes = "后台登录的唯一接口，不需要携带token")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "登录用户名",required = true, dataType = "String"),
@@ -42,6 +49,57 @@ public class AuthController {
             return new ResultVO(0,"success",adminUser.getNickName(),token);
         } else {
             return new ResultVO(1,"fail",null);
+        }
+    }
+
+    @RequestMapping(value = "/memberLogin",method = RequestMethod.POST)
+    @ApiOperation(value = "前台用户登录接口", notes = "前台登录的唯一接口，不需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "登录用户名",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "登录密码",required = true, dataType = "String")
+    })
+    public ResultVO memberLogin(@RequestParam String username,@RequestParam String password) {
+        MemberUser memberUser = memberService.loginByMemberUser(username, password);
+        if (memberUser != null) {
+            String token = JWTUtil.encrypt(memberUser.getUsername(), memberUser.getMemberId(), "member");
+            return new ResultVO(0,"success",memberUser.getNickname(),token);
+        } else {
+            return new ResultVO(1,"fail",null);
+        }
+    }
+
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @ApiOperation(value = "前台用户注册接口", notes = "用来注册前台用户的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "memberId", value = "用户ID(UUID)", required = true, type = "String"),
+            @ApiImplicitParam(name = "username", value = "登录用户名", required = true, type = "String"),
+            @ApiImplicitParam(name = "password", value = "登录密码", required = true, type = "String"),
+            @ApiImplicitParam(name = "nickname", value = "昵称", required = true, type = "String"),
+            @ApiImplicitParam(name = "phone", value = "手机号", required = true, type = "String"),
+            @ApiImplicitParam(name = "gender", value = "性别", required = true, type = "gender"),
+            @ApiImplicitParam(name = "birthday", value = "生日", required = true, type = "Date"),
+            @ApiImplicitParam(name = "city", value = "城市", required = true, type = "String"),
+            @ApiImplicitParam(name = "job", value = "职业", required = true, type = "String"),
+            @ApiImplicitParam(name = "personalizedSignature", value = "个性签名", required = true, type = "String")
+    })
+    public ResultVO register(@RequestParam String username,
+                             @RequestParam String password,
+                             @RequestParam String nickname,
+                             @RequestParam String phone,
+                             @RequestParam int gender,
+                             @RequestParam String city,
+                             @RequestParam String job,
+                             @RequestParam String personalizedSignature){
+        String memberId = UUID.randomUUID().toString().replace("-", "");
+        System.out.println(username);
+//        System.out.println(birthday);
+        String pwd = MD5Util.md5(password);
+
+        int i = memberService.insertMemberUser(new MemberUser(null,memberId,username,pwd,nickname,phone,1,new Date(),null,gender,new Date(),city,job,personalizedSignature));
+        if (i>0) {
+            return new ResultVO(0,"注册成功",null);
+        } else {
+            return new ResultVO(1,"注册失败",null);
         }
     }
 }
