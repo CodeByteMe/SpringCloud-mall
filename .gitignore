@@ -24,8 +24,13 @@ mall-eureka/*.iml
 mall-zuul/target
 mall-zuul/*.iml
 
+
 mall-user-list/target
 mall-user-iist/*.iml
 
 mall-role-list/target
 mall-role-iist/*.iml
+
+mall-product-list/target
+mall-product-list/*.iml
+

@@ -1,4 +1,4 @@
-package com.mall.admin.auth;
+package com.mall.product.list;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -9,11 +9,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-@MapperScan(basePackages = "com.mall.admin.auth.dao")
-public class MallAdminAuthApplication {
+@MapperScan(basePackages = "com.mall.product.list.dao")
+public class MallProductListApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MallAdminAuthApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MallProductListApplication.class, args);
+    }
 
 }
