@@ -2,6 +2,7 @@ package com.mall.admin.auth.service.impl;
 
 import com.mall.admin.auth.dao.MemberDAO;
 import com.mall.admin.auth.service.MemberService;
+import com.mall.common.pojo.MemberUser;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

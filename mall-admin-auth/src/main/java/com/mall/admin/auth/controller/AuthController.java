@@ -3,6 +3,7 @@ package com.mall.admin.auth.controller;
 import com.mall.admin.auth.service.AdminService;
 import com.mall.admin.auth.service.MemberService;
 import com.mall.common.pojo.AdminUser;
+import com.mall.common.pojo.MemberUser;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.util.MD5Util;
 import com.mall.common.vo.ResultVO;
@@ -98,7 +99,7 @@ public class AuthController {
 //        System.out.println(birthday);
         String pwd = MD5Util.md5(password);
 
-        int i = memberService.insertMemberUser(new MemberUser(null,memberId,username,pwd,nickname,phone,1,new Date(),null,gender,new Date(),city,job,personalizedSignature));
+        int i = memberService.insertMemberUser(new MemberUser(null,memberId,username,pwd,nickname,phone,1,new Date(),null,gender,city,job,personalizedSignature));
         if (i>0) {
             return new ResultVO(0,"注册成功",null);
         } else {
