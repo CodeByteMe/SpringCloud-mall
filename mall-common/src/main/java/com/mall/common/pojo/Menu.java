@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -32,12 +33,12 @@ public class Menu {
     private Integer level;
     @ApiModelProperty(value = "菜单排序" ,dataType = "integer", required = true)
     private Integer sort;
-    @ApiModelProperty(value = "前端名称" ,dataType = "string", required = true)
-    private String name;
+    @ApiModelProperty(value = "访问路径" ,dataType = "string", required = true)
+    private String url;
     @ApiModelProperty(value = "图标" ,dataType = "string", required = true)
     private String icon;
     @ApiModelProperty(value = "前端隐藏" ,dataType = "integer", required = true)
     private Integer hidden;
     @ApiModelProperty(value = "子级菜单" ,dataType = "menu", required = true)
-    private Menu children;
+    private List<Menu> children;
 }
