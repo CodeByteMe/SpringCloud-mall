@@ -23,6 +23,8 @@ import java.util.Date;
 public class AdminUser {
     @ApiModelProperty(value = "用户id" ,dataType = "Integet", required = true)
     private Integer id;
+    @ApiModelProperty(value = "用户uuid" ,dataType = "String", required = true)
+    private String adminId;
     @ApiModelProperty(value = "用户名" ,dataType = "String", required = true)
     private String username;
     @ApiModelProperty(value = "密码" ,dataType = "String", required = true)

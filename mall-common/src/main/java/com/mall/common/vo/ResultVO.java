@@ -18,5 +18,17 @@ import lombok.ToString;
 public class ResultVO {
     private Integer code;
     private String msg;
+    private String name;
     private Object data;
+
+    public ResultVO(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public ResultVO(Integer code, String msg, Object data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
 }

@@ -6,6 +6,7 @@
 <mapper namespace="com.mall.admin.auth.dao.AdminDAO">
     <resultMap id="adminMap" type="AdminUser">
         <id column="id" property="id"/>
+        <result column="admin_id" property="adminId"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="icon" property="icon"/>
@@ -20,9 +21,9 @@
     </resultMap>
 <!--    public AdminUser getAdminUser(@Param("username") String username,
         @Param("password") String password);-->
-    <select id="getAdminUser">
-        select id,username,password,icon,email,nick_name,note,create_time,login_time,status,company_id,company_name
+    <select id="getAdminUser" resultMap="adminMap">
+        select id,admin_id,username,password,icon,email,nick_name,note,create_time,login_time,status,company_id,company_name
         from ums_admin
-        where username = #{username},#{password}
+        where username = #{username} and password = #{password}
     </select>
 </mapper>
