@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>巢庭万家</title>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<style type="text/css">
+			*{
+				margin: 0;
+			}
+			.mybody{
+				margin-top: 1.625rem;
+			}
+			body{
+				background-image: url(assets/img/background.jpg);
+				z-index: -1;
+				background-size:cover;
+				background-repeat:no-repeat;
+				background-attachment:fixed;
+				background-position:center;
+				height: 100%;
+			}
+			#container{
+				width: 100%;
+			}
+			#leftnav{
+				background-color: #545c64;
+				width: 180px!important;
+				height: 100%;
+				position: fixed;
+				font-size: 0;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 1001;
+				overflow: hidden;
+			}
+			#rightnav{
+				/* height: 100%; */
+				width: 100%;
+				position: fixed;
+				font-size: 0;
+				top: 0;
+				bottom: 0;
+				left: 180px!important;
+				z-index: 1001;
+				overflow: hidden;
+			}
+			#rightnav-top{
+				width: 100%;
+				position: relative;
+			}
+			.rightnav-body{
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="container">
+			
+			<div id="leftnav">
+				<el-row class="tac">
+				  <el-col :span="12" style="width: 100%;">
+				    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
+				      @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+						<template>
+							<el-submenu v-for="(item,index) in menuData" :key="item.id" v-if="item.level == 0" :index="item.id">
+								<template slot="title">
+									<i :class="item.icon"></i>
+									<span>{{item.title}}</span>
+								</template>
+								<el-menu-item-group v-for="(item1,index1) in item.children" :key="item1.id">
+									<el-menu-item :index="item1.id" target="main_self_frame">{{item1.title}}</el-menu-item>
+								</el-menu-item-group>
+							</el-submenu>
+						</template>
+				    </el-menu>
+				  </el-col>
+				</el-row>
+			</div>
+			<div id="rightnav">
+				<div id="rightnav-top">
+					<el-card shadow="hover">
+						<el-breadcrumb separator="/" style="float: left;">
+							<el-breadcrumb-item><a href="home.html">首页</el-breadcrumb-item>
+							<el-breadcrumb-item>活动管理</el-breadcrumb-item>
+							
+						</el-breadcrumb>
+						<el-dropdown trigger="click" style="margin-left: 76%;">
+							<span class="el-dropdown-link">
+								{{nickName}}<i class="el-icon-arrow-down el-icon--right"></i>
+							</span>
+							<el-dropdown-menu slot="dropdown">
+								<el-dropdown-item icon="el-icon-s-unfold">首页</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-s-promotion">退出</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
+					</el-card>
+				</div>
+				<div class="rightnav-body">
+				    <!-- 内容主体区域 -->
+				    <iframe src="bulletin.html" name="main_self_frame" frameborder="0" class="layadmin-iframe" height="100%" width="100%"></iframe>
+				</div>
+			</div>
+			
+		</div>
+		
+	</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#container",
+			data:{
+				menuData: [
+	{
+		"id": "1",
+		"parentId": 0,
+		"title": "商品",
+		"level": 0,
+		"icon": "product",
+		children: [
+			{
+				"id": "2",
+				"parentId": 0,
+				"title": "商品列表",
+				"level": 0,
+				"icon": "product"
+			},
+			{
+				"id": "3",
+				"parentId": 0,
+				"title": "添加商品",
+				"level": 0,
+				"icon": "product"
+			}
+		]
+	},
+	{
+		"id": "7",
+		"parentId": 0,
+		"title": "订单",
+		"level": 0,
+		"icon": "order",
+		children: [
+			{
+				"id": "2",
+				"parentId": 0,
+				"title": "商品列表",
+				"level": 0,
+				"icon": "product"
+			},
+			{
+				"id": "3",
+				"parentId": 0,
+				"title": "添加商品",
+				"level": 0,
+				"icon": "product"
+			}
+		]
+	},
+	{
+		"id": "12",
+		"parentId": 0,
+		"title": "营销",
+		"level": 0,
+		"icon": "sms",
+		children: [
+			{
+				"id": "2",
+				"parentId": 0,
+				"title": "商品列表",
+				"level": 0,
+				"icon": "product"
+			},
+			{
+				"id": "3",
+				"parentId": 0,
+				"title": "添加商品",
+				"level": 0,
+				"icon": "product"
+			}
+		]
+	},
+	{
+		"id": "21",
+		"parentId": 0,
+		"title": "权限",
+		"level": 0,
+		"icon": "ums",
+		children: [
+			{
+				"id": "2",
+				"parentId": 0,
+				"title": "商品列表",
+				"level": 0,
+				"icon": "product"
+			},
+			{
+				"id": "3",
+				"parentId": 0,
+				"title": "添加商品",
+				"level": 0,
+				"icon": "product"
+			}
+		]
+	}
+],
+				nickName: "冬杨"
+			},
+			methods:{
+				handleOpen:function(key, keyPath){
+					console.log("handleOpen");
+					console.log(key, keyPath);
+				},
+				handleClose:function(key, keyPath){
+					console.log("handleOpen");
+					console.log(key, keyPath);
+				}
+			}
+		});
+	</script>
+</html>
