@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+    <title>商品列表</title>
+    <style>
+        .text {
+            font-size: 14px;
+        }
+        .item {
+            margin-bottom: 18px;
+        }
+        .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";
+        }
+        .clearfix:after {
+            clear: both
+        }
+        .box-card {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span><i class="el-icon-search"></i> 筛选查询</span>
+                <el-button type="primary" style="float: right;">查询结果</el-button>
+                <el-button style="float: right; margin-right: 20px;">重置</el-button>
+            </div>
+            <div class="text item">
+                <div class="demo-input-size">
+                    <span class="demonstration">输入搜索：</span>
+                    <el-input v-model="name" placeholder="商品名称" style="width: 200px;"></el-input>
+                    <span class="demonstration">商品货号：</span>
+                    <el-input v-model="productId" placeholder="商品货号" style="width: 200px;"></el-input>
+                    <span class="demonstration">商品分类：</span>
+                    <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader>
+                    <span class="demonstration">商品品牌：</span>
+                    <el-select v-model="value1" placeholder="请选择">
+                        <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                    <span class="demonstration">上架状态：</span>
+                    <el-select v-model="state" placeholder="请选择">
+                        <el-option label="未上架" :value="0"></el-option>
+                        <el-option label="已上架" :value="1"></el-option>
+                    </el-select>
+                </div>
+            </div>
+        </el-card>
+        <el-card class="box-card" :body-style="{ padding: '0px' }">
+            <div slot="header" class="clearfix">
+                <span><i class="el-icon-tickets"></i> 数据列表</span>
+                <el-button style="float: right;">添加</el-button>
+            </div>
+        </el-card>
+        <el-card class="box-card">
+            <div class="text item">
+                <template>
+                    <el-table :data="tableData" height="540" border style="width: 100%">
+                        <el-table-column prop="id" label="编号"></el-table-column>
+                        <el-table-column prop="pic" label="商品图片" width="80">
+                            <template slot-scope="scope">
+                                <img :src="scope.row.pic" class="image" style="width: 3.125rem;height: 3.125rem;" />
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="name" label="商品名称"></el-table-column>
+                        <el-table-column prop="promoteDesc" label="价格/货号"></el-table-column>
+                        <el-table-column label="套餐" fixed="right" width=80>
+                            <template slot-scope="scope">
+                                <el-button type="primary" icon="el-icon-edit" circle @click=""></el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="publishStatus" label="是否上架">
+                            <template scope="scope">
+                                <el-switch
+                                    on-color="#5B7BFA"
+                                    off-color="#dadde5"
+                                    v-model="scope.row.publishStatus" 
+                                    @change=change(scope.$index,scope.row)                
+                                >
+                                </el-switch>
+                                </template>
+                        </el-table-column>
+                        <el-table-column prop="sort" label="排序"></el-table-column>
+                        <el-table-column prop="sellNum" label="库存"></el-table-column>
+                        <el-table-column prop="sale" label="销量"></el-table-column>
+                        <el-table-column label="操作" fixed="right" width="250">
+                            <template slot-scope="scope">
+                                <el-button size="mini" @click="">详情</el-button>
+                                <el-button size="mini" @click="">编辑</el-button>
+                                <el-button size="mini" type="danger" @click.native.prevent="">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    
+                </template>
+            </div>
+        </el-card>
+    </div>
+</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el:"#container",
+            data:{
+                name:"",
+                productId:"",
+                state:"",
+                value: [],
+                value1: "",
+                tableData:[
+                {
+                    id: 1,
+                    pic: "a.png",
+                    name: "冬杨",
+                    promoteDesc: 22.22,
+                    publishStatus: true,
+                    sort: 100,
+                    sellNum: 3,
+                    sale: 666
+                },
+                {
+                    id: 2,
+                    pic: "a.png",
+                    name: "冬杨1",
+                    promoteDesc: 222.22,
+                    publishStatus: false,
+                    sort: 1001,
+                    sellNum: 31,
+                    sale: 6666
+                }
+                ],
+                options:[
+                {
+                    value: 'ziyuan',
+                    label: '资源',
+                    children: [{
+                        value: 'axure',
+                        label: 'Axure Components'
+                    },{
+                        value: 'sketch',
+                        label: 'Sketch Templates'
+                    },{
+                        value: 'jiaohu',
+                        label: '组件交互文档'
+                    }]
+                }
+                ],
+                options1: [{
+                    value: '选项1',
+                    label: '黄金糕'
+                    }, {
+                    value: '选项2',
+                    label: '双皮奶'
+                    }, {
+                    value: '选项3',
+                    label: '蚵仔煎'
+                    }, {
+                    value: '选项4',
+                    label: '龙须面'
+                    }, {
+                    value: '选项5',
+                    label: '北京烤鸭'
+                    }
+                ],
+                active: 0
+                },
+            beforeMount:function(){
+                
+            },
+            methods:{
+                change:function(index,row){
+                    console.log(index,row.publishStatus);
+                },
+                handleChange:function(value) {
+                    console.log(value);
+                },
+                next:function(){
+                    this.active++;
+                },
+                pre:function() {
+                    this.active--;
+                },
+                submit:function(){
+                    console.log("111");
+                }
+            }
+        });
+    </script>
+</html>
