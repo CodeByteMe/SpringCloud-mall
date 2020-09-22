@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品添加</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+    <style>
+        .text {
+            font-size: 14px;
+        }
+        .item {
+            margin-bottom: 18px;
+        }
+        .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";
+        }
+        .clearfix:after {
+            clear: both
+        }
+        .box-card {
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <el-card class="box-card">
+            <el-steps :active="active" finish-status="success">
+                <el-step title="填写商品信息"></el-step>
+                <el-step title="填写商品促销"></el-step>
+                <el-step title="填写商品属性"></el-step>
+            </el-steps>
+            <!-- 个人信息 -->
+            <div class="info" v-if="active==0">
+            我的信息
+            </div>
+            <div class="info" v-if="active==1">
+            我的步骤
+            </div>
+            <div class="info" v-if="active==2">
+            我的步骤222
+            </div>
+            <el-button style="margin-top: 12px;"v-if="active<2" @click="next">下一步</el-button>  
+            <el-button style="margin-top: 12px;" @click="submit" v-if="active==2">提交</el-button>
+            <el-button style="margin-top: 12px;" @click="pre" v-if="active>0">上一步</el-button>
+        </el-card>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+    var vm = new Vue({
+            el:"#container",
+            data:{
+                active: 0
+            },
+            beforeMount:function(){
+                
+            },
+            methods:{
+                next:function(){
+                    this.active++;
+                },
+                pre:function() {
+                    this.active--;
+                },
+                submit:function(){
+                    console.log("111");
+                }
+            }
+        });
+    </script>
+</html>
