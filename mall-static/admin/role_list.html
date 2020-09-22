@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>后台角色列表</title>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<style>
+			.shadow{
+				width: 88%;
+				height: 150px;
+			}
+			.sera{
+				width: 30%;
+				padding-left: 100px;
+				display: block;
+			}
+			.doser{
+				padding-left: 90%;
+				display: block;
+			}
+			.shadow1{
+				width: 88%;
+				height: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div class="shadow" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
+				<div>
+					<p>🔍筛选搜索</p>
+				</div>
+				<div class= "sera">
+					<label>查询搜索</label>
+					 <el-input
+					    placeholder="请输入内容"
+					    suffix-icon="el-icon-date"
+					    v-model="keyword">
+					 </el-input>
+				</div>
+				<div class="doser">
+					 <el-button type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
+				</div>
+			</div>
+			<div class="shadow1" style=" box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+				<div style="display: inline;"><label style="line-height:50px;">数据列表</label>
+					
+				</div>
+				<div id="" style="display: inline;margin-left: 75%;">
+					<el-button size="medium" @click="addRole">添加</el-button>
+				</div>
+			</div>
+				<div >
+					
+					<template>
+					  <el-table
+					    :data="tableData"
+					    border
+					    style="width: 88%">
+					    <el-table-column
+					      prop="id"
+					      label="编号"
+					      width="80">
+					    </el-table-column>
+					    <el-table-column
+					      prop="name"
+					      label="角色名"
+					      width="100">
+					    </el-table-column>
+					    <el-table-column
+					      prop="description"
+					      label="描述">
+					    </el-table-column>
+					    
+					    <el-table-column
+					      prop="createTime"
+					      label="创建时间">
+					    </el-table-column>
+					     <el-table-column prop="status" label="是否启用">
+	                            <template scope="scope">
+								<el-switch v-model="scope.row.status"
+								     :active-value="1"
+								     :inactive-value="0"
+								     @change=change(scope.row)>
+								</el-switch>
+							</template>
+	                        </el-table-column>
+						<el-table-column label="操作" fixed="right">
+					    	<el-button type="text">分配菜单</el-button>
+					    	<el-button type="text">分配资源</el-button></br>
+					    	<el-button type="text">编辑</el-button>
+					    	<el-button type="text">删除</el-button>
+						</el-table-column>
+					  </el-table>
+					</template>
+				</div>	
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script type="text/javascript">
+			var Vue = new Vue({
+				el:"#container"
+				,data:{
+					keyword:"",
+					value:true,
+					boostatus1:false,
+					tableData: [{
+			          id: '1',
+			          name: '冬杨',
+			          createTime: ',,,,',
+			          description: '1212',
+			          status: 1
+			        }, {
+			            id: '1',
+			          name: '冬杨',
+			          createTime: ',,,,',
+			          description: '1212',
+			          status: 0
+			        }, {
+			            id: '1',
+			          name: '冬杨',
+			          createTime: ',,,,',
+			          description: '1212',
+			          status: 1
+			        }, {
+			             id: '1',
+			          name: '冬杨',
+			          createTime: ',,,,',
+			          description: '1212',
+			          status: 0
+			        }]
+				}
+				,methods:{
+					doSearch:function(keyword){
+						axios({
+							method:'get',
+							url:"",
+							params:{
+								keyword:vm.keyword,
+								page:1,
+								limit:5
+							},
+							headers:{
+								'token':tokenStr
+							}
+						})
+						.then(function(res){
+							
+						})
+							
+					},
+					change:function(row){
+						console.log(row)
+					},
+					addRole:function(){
+						console.log("添加")
+					}
+				}
+			})
+		</script>
+			
+	</body>
+</html>
