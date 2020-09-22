@@ -1,17 +1,17 @@
-package com.mall.admin.home.dao;
+package com.mall.admin.home.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * AuthDAO
+ * AuthService
  *
  * @Author BessCroft
- * @Date 2020/9/21 23:29
+ * @Date 2020/9/22 9:01
  */
 @FeignClient("mall-admin-auth")
-public interface AuthDAO {
+public interface AuthService {
     /**
      * 此处@RequestMapping注解用于声明服务访问的服务
      * @return
