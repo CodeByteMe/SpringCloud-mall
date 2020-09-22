@@ -24,8 +24,8 @@ public class Order {
     private Integer id;
     @ApiModelProperty(value = "订单UUID" ,dataType = "string", required = true)
     private String orderId;
-    @ApiModelProperty(value = "用户UUID" ,dataType = "string", required = true)
-    private String memberId;
+    @ApiModelProperty(value = "用户对象" ,dataType = "MemberUser", required = true)
+    private MemberUser memberUser;
     @ApiModelProperty(value = "提交时间" ,dataType = "date", required = true)
     private Date createTime;
     @ApiModelProperty(value = "用户账号" ,dataType = "string", required = true)
