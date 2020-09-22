@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>后台用户列表</title>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+		<style>
+			.shadow{
+				width: 88%;
+				height: 150px;
+			}
+			.sera{
+				width: 30%;
+				padding-left: 100px;
+				display: block;
+			}
+			.doser{
+				padding-left: 90%;
+				display: block;
+			}
+			.shadow1{
+				width: 88%;
+				height: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div class="shadow" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
+				<div>
+					<p>🔍筛选搜索</p>
+				</div>
+				<div class= "sera">
+					<label>查询搜索</label>
+					 <el-input
+					    placeholder="请输入内容"
+					    suffix-icon="el-icon-date"
+					    v-model="keyword">
+					 </el-input>
+				</div>
+				<div class="doser">
+					 <el-button type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
+				</div>
+			</div>
+			<div class="shadow1" style=" box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+				<div style="display: inline;"><label style="line-height:50px;">数据列表</label>
+					
+				</div>
+				<div id="" style="display: inline;margin-left: 88%;">
+					<el-button size="medium" @click="add">添加</el-button>
+				</div>
+			</div>
+					<template>
+					  <el-table
+					    :data="tableData"
+					    border
+					    style="width: 88%">
+					    <el-table-column
+					      prop="id"
+					      label="编号"
+					      width="80">
+					    </el-table-column>
+					    <el-table-column
+					      prop="adminId"
+					      label="用户id"
+					      width="100">
+					    </el-table-column>
+					    <el-table-column
+					      prop="username"
+					      label="用户名">
+					    </el-table-column>
+					    <el-table-column
+					      prop="email"
+					      label="邮箱">
+					    </el-table-column>
+					    <el-table-column
+					      prop="createTime"
+					      label="创建时间">
+					    </el-table-column>
+					     <el-table-column 
+					     prop="loginTime" 
+					     label="最后登陆时间">
+					     </el-table-column>
+					     <el-table-column label="是否启用">
+							<template scope="scope">
+								<el-switch v-model="scope.row.status"
+								     :active-value="1"
+								     :inactive-value="0"
+								     @change=change(scope.row)>
+								</el-switch>
+							</template>V
+						</el-table-column>
+						<el-table-column label="操作" fixed="right">
+					    	<el-button type="text">分配角色</el-button>
+					    	<el-button type="text">编辑</el-button>
+					    	<el-button type="text">删除</el-button>
+					    	
+						</el-table-column>
+					  </el-table>
+					</template>
+			<el-pagination
+				      @size-change="handleSizeChange"
+				      @current-change="handleCurrentChange"
+				      :current-page.sync="currentPage3"
+				      :page-size="100"
+				      layout="prev, pager, next, jumper"
+				      :total="1000">
+			    </el-pagination>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script type="text/javascript">
+			var Vue = new Vue({
+				el:"#container"
+				,data:{
+					keyword:"",
+					boostatus:true,
+					currentPage3:5,
+					tableData: [{
+			          id: '1',
+			          adminId: '1233',
+			          username: '冬杨',
+			          email: '111@ad.com',
+			          status: 1,
+			          createTime: ',,,,',
+			          loginTime: '1212'
+			          
+			        }, {
+			             id: '1',
+			          adminId: '1233',
+			          username: '冬杨',
+			          email: '111@ad.com',
+			          createTime: ',,,,',
+			          status: 0,
+			          loginTime: '1212'
+			        }, {
+			             id: '1',
+			          adminId: '1233',
+			          username: '冬杨',
+			          email: '111@ad.com',
+			          createTime: ',,,,',
+			          status: 0,
+			          loginTime: '1212'
+			        }, {
+			             id: '1',
+			          adminId: '1233',
+			          username: '冬杨',
+			          email: '111@ad.com',
+			          createTime: ',,,,',
+			          status: 1,
+			          loginTime: '1212'
+			        }]
+				}
+				,methods:{
+					doSearch:function(keyword){
+						console.log(keyword),
+						axios({
+							method:'get',
+							url:"",
+							params:{
+								keyword:vm.keyword,
+								page:1,
+								limit:5
+							},
+							headers:{
+								'token':tokenStr
+							}
+						})
+						.then(function(res){
+							
+						})
+							
+					},
+					change:function(row){
+						console.log(row)
+					},
+					add:function(){
+						console.log("add")
+					},
+					handleSizeChange:function(val) {
+				        console.log(`每页 ${val} 条`);
+				      },
+				      handleCurrentChange:function(val) {
+				        console.log(`当前页: ${val}`);
+				      }
+				}
+			})
+		</script>
+	</body>
+</html>
