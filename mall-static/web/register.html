@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>自媒体用户注册</title>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<style type="text/css">
+			*{
+				margin: 0;
+			}
+			.mybody{
+				margin-top: 1.625rem;
+			}
+			body{
+				background-image: url(../assets/img/register.jpg);
+				z-index: -1;
+				background-size:cover;
+				background-repeat:no-repeat;
+				background-attachment:fixed;
+				background-position:center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<el-row>
+				<el-col :span="24">
+					<div class="grid-content bg-purple-dark">
+						<el-menu
+						  class="el-menu-demo"
+						  mode="horizontal"
+						  background-color="#545c64"
+						  text-color="#fff"
+						  active-text-color="#ffd04b">
+						  <el-menu-item index="1">处理中心</el-menu-item>
+						  <el-submenu index="2">
+							 <template slot="title">我的工作台</template>
+							 <el-menu-item index="2-1">选项1</el-menu-item>
+							 <el-menu-item index="2-2">选项2</el-menu-item>
+							 <el-menu-item index="2-3">选项3</el-menu-item>
+							 <el-submenu index="2-4">
+							   <template slot="title">选项4</template>
+							   <el-menu-item index="2-4-1">选项1</el-menu-item>
+							   <el-menu-item index="2-4-2">选项2</el-menu-item>
+							   <el-menu-item index="2-4-3">选项3</el-menu-item>
+							 </el-submenu>
+						  </el-submenu>
+						  <el-menu-item index="3" disabled>消息中心</el-menu-item>
+						  <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+						</el-menu>
+					</div>
+				</el-col>
+			</el-row>
+			
+			<el-row style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+				<el-col :span="6"><div class="grid-content bg-purple">&nbsp;</div></el-col>
+				<el-col :span="12">
+					<div class="grid-content bg-purple">
+						<el-card shadow="always">
+						    <el-tag>用户注册</el-tag>
+							<el-form label-width="80px">
+								<el-form-item label="登录名">
+								    <el-input v-model="username"></el-input>
+								</el-form-item>
+								<el-form-item label="密码">
+								    <el-input v-model="password"></el-input>
+								</el-form-item>
+								<el-form-item label="昵称">
+								    <el-input v-model="nickname"></el-input>
+								</el-form-item>
+								<el-form-item label="电话">
+								    <el-input v-model="phone"></el-input>
+								</el-form-item>
+								<el-form-item label="性别">
+								    <el-radio v-model="gender" label="1">男</el-radio>
+								    <el-radio v-model="gender" label="2">女</el-radio>
+								</el-form-item>
+								<el-form-item label="城市">
+								    <el-input v-model="city"></el-input>
+								</el-form-item>
+								<el-form-item label="职业">
+								    <el-input v-model="job"></el-input>
+								</el-form-item>
+								<el-form-item label="个性签名">
+								    <el-input type="textarea" v-model="personalizedSignature"></el-input>
+								</el-form-item>
+								<el-form-item>
+								    <el-button type="primary" @click="onSubmit">立即注册</el-button>
+								    <el-button type="primary" @click="backLogin">返回登录</el-button>
+								  </el-form-item>
+							</el-form>
+						</el-card>
+					</div>
+				</el-col>
+				<el-col :span="6"><div class="grid-content bg-purple">&nbsp;</div></el-col>
+			</el-row>
+			
+		</div>
+		
+	</body>
+	<script src="../assets/js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+	<script src="../assets/js/axios.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#container",
+			data:{
+				username:'',
+				password:'',
+				nickname:'',
+				phone:'',
+				gender:'',
+				city:'',
+				job:'',
+				personalizedSignature:''
+			},
+			methods:{
+				onSubmit:function(){
+					console.log(vm.birthday)
+					console.log(vm.gender)
+					axios({
+					  method: 'post',
+					  url: 'http://localhost:8766/auth/auth/register',
+					  params: {
+					    username: vm.username,
+					    password: vm.password,
+					    nickname: vm.nickname,
+					    phone: vm.phone,
+					    gender: vm.gender,
+					    city: vm.city,
+					    job: vm.job,
+					    personalizedSignature: vm.personalizedSignature
+					  }
+					})
+					.then(function(res){
+						console.log(res);
+						if(res.data.code == 0){
+							vm.$message('注册成功');
+							// location.href="login.html";
+						}else{
+							vm.$message('注册失败');
+						}
+					});
+				},
+				backLogin:function(){
+					location.href = "login.html";
+				}
+			}
+		});
+	</script>	
+</html>
