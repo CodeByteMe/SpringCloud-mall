@@ -83,6 +83,10 @@ mall
 | RabbitMq      | 3.7.0  | http://www.rabbitmq.com/download.html                        |
 | nginx         | 1.18   | http://nginx.org/en/download.html                            |
 
+### 行为准则
+
+我们有一份 [行为准则](https://github.com/besscroft/SpringCloud-mall/blob/master/CODE_OF_CONDUCT.md)，希望所有的贡献者都能遵守，请花时间阅读一遍全文以确保你能明白哪些是可以做的，哪些是不可以做的。
+
 ### 在线开发
 
 你可以使用 Gitpod 进行在线开发：
