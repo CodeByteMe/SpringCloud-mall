@@ -2,7 +2,7 @@ package com.mall.admin.home.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mall.admin.home.dao.AuthDAO;
+import com.mall.admin.home.service.AuthService;
 import com.mall.admin.home.service.MenuService;
 import com.mall.common.pojo.Menu;
 import com.mall.common.util.JWTUtil;
@@ -11,7 +11,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +33,7 @@ public class HomeController {
     private MenuService menuService;
 
     @Resource
-    private AuthDAO authDAO;
+    private AuthService authService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -46,7 +45,7 @@ public class HomeController {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
         String adminId = jws.getBody().getId();
-        String jsonStr = authDAO.getId(adminId);
+        String jsonStr = authService.getId(adminId);
         List<Menu> menus = null;
         try {
             Integer i = mapper.readValue(jsonStr, Integer.class);
