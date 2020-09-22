@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.home.dao.MenuDAO">
+    <resultMap id="menuMap" type="Menu">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="title" property="title"/>
+        <result column="level" property="level"/>
+        <result column="sort" property="sort"/>
+        <result column="url" property="url"/>
+        <result column="icon" property="icon"/>
+        <result column="hidden" property="hidden"/>
+    </resultMap>
+<!--    public List<Menu> listMenu(int adminId);-->
+    <select id="listMenu" resultSets="java.util.List" resultMap="menuMap">
+        select ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
+        ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden
+        from ums_admin inner join ums_admin_role_relation on ums_admin.id = ums_admin_role_relation.admin_id
+        inner join ums_role on ums_admin_role_relation.role_id = ums_role.id
+        inner join ums_role_menu_relation on ums_role.id = ums_role_menu_relation.role_id
+        inner join ums_menu on ums_role_menu_relation.menu_id = ums_menu.id
+        where ums_admin.id = #{adminId} and ums_menu.level = 0;
+    </select>
+<!--    public List<Menu> listMenuChildren(@Param("adminId") int adminId,
+        @Param("parentId") int parentId);-->
+    <select id="listMenuChildren">
+        select ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
+        ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden
+        from ums_admin inner join ums_admin_role_relation on ums_admin.id = ums_admin_role_relation.admin_id
+        inner join ums_role on ums_admin_role_relation.role_id = ums_role.id
+        inner join ums_role_menu_relation on ums_role.id = ums_role_menu_relation.role_id
+        inner join ums_menu on ums_role_menu_relation.menu_id = ums_menu.id
+        where ums_admin.id = #{adminId} and ums_menu.level = 1 and ums_menu.parent_id = #{parentId};
+    </select>
+</mapper>

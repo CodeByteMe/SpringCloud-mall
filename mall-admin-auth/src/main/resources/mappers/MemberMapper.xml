@@ -24,7 +24,7 @@
     <!--  public MemberUser getMemberUser(@Param("username") String username,
     @Param("password") String password);  -->
     <select id="getMemberUser" resultMap="memberMap">
-        select id,member_id,username,password,nickname,phone,status,create_time,icon,gender,birthday,city,job,personalized_signature
+        select id,member_id,username,password,nickname,phone,status,create_time,icon,gender,city,job,personalized_signature
         from ums_member
         where username = #{username} and password = #{password}
     </select>
