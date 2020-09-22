@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
     <title>商品列表</title>
     <style>
+        #container{
+            width: 90%;
+        }
         .text {
             font-size: 14px;
         }
@@ -62,7 +65,7 @@
         <el-card class="box-card">
             <div class="text item">
                 <template>
-                    <el-table :data="tableData" height="540" border style="width: 100%">
+                    <el-table :data="tableData" height="550" border style="width: 100%">
                         <el-table-column prop="id" label="编号"></el-table-column>
                         <el-table-column prop="pic" label="商品图片" width="80">
                             <template slot-scope="scope">
@@ -81,6 +84,8 @@
                                 <el-switch
                                     on-color="#5B7BFA"
                                     off-color="#dadde5"
+                                    :active-value="1"
+								    :inactive-value="0"
                                     v-model="scope.row.publishStatus" 
                                     @change=change(scope.$index,scope.row)                
                                 >
@@ -98,7 +103,14 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                    
+                </template>
+                <template>
+                    <div class="block">
+                        <el-pagination :hide-on-single-page="pageValue" @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                        </el-pagination>
+                    </div>
                 </template>
             </div>
         </el-card>
@@ -113,33 +125,16 @@
         var vm = new Vue({
             el:"#container",
             data:{
+                token:"",
+                total: 100,
+                currentPage4:1,
+                pageValue:true,
                 name:"",
                 productId:"",
                 state:"",
                 value: [],
                 value1: "",
-                tableData:[
-                {
-                    id: 1,
-                    pic: "a.png",
-                    name: "冬杨",
-                    promoteDesc: 22.22,
-                    publishStatus: true,
-                    sort: 100,
-                    sellNum: 3,
-                    sale: 666
-                },
-                {
-                    id: 2,
-                    pic: "a.png",
-                    name: "冬杨1",
-                    promoteDesc: 222.22,
-                    publishStatus: false,
-                    sort: 1001,
-                    sellNum: 31,
-                    sale: 6666
-                }
-                ],
+                tableData:[],
                 options:[
                 {
                     value: 'ziyuan',
@@ -173,14 +168,44 @@
                     label: '北京烤鸭'
                     }
                 ],
-                active: 0
+                active: 0,
+                page:1,
+                pageSize:5
                 },
             beforeMount:function(){
-                
+                var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+                axios({
+					method: 'get',
+					url: 'http://localhost:8766/product/product/list',
+					params: {
+						page: 1,
+						pageSize: 5
+					},
+                    headers: {
+                        'token': tokenStr
+                    }
+					})
+					.then(function(res){
+						console.log(res.data.data);
+                        vm.tableData = res.data.data.list;
+                        vm.total = res.data.data.total;
+					});
             },
             methods:{
                 change:function(index,row){
-                    console.log(index,row.publishStatus);
+                    console.log(row.publishStatus);
                 },
                 handleChange:function(value) {
                     console.log(value);
@@ -193,7 +218,62 @@
                 },
                 submit:function(){
                     console.log("111");
-                }
+                },
+                handleSizeChange:function(event){
+					console.log(event);
+					vm.pageSize = event;
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/product/product/list',
+						headers: {'token': tokenStr},
+						params: {
+							pageSize:vm.pageSize,
+							page:1
+						}
+					}).then(function(res) {
+						vm.tableData = res.data.data.list;
+					});
+				},
+                handleCurrentChange:function(event){
+					console.log(event);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/product/product/list',
+						headers: {'token': tokenStr},
+						params: {
+							pageSize:vm.pageSize,
+							page:event
+						}
+					}).then(function(res) {
+						vm.tableData = res.data.data.list;
+					});
+				},
             }
         });
     </script>

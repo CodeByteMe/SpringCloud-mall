@@ -29,46 +29,8 @@
 		<div id="container">
 			
 			<leftnav :menu="menuData"></leftnav>
-			<!-- <div id="leftnav">
-				<el-row class="tac">
-				  <el-col :span="12" style="width: 100%;">
-				    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
-				      @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-						<template>
-							<el-submenu v-for="(item,index) in menuData" :key="item.id" v-if="item.level == 0" :index="item.id">
-								<template slot="title">
-									<i :class="item.icon"></i>
-									<span>{{item.title}}</span>
-								</template>
-								<el-menu-item-group v-for="(item1,index1) in item.children" :key="item1.id">
-									<el-menu-item :index="item1.id"><el-link type="primary" :href="item1.url" target="main_self_frame">{{item1.title}}</el-link></el-menu-item>
-								</el-menu-item-group>
-							</el-submenu>
-						</template>
-				    </el-menu>
-				  </el-col>
-				</el-row>
-			</div> -->
 			<div id="rightnav">
 				<rightnavtop :title="nickName"></rightnavtop>
-				<!-- <div id="rightnav-top">
-					<el-card shadow="hover">
-						<el-breadcrumb separator="/" style="float: left;">
-							<el-breadcrumb-item><a href="home.html">首页</el-breadcrumb-item>
-							<el-breadcrumb-item>活动管理</el-breadcrumb-item>
-							
-						</el-breadcrumb>
-						<el-dropdown trigger="click" style="margin-left: 76%;">
-							<span class="el-dropdown-link">
-								{{nickName}}<i class="el-icon-arrow-down el-icon--right"></i>
-							</span>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item icon="el-icon-s-unfold">首页</el-dropdown-item>
-								<el-dropdown-item icon="el-icon-s-promotion">退出</el-dropdown-item>
-							</el-dropdown-menu>
-						</el-dropdown>
-					</el-card>
-				</div> -->
 				<div class="rightnav-body">
 				    <!-- 内容主体区域 -->
 				    <iframe src="bulletin.html" name="main_self_frame" frameborder="0" class="layadmin-iframe" height="100%" width="100%"></iframe>
