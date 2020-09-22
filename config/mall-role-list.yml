@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://47.100.38.50:3306/mall?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
-    username: root
+    username: mall
     password: jLfmazj2MzbGFR5a
     type: com.alibaba.druid.pool.DruidDataSource
     # 数据库连接池配置
