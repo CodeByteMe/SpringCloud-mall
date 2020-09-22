@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>商户系统登录</title>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<style type="text/css">
+			*{
+				margin: 0;
+			}
+			.mybody{
+				margin-top: 1.625rem;
+			}
+			body{
+				background-image: url(../assets/img/login.jpg);
+				z-index: -1;
+				background-size:cover;
+				background-repeat:no-repeat;
+				background-attachment:fixed;
+				background-position:center;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="container">
+			<el-row>
+				<el-col :span="24">
+					<div class="grid-content bg-purple-dark">
+						 <el-menu
+							   class="el-menu-demo"
+							   mode="horizontal"
+							   background-color="#545c64"
+							   text-color="#fff"
+							   active-text-color="#ffd04b">
+							   <el-menu-item index="1">处理中心</el-menu-item>
+							   <el-submenu index="2">
+								 <template slot="title">我的工作台</template>
+								 <el-menu-item index="2-1">选项1</el-menu-item>
+								 <el-menu-item index="2-2">选项2</el-menu-item>
+								 <el-menu-item index="2-3">选项3</el-menu-item>
+							   </el-submenu>
+							   <el-menu-item index="3">消息中心</el-menu-item>
+							   <el-menu-item index="4"><a href="">订单管理</a></el-menu-item>
+						  </el-menu>
+					</div>
+					
+				</el-col>
+			</el-row>
+			<el-row class="mybody">
+				<el-col :span="2">&nbsp;</el-col>
+				<el-col :span="12">
+					<div class="grid-content bg-purple">
+						<el-calendar v-model="time">
+						</el-calendar>
+					</div>
+				</el-col>
+				<el-col :span="2">&nbsp;</el-col>
+				<el-col :span="6">
+					<div class="grid-content bg-purple-light">
+						
+						<el-card class="box-card">
+							<div slot="header" class="clearfix">
+							    <span>用户登录</span>
+							</div>
+							<div class="text item">
+							    <el-form label-width="100px" class="demo-ruleForm">
+									
+									<el-form-item label="账号">
+									    <el-input v-model="username"></el-input>
+									</el-form-item>
+									<el-form-item label="密码">
+									    <el-input v-model="password" type="password" @keyup.enter.native="submitForm" :plain="true"></el-input>
+									</el-form-item>
+									<el-form-item>
+										<el-button type="primary" @click="submitForm" :plain="true">登录</el-button>
+										<el-button type="primary" @click="register" :plain="true" >注册</el-button>
+									</el-form-item>
+								</el-form>
+							</div>
+						</el-card>
+					</div>
+				</el-col>
+				<el-col :span="2">
+					<div class="grid-content bg-purple">
+						&nbsp;
+					</div>
+				</el-col>
+			</el-row>
+		</div>
+		
+	</body>
+	<script src="../assets/js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+	<script src="../assets/js/axios.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#container",
+			data:{
+				username: '',
+				password: '',
+				time: new Date(),
+			},
+			beforeMount:function(){
+				this.$message({
+					dangerouslyUseHTMLString: true,
+					message: '<strong>欢迎，今天是'+new Date()+'</strong>'
+				});
+			},
+			methods: {
+			    submitForm() {
+					axios({
+					  method: 'post',
+					  url: 'http://localhost:8766/auth/auth/memberLogin',
+					  params: {
+						username: vm.username,
+						password: vm.password
+					  }
+					}).then(function(res){
+						console.log(res);
+						if(res.data.code == 0){
+							var token = res.data.data;
+							document.cookie = "token="+token;
+							vm.$message('登录成功');
+							setTimeout(function () {
+								location.href="../index.html";
+							},2000);
+							
+						}else{
+							vm.$message('登录失败，请检查用户名或密码');
+						}
+					});
+			    },
+				register:function(){
+					location.href = "register.html";
+				}
+			}
+		});
+	</script>
+</html>

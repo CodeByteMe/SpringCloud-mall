@@ -1,0 +1,433 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>巢庭万家</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
+		<!-- Place favicon.ico in the root directory -->
+
+		<!-- CSS here -->
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../assets/css/animate.min.css">
+		<link rel="stylesheet" href="css/magnific-popup.css">
+		<link href="https://s1.pstatp.com/cdn/expire-1-M/font-awesome/5.8.1/css/all.min.css" type="text/css" rel="stylesheet" />
+		<link rel="stylesheet" href="../assets/css/dripicons.css">
+		<link rel="stylesheet" href="../assets/css/slick.css">
+		<link rel="stylesheet" href="../assets/css/default.css">
+		<link rel="stylesheet" href="../assets/css/style.css">
+		<link rel="stylesheet" href="../assets/css/responsive.css">
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: "microsoft yahei";
+			}
+			
+			html,
+			body {
+				background: #f3f3f3;
+			}
+			
+			ul {
+				list-style: none;
+			}
+			
+			a {
+				text-decoration: none;
+				color: #555;
+			}
+			
+			.pro_recommend {
+				width: 1200px;
+				height: auto;
+				margin: 0 auto;
+			}
+			
+			.pro_recommend h2 {
+				font-size: 20px;
+				color: #555;
+				font-weight: bold;
+				margin-bottom: 20px;
+			}
+			
+			.pro_recommend ul {
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				background: #fff;
+			}
+			
+			.pro_recommend ul li {
+				float: left;
+				position: relative;
+				overflow: hidden;
+				transition: all 0.3s ease 0s;
+				width: 319px;
+				height: 219px;
+				border-right: 1px solid #ebebeb;
+				border-bottom: 1px solid #ebebeb;
+			}
+			
+			.pro_recommend ul li:first-child {
+				border: none;
+				width: 279px;
+				height: 440px;
+				border-right: 1px solid #ebebeb;
+			}
+			
+			.pro_recommend ul li:nth-child(2) {
+				float: right;
+				border: none;
+				width: 280px;
+				height: 440px;
+			}
+			
+			.pro_recommend ul li a {
+				display: block;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			
+			.pro_recommend ul li img {
+				position: absolute;
+				width: 180px;
+				height: 180px;
+				bottom: 0;
+				right: -40px;
+				transition: all 0.3s ease 0s;
+				vertical-align: middle;
+			}
+			
+			.pro_recommend ul li:first-child img {
+				width: 240px;
+				height: 240px;
+			}
+			
+			.pro_recommend ul li:nth-child(2) img {
+				width: 240px;
+				height: 240px;
+			}
+			
+			.pro_recommend ul li .item-text {
+				position: absolute;
+				top: 30px;
+				left: 30px;
+			}
+			
+			.pro_recommend ul li .item-text strong {
+				display: block;
+				font-size: 18px;
+				font-weight: normal;
+				margin-bottom: 10px;
+			}
+			
+			.pro_recommend ul li .item-text p {
+				font-size: 14px;
+				margin-bottom: 30px;
+			}
+			
+			.pro_recommend ul li .item-text span {
+				display: inline-block;
+				height: 28px;
+				line-height: 28px;
+				border: 1px solid #fc6451;
+				color: #fc6451;
+				font-size: 14px;
+				padding: 0 20px;
+				border-radius: 2px;
+				text-align: center;
+				transition: all 0.3s ease 0s;
+			}
+			
+			.pro_recommend ul li .i-p-hot {
+				display: block;
+				width: 60px;
+				height: 60px;
+				background: url(../images/icon_bg.png) no-repeat 0 -280px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+			
+			.pro_recommend ul li .i-p-new {
+				display: block;
+				width: 60px;
+				height: 60px;
+				background: url(../images/icon_bg.png) no-repeat -80px -280px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+			
+			.pro_recommend ul li .i-p-free {
+				display: block;
+				width: 60px;
+				height: 60px;
+				background: url(../images/icon_bg.png) no-repeat -160px -280px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+			
+			.pro_recommend ul li a:hover .item-img {
+				right: -20px;
+			}
+			.item-img{
+				border-width: 0px;
+			}
+			.pro_recommend ul li a:hover .item-text span {
+				background: #fc6451;
+				border: 1px solid #fc6451;
+				color: #fff;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div style="width: 80%;margin: auto;">
+			<div id="dongyang">
+				<!-- header -->
+				<header class="header-area">
+					<div id="header-sticky" class="menu-area">
+						<div class="container">
+							<div class="second-menu">
+								<div class="row align-items-center">
+									<div class="col-xl-2 col-lg-2">
+										<div class="logo">
+											<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 200px;height: 200px;"></a>
+										</div>
+									</div>
+									<div class="col-xl-8 col-lg-9">
+										<div class="responsive"><i class="icon dripicons-align-right"></i></div>
+										<div class="main-menu text-right text-xl-center">
+											<nav id="mobile-menu">
+												<ul>
+													<li class="has-sub">
+														<a href="#home">消息管理</a>
+													</li>
+													<li class="has-sub"><a href="#">个人中心</a>
+														<ul>
+															<li><a href="#pricing">购物车</a></li>
+															<li><a href="#team">我的订单</a></li>
+															<li><a href="#testimonios">地址管理</a></li>
+														</ul>
+													</li>
+													<li><a href="#">送货上门</a></li>
+													<li class="has-sub"><a href="#">所有商品</a>
+													</li>
+												</ul>
+											</nav>
+										</div>
+									</div>
+									<div class="col-xl-2 text-right d-none d-xl-block">
+										<div class="header-btn second-header-btn">
+											<a href="login.html" class="btn">登录</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</header>
+				<!-- body -->
+				<div class="pro_recommend">
+					<h2 style="margin-top: 50px;">商品列表</h2>
+					<ul>
+						<li>
+							<a href="#" class="goods-li-a">
+								<img class="item-img" src="../assets/img/a.jpg">
+								<div class="item-text">
+									<strong>安享康健2018</strong>
+									<p>保120种疾病<br>赔付最高可达116万</p>
+									<span>查看详情</span>
+								</div>
+								<i class="i-p-hot"></i>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="goods-li-a">
+								<img class="item-img" src="../assets/img/a.jpg">
+								<div class="item-text">
+									<strong>安享康健2018</strong>
+									<p>保120种疾病<br>赔付最高可达116万</p>
+									<span>查看详情</span>
+								</div>
+								<i class="i-p-hot"></i>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="goods-li-a">
+								<img class="item-img" src="../assets/img/a.jpg">
+								<div class="item-text">
+									<strong>安享康健2018</strong>
+									<p>保120种疾病<br>赔付最高可达116万</p>
+									<span>查看详情</span>
+								</div>
+								<i class="i-p-hot"></i>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="goods-li-a">
+								<img class="item-img" src="../assets/img/a.jpg">
+								<div class="item-text">
+									<strong>安享康健2018</strong>
+									<p>保120种疾病<br>赔付最高可达116万</p>
+									<span>查看详情</span>
+								</div>
+								<i class="i-p-hot"></i>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="goods-li-a">
+								<img class="item-img" src="../assets/img/a.jpg">
+								<div class="item-text">
+									<strong>安享康健2018</strong>
+									<p>保120种疾病<br>赔付最高可达116万</p>
+									<span>查看详情</span>
+								</div>
+								<i class="i-p-hot"></i>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="goods-li-a">
+								<img class="item-img" src="../assets/img/a.jpg">
+								<div class="item-text">
+									<strong>儿童综合保障</strong>
+									<p>教育+大病+住院+意外<br> 4合1全面保障</p>
+									<span>查看详情</span>
+								</div>
+								<i class="i-p-new"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!-- body-end -->
+			</div>
+			<!-- header-end -->
+			<!-- footer -->
+			<footer class="footer-bg footer-p pt-100 pb-80 " style="margin-top: 200px;">
+
+				<div class="footer-top pb-30">
+					<div class="container">
+						<div class="row justify-content-between">
+							<div class="col-xl-3 col-lg-3 col-sm-6">
+								<div class="footer-widget mb-30">
+									<div class="logo mb-35">
+										<a href="#"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 300px;height: 300px;"></a>
+									</div>
+
+									<div class="footer-social">
+										<span>Follow Us</span>
+										<a href="#"><i class="fab fa-facebook-f"></i></a>
+										<a href="#"><i class="fab fa-twitter"></i></a>
+										<a href="#"><i class="fab fa-instagram"></i></a>
+										<a href="#"><i class="fab fa-google-plus-g"></i></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-2 col-lg-3 col-sm-6">
+								<div class="footer-widget mb-30">
+									<div class="f-widget-title">
+										<h5>Company News</h5>
+									</div>
+									<div class="footer-link">
+										<ul>
+											<li><a href="#">Partners</a></li>
+											<li><a href="#">About Us</a></li>
+											<li><a href="#">Career</a></li>
+											<li><a href="#">Reviews</a></li>
+											<li><a href="#">Terms & Conditions</a></li>
+											<li><a href="#">Help</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-2 col-lg-3 col-sm-6">
+								<div class="footer-widget mb-30">
+									<div class="f-widget-title">
+										<h5>Useful Links</h5>
+									</div>
+									<div class="footer-link">
+										<ul>
+											<li><a href="#">Home</a></li>
+											<li><a href="#">About Us</a></li>
+											<li><a href="#">Services</a></li>
+											<li><a href="#">Project</a></li>
+											<li><a href="#">Our Team</a></li>
+											<li><a href="#">Latest Blog</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-sm-6">
+								<div class="footer-widget mb-30">
+									<div class="f-widget-title">
+										<h5>Our Gallery</h5>
+									</div>
+									<div class="f-insta">
+										<ul>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_01.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_02.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_03.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_04.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_05.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_02.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_03.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_04.jpg" alt="img"></a></li>
+											<li><a href="#"><img src="../assets/img/blog/aside/post_05.jpg" alt="img"></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="copyright-wrap">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<div class="copyright-text">
+									<p>@ massivex All design Zcube.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- footer-end -->
+		</div>
+	</body>
+	<!-- JS here -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<script src="../assets/js/vendor/modernizr-3.5.0.min.js"></script>
+	<script src="../assets/js/vendor/jquery-1.12.4.min.js"></script>
+	<script src="../assets/js/popper.min.js"></script>
+	<script src="../assets/js/bootstrap.min.js"></script>
+	<script src="../assets/js/one-page-nav-min.js"></script>
+	<script src="../assets/js/slick.min.js"></script>
+	<script src="../assets/js/ajax-form.js"></script>
+	<script src="../assets/js/paroller.js"></script>
+	<script src="../assets/js/wow.min.js"></script>
+	<script src="../assets/js/js_isotope.pkgd.min.js"></script>
+	<script src="../assets/js/imagesloaded.min.js"></script>
+	<script src="../assets/js/parallax.min.js"></script>
+	<script src="../assets/js/jquery.waypoints.min.js"></script>
+	<script src="../assets/js/jquery.counterup.min.js"></script>
+	<script src="../assets/js/jquery.scrollUp.min.js"></script>
+	<script src="../assets/js/parallax-scroll.js"></script>
+	<script src="../assets/js/jquery.magnific-popup.min.js"></script>
+	<script src="../assets/js/element-in-view.js"></script>
+	<script src="../assets/js/main.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: "#dongyang",
+			data: {
+
+			}
+		});
+	</script>
+</html>
