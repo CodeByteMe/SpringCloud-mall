@@ -5,6 +5,7 @@
 		<title>巢庭万家</title>
 		<!-- 引入样式 -->
 		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../assets/css/custom.css">
 		<style type="text/css">
 			*{
 				margin: 0;
@@ -21,46 +22,14 @@
 				background-position:center;
 				height: 100%;
 			}
-			#container{
-				width: 100%;
-			}
-			#leftnav{
-				background-color: #545c64;
-				width: 180px!important;
-				height: 100%;
-				position: fixed;
-				font-size: 0;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				z-index: 1001;
-				overflow: hidden;
-			}
-			#rightnav{
-				/* height: 100%; */
-				width: 100%;
-				position: fixed;
-				font-size: 0;
-				top: 0;
-				bottom: 0;
-				left: 180px!important;
-				z-index: 1001;
-				overflow: hidden;
-			}
-			#rightnav-top{
-				width: 100%;
-				position: relative;
-			}
-			.rightnav-body{
-				height: 100%;
-			}
 		</style>
 	</head>
 	<body>
 		
 		<div id="container">
 			
-			<div id="leftnav">
+			<leftnav :menu="menuData"></leftnav>
+			<!-- <div id="leftnav">
 				<el-row class="tac">
 				  <el-col :span="12" style="width: 100%;">
 				    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
@@ -72,16 +41,17 @@
 									<span>{{item.title}}</span>
 								</template>
 								<el-menu-item-group v-for="(item1,index1) in item.children" :key="item1.id">
-									<el-menu-item :index="item1.id" target="main_self_frame">{{item1.title}}</el-menu-item>
+									<el-menu-item :index="item1.id"><el-link type="primary" :href="item1.url" target="main_self_frame">{{item1.title}}</el-link></el-menu-item>
 								</el-menu-item-group>
 							</el-submenu>
 						</template>
 				    </el-menu>
 				  </el-col>
 				</el-row>
-			</div>
+			</div> -->
 			<div id="rightnav">
-				<div id="rightnav-top">
+				<rightnavtop :title="nickName"></rightnavtop>
+				<!-- <div id="rightnav-top">
 					<el-card shadow="hover">
 						<el-breadcrumb separator="/" style="float: left;">
 							<el-breadcrumb-item><a href="home.html">首页</el-breadcrumb-item>
@@ -98,7 +68,7 @@
 							</el-dropdown-menu>
 						</el-dropdown>
 					</el-card>
-				</div>
+				</div> -->
 				<div class="rightnav-body">
 				    <!-- 内容主体区域 -->
 				    <iframe src="bulletin.html" name="main_self_frame" frameborder="0" class="layadmin-iframe" height="100%" width="100%"></iframe>
@@ -113,6 +83,8 @@
 	<!-- 引入组件库 -->
 	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="../assets/js/layout.js"></script>
+	<script src="../assets/js/rightnavtop.js"></script>
 	<script type="text/javascript">
 		var vm = new Vue({
 			el:"#container",
@@ -142,21 +114,11 @@
 				}).then(function(res) {
 					console.log(res);
 					if (res.data.code === 1) {
-						top.location = "../login.html";
+						top.location = "login.html";
 					}
 					vm.menuData = res.data.data;
 				});
 				this.token = tokenStr;
-			}
-			methods:{
-				handleOpen:function(key, keyPath){
-					console.log("handleOpen");
-					console.log(key, keyPath);
-				},
-				handleClose:function(key, keyPath){
-					console.log("handleOpen");
-					console.log(key, keyPath);
-				}
 			}
 		});
 	</script>

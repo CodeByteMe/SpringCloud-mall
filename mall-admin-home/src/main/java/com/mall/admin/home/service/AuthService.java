@@ -16,6 +16,6 @@ public interface AuthService {
      * 此处@RequestMapping注解用于声明服务访问的服务
      * @return
      */
-    @RequestMapping(value="/auth/auth/getId",method = RequestMethod.POST)
+    @RequestMapping(value="/auth/getId",method = RequestMethod.POST)
     public String getId(String adminId);
 }

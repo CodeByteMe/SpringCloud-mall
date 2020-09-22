@@ -109,7 +109,7 @@ public class AuthController {
     @RequestMapping(value = "/getId",method = RequestMethod.POST)
     @ApiOperation(value = "服务调用接口", notes = "请求adminId，响应id")
     @ApiImplicitParam(name = "password", value = "登录密码",required = true, dataType = "String")
-    public String getId(@RequestParam String adminId) {
+    public String getId(@RequestBody String adminId) {
         Integer id = adminService.getId(adminId);
         return id+"";
     }

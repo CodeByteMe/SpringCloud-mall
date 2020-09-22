@@ -27,7 +27,7 @@
     </select>
 <!--    public List<Menu> listMenuChildren(@Param("adminId") int adminId,
         @Param("parentId") int parentId);-->
-    <select id="listMenuChildren">
+    <select id="listMenuChildren" resultSets="java.util.List" resultMap="menuMap">
         select ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
         ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden
         from ums_admin inner join ums_admin_role_relation on ums_admin.id = ums_admin_role_relation.admin_id

@@ -1,0 +1,33 @@
+#container{
+	width: 100%;
+}
+#leftnav{
+	background-color: #545c64;
+	width: 180px!important;
+	height: 100%;
+	position: fixed;
+	font-size: 0;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1001;
+	overflow: hidden;
+}
+#rightnav{
+	/* height: 100%; */
+	width: 100%;
+	position: fixed;
+	font-size: 0;
+	top: 0;
+	bottom: 0;
+	left: 180px!important;
+	z-index: 1001;
+	overflow: hidden;
+}
+#rightnav-top{
+	width: 100%;
+	position: relative;
+}
+.rightnav-body{
+	height: 100%;
+}

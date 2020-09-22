@@ -46,6 +46,7 @@ public class HomeController {
         // 获取解析的token中的用户名、id等
         String adminId = jws.getBody().getId();
         String jsonStr = authService.getId(adminId);
+        System.out.println(jsonStr);
         List<Menu> menus = null;
         try {
             Integer i = mapper.readValue(jsonStr, Integer.class);
