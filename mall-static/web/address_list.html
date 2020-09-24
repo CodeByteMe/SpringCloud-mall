@@ -7,6 +7,7 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 		<!-- Place favicon.ico in the root directory -->
 
 		<!-- CSS here -->
@@ -236,119 +237,120 @@
 					</div>
 				</header>
 				<!-- body -->
-				<div class="pro_recommend">
-					<h2 style="margin-top: 50px;">商品列表</h2>
-					<ul>
-						<li v-for="item in product" >
-							<a  @click="productDetail(item)" class="goods-li-a">
-								<img class="item-img" :src="item.pic">
-								<div class="item-text">
-									<strong>{{item.name}}</strong>
-									<p>{{item.description}}<br>{{item.subTitle}}</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-hot"></i>
-							</a>
-						</li>
-					</ul>
+				<div id="" style="margin-top: 100px;">
+					<template>
+						<el-table :data="tableData" style="width: 77%;margin: auto;">
+							<el-table-column prop="date" label="收货人" width="180">
+							</el-table-column>
+							<el-table-column prop="name" label="所在地区" width="180">
+							</el-table-column>
+							<el-table-column prop="post_code" label="邮政编码">
+							</el-table-column>
+							<el-table-column prop="post_code" label="联系电话">
+							</el-table-column>
+							<el-table-column prop="post_code" label="操作">
+							</el-table-column>
+							<el-table-column prop="post_code" label="默认地址">
+							</el-table-column>
+						</el-table>
+					</template>
 				</div>
-				<!-- body-end -->
+
+				<!-- footer -->
+				<footer class="footer-bg footer-p pt-100 pb-80 " style="margin-top: 200px;">
+
+					<div class="footer-top pb-30">
+						<div class="container">
+							<div class="row justify-content-between">
+								<div class="col-xl-3 col-lg-3 col-sm-6">
+									<div class="footer-widget mb-30">
+										<div class="logo mb-35">
+											<a href="#"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 300px;height: 300px;"></a>
+										</div>
+
+										<div class="footer-social">
+
+											<a href="#"><i class="fab fa-facebook-f"></i></a>
+											<a href="#"><i class="fab fa-twitter"></i></a>
+											<a href="#"><i class="fab fa-instagram"></i></a>
+											<a href="#"><i class="fab fa-google-plus-g"></i></a>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-2 col-lg-3 col-sm-6">
+									<div class="footer-widget mb-30">
+										<div class="f-widget-title">
+											<h5>帮助中心</h5>
+										</div>
+										<div class="footer-link">
+											<ul>
+												<li><a href="#">购物指南</a></li>
+												<li><a href="#">账户管理</a></li>
+												<li><a href="#">订单操作</a></li>
+												<li><a href="#">防伪查询</a></li>
+												<li><a href="#">礼物码</a></li>
+												<li><a href="#">服务网点</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-2 col-lg-3 col-sm-6">
+									<div class="footer-widget mb-30">
+										<div class="f-widget-title">
+											<h5>服务支持</h5>
+										</div>
+										<div class="footer-link">
+											<ul>
+												<li><a href="#">售后政策</a></li>
+												<li><a href="#">自助服务</a></li>
+												<li><a href="#">官方微信</a></li>
+												<li><a href="#">服务网点</a></li>
+												<li><a href="#">上门维修</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-lg-3 col-sm-6">
+									<div class="footer-widget mb-30">
+										<div class="f-widget-title">
+											<h5>关注我们</h5>
+										</div>
+										<div class="f-insta">
+											<ul>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_01.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_02.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_03.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_04.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_05.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_02.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_03.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_04.jpg" alt="img"></a></li>
+												<li><a href="#"><img src="../assets/img/blog/aside/post_05.jpg" alt="img"></a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="copyright-wrap">
+						<div class="container">
+							<div class="row">
+								<div class="col-12">
+									<div class="copyright-text">
+										<p>@ massivex All design Zcube.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</footer>
+				<!-- footer-end -->
 			</div>
-			<!-- header-end -->
-			<!-- footer -->
-			<footer class="footer-bg footer-p pt-100 pb-80 " style="margin-top: 200px;">
-
-				<div class="footer-top pb-30">
-					<div class="container">
-						<div class="row justify-content-between">
-							<div class="col-xl-3 col-lg-3 col-sm-6">
-								<div class="footer-widget mb-30">
-									<div class="logo mb-35">
-										<a href="#"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 300px;height: 300px;"></a>
-									</div>
-
-									<div class="footer-social">
-
-										<a href="#"><i class="fab fa-facebook-f"></i></a>
-										<a href="#"><i class="fab fa-twitter"></i></a>
-										<a href="#"><i class="fab fa-instagram"></i></a>
-										<a href="#"><i class="fab fa-google-plus-g"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-2 col-lg-3 col-sm-6">
-								<div class="footer-widget mb-30">
-									<div class="f-widget-title">
-										<h5>帮助中心</h5>
-									</div>
-									<div class="footer-link">
-										<ul>
-											<li><a href="#">购物指南</a></li>
-											<li><a href="#">账户管理</a></li>
-											<li><a href="#">订单操作</a></li>
-											<li><a href="#">防伪查询</a></li>
-											<li><a href="#">礼物码</a></li>
-											<li><a href="#">服务网点</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-2 col-lg-3 col-sm-6">
-								<div class="footer-widget mb-30">
-									<div class="f-widget-title">
-										<h5>服务支持</h5>
-									</div>
-									<div class="footer-link">
-										<ul>
-											<li><a href="#">售后政策</a></li>
-											<li><a href="#">自助服务</a></li>
-											<li><a href="#">官方微信</a></li>
-											<li><a href="#">服务网点</a></li>
-											<li><a href="#">上门维修</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-3 col-lg-3 col-sm-6">
-								<div class="footer-widget mb-30">
-									<div class="f-widget-title">
-										<h5>关注我们</h5>
-									</div>
-									<div class="f-insta">
-										<ul>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_01.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_02.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_03.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_04.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_05.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_02.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_03.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_04.jpg" alt="img"></a></li>
-											<li><a href="#"><img src="../assets/img/blog/aside/post_05.jpg" alt="img"></a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="copyright-wrap">
-					<div class="container">
-						<div class="row">
-							<div class="col-12">
-								<div class="copyright-text">
-									<p>@ massivex All design Zcube.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</footer>
-			<!-- footer-end -->
-		</div>
 	</body>
 	<!-- JS here -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
 	<script src="../assets/js/axios.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../assets/js/vendor/modernizr-3.5.0.min.js"></script>
 	<script src="../assets/js/vendor/jquery-1.12.4.min.js"></script>
@@ -373,19 +375,25 @@
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				total: 100,
-				currentPage4:1,
-				pageValue:true,
-				page:1,
-				pageSize:5,
-				product:[],
-				total:[]
+				tableData: []
 			},
 			beforeMount: function() {
-
+				var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
 				axios({
 						method: 'get',
-						url: 'http://localhost:8766/product/product/allList',
+						url: 'http://localhost:8766/address/address/list',
 						params: {
 							page: 1,
 							pageSize: 6
@@ -393,16 +401,15 @@
 					})
 					.then(function(res) {
 						console.log(res.data.data);
-						vm.product = res.data.data.list;
-						vm.total = res.data.data.total;
+						vm.tableData = res.data.data.list;
 					});
 			},
-			methods:{
-				productDetail:function(item){
-					alert(JSON.stringify(item));
-					localStorage.setItem("item", JSON.stringify(item));
-					location.href = "product_detail.html";
-				}
+			methods: {
+				// productDetail:function(item){
+				// 	alert(JSON.stringify(item));
+				// 	localStorage.setItem("item", JSON.stringify(item));
+				// 	location.href = "product_detail.html";
+				// }
 			}
 		});
 	</script>

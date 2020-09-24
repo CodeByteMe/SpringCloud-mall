@@ -9,6 +9,9 @@
 *.war
 
 # out
+mall-address-list/target
+mall-address-list/*.iml
+
 mall-admin-auth/target
 mall-admin-auth/*.iml
 
