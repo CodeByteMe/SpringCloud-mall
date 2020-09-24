@@ -86,12 +86,12 @@
 				<!--left -->
 				<div class="showbot">
 					<div id="showbox">
+						<img :src="product.pic" width="400" height="400" />
 						<img src="../assets/img/a.jpg" width="400" height="400" />
-						<img src="../assets/img/a.jpg" width="400" height="400" />
-						<img src="../assets/img/a.jpg" width="400" height="400" />
-						<img src="../assets/img/a.jpg" width="400" height="400" />
-						<img src="../assets/img/a.jpg" width="400" height="400" />
-						<img src="../assets/img/a.jpg" width="400" height="400" />
+						<img :src="product.pic" width="400" height="400" />
+						<img :src="product.pic" width="400" height="400" />
+						<img :src="product.pic" width="400" height="400" />
+						<img :src="product.pic" width="400" height="400" />
 					</div>
 					<!--展示图片盒子-->
 					<div id="showsum">
@@ -109,10 +109,10 @@
 						<h3>{{product.name}}</h3>
 					</div>
 					<div class="txt">
-						<span class="nowprice">￥<a href="">599.00</a></span>
+						<span class="nowprice">￥<a href="">{{product.price}}</a></span>
 						<div class="cumulative">
-							<span class="number ty1">累计售出<br /><em id="add_sell_num_363">370</em></span>
-							<span class="number tyu">累计评价<br /><em id="add_sell_num_363">25</em></span>
+							<span class="number ty1">销量<br /><em id="add_sell_num_363">{{product.sale}}</em></span>
+							<span class="number tyu">累计评价<br /><em id="add_sell_num_363">{{product.sale}}</em></span>
 						</div>
 					</div>
 
@@ -122,7 +122,7 @@
 						<input id="min" name="" type="button" value="-" />
 						<input id="text_box" name="" type="text" value="1" style="width:30px; text-align: center; color: #0F0F0F;" />
 						<input id="add" name="" type="button" value="+" />
-						<span class="Hgt">库存（99）</span>
+						<span class="Hgt">库存{{product.stock}}</span>
 					</div>
 					<div class="nobdr-btns">
 						<button class="addcart hu"><img src="../assets/img/shop.png" width="25" height="25" />加入购物车</button>
@@ -148,5 +148,22 @@
 			</div>
 		</div>
 	</body>
-
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<script src="../assets/js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: "#dongyang",
+			data: {
+				product:[],
+				total:[]
+			},
+			beforeMount: function() {
+				this.product = JSON.parse(localStorage.getItem("item"));
+				console.log(this.product);
+			},
+			methods:{
+				
+			}
+		});
+	</script>
 </html>

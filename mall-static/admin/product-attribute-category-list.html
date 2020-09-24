@@ -6,6 +6,28 @@
     <title>商品类型</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 </head>
+<style>
+    #container{
+        width: 90%;
+    }
+    .text {
+        font-size: 14px;
+    }
+    .item {
+        margin-bottom: 18px;
+    }
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+    .box-card {
+        width: 100%;
+    }
+</style>
 <body>
     <div id="container">
         <el-card class="box-card" :body-style="{ padding: '0px' }">
@@ -38,7 +60,7 @@
                 </template>
                 <template>
                     <div class="block">
-                        <el-pagination :hide-on-single-page="pageValue" @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
                         :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
                         :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
                         </el-pagination>
@@ -77,7 +99,6 @@
                         paramCount:4
                     },
                 ],
-                pageValue:true,
                 total:10,
                 currentPage4:1
             },

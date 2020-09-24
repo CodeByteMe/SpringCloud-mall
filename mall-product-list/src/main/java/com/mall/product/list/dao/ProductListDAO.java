@@ -11,5 +11,4 @@ import java.util.List;
 public interface ProductListDAO {
 
     public List<Product> productList();
-
 }

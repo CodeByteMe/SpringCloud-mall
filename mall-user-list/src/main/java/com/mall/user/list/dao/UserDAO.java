@@ -6,8 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserDAO {
-    public int userCount();
-    public List<AdminUser> selectUserListBycompanyid(@Param("companyId") String companyId,
-                                                      @Param("start") int start,
-                                                      @Param("limit") int limit);
+    public List<AdminUser> selectUserListBycompanyId(@Param("companyId") String companyId);
+    public String selectCompanyId(String adminId);//通过登录的id拿到公司id
+
 }

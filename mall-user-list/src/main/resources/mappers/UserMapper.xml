@@ -4,7 +4,7 @@
 
 <!--namespace = 所需实现的接口全限定名-->
 <mapper namespace="com.mall.user.list.dao.UserDAO">
-    <resultMap id="adminMap" type="AdminUser">
+    <resultMap id="adminMap" type="com.mall.common.pojo.AdminUser">
         <id column="id" property="id"/>
         <result column="admin_id" property="adminId"/>
         <result column="username" property="username"/>
@@ -27,10 +27,10 @@
         WHERE
         company_id =#{companyId}
     </select>
-<!--    public List<AdminUser> selectUserListBycompanyid(@Param("companyId") String companyId,-->
+<!--    public List<AdminUser> selectUserListBycompanyId(@Param("companyId") String companyId,-->
 <!--    @Param("start") int start,-->
 <!--    @Param("limit") int limit);-->
-    <select id="selectUserListBycompanyid" resultMap="adminMap">
+    <select id="selectUserListBycompanyId" resultMap="adminMap">
         select
             id,
             admin_id,
@@ -47,6 +47,11 @@
         FROM ums_admin
         WHERE
         company_id =#{companyId}
-        limit #{start},#{limit}
+    </select>
+<!--    public String selectCompanyId(String adminId);//通过登录的id拿到公司id-->
+    <select id="selectCompanyId" resultMap="adminMap">
+        select company_id
+        FROM ums_admin
+        where admin_id =#{adminId}
     </select>
 </mapper>

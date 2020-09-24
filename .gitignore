@@ -9,6 +9,9 @@
 *.war
 
 # out
+mall-address-list/target
+mall-address-list/*.iml
+
 mall-admin-auth/target
 mall-admin-auth/*.iml
 
@@ -38,6 +41,9 @@ mall-role-iist/*.iml
 
 mall-user-list/target
 mall-user-iist/*.iml
+
+mall-user-action/target
+mall-user-action/*.iml
 
 mall-zuul/target
 mall-zuul/*.iml

@@ -239,72 +239,17 @@
 				<div class="pro_recommend">
 					<h2 style="margin-top: 50px;">商品列表</h2>
 					<ul>
-						<li v-for="item in list" :key="item.name">
-							<a href="product_detail.html" class="goods-li-a">
-								<img class="item-img" src="../assets/img/a.jpg">
+						<li v-for="item in product" >
+							<a  @click="productDetail(item)" class="goods-li-a">
+								<img class="item-img" :src="item.pic">
 								<div class="item-text">
 									<strong>{{item.name}}</strong>
-									<p>{{item.age}}<br>{{}}</p>
+									<p>{{item.description}}<br>{{item.subTitle}}</p>
 									<span>查看详情</span>
 								</div>
 								<i class="i-p-hot"></i>
 							</a>
 						</li>
-						<!-- <li>
-							<a href="#" class="goods-li-a">
-								<img class="item-img" src="../assets/img/a.jpg">
-								<div class="item-text">
-									<strong>安享康健2018</strong>
-									<p>保120种疾病<br>赔付最高可达116万</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-hot"></i>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="goods-li-a">
-								<img class="item-img" src="../assets/img/a.jpg">
-								<div class="item-text">
-									<strong>安享康健2018</strong>
-									<p>保120种疾病<br>赔付最高可达116万</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-hot"></i>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="goods-li-a">
-								<img class="item-img" src="../assets/img/a.jpg">
-								<div class="item-text">
-									<strong>安享康健2018</strong>
-									<p>保120种疾病<br>赔付最高可达116万</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-hot"></i>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="goods-li-a">
-								<img class="item-img" src="../assets/img/a.jpg">
-								<div class="item-text">
-									<strong>安享康健2018</strong>
-									<p>保120种疾病<br>赔付最高可达116万</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-hot"></i>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="goods-li-a">
-								<img class="item-img" src="../assets/img/a.jpg">
-								<div class="item-text">
-									<strong>儿童综合保障</strong>
-									<p>教育+大病+住院+意外<br> 4合1全面保障</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-new"></i>
-							</a>
-						</li> -->
 					</ul>
 				</div>
 				<!-- body-end -->
@@ -323,7 +268,7 @@
 									</div>
 
 									<div class="footer-social">
-										
+
 										<a href="#"><i class="fab fa-facebook-f"></i></a>
 										<a href="#"><i class="fab fa-twitter"></i></a>
 										<a href="#"><i class="fab fa-instagram"></i></a>
@@ -404,6 +349,7 @@
 	</body>
 	<!-- JS here -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<script src="../assets/js/axios.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../assets/js/vendor/modernizr-3.5.0.min.js"></script>
 	<script src="../assets/js/vendor/jquery-1.12.4.min.js"></script>
 	<script src="../assets/js/popper.min.js"></script>
@@ -427,15 +373,36 @@
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				list: [{
-						name: 'dy',
-						age: 18
-					},
-					{
-						name: 'dyyyyyyy',
-						age: 19
-					},
-				]
+				total: 100,
+				currentPage4:1,
+				pageValue:true,
+				page:1,
+				pageSize:5,
+				product:[],
+				total:[]
+			},
+			beforeMount: function() {
+
+				axios({
+						method: 'get',
+						url: 'http://localhost:8766/product/product/allList',
+						params: {
+							page: 1,
+							pageSize: 6
+						}
+					})
+					.then(function(res) {
+						console.log(res.data.data);
+						vm.product = res.data.data.list;
+						vm.total = res.data.data.total;
+					});
+			},
+			methods:{
+				productDetail:function(item){
+					alert(JSON.stringify(item));
+					localStorage.setItem("item", JSON.stringify(item));
+					location.href = "product_detail.html";
+				}
 			}
 		});
 	</script>
