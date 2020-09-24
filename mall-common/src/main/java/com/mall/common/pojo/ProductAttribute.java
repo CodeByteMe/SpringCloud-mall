@@ -23,6 +23,8 @@ public class ProductAttribute {
     @ApiModelProperty(value = "产品属性分类ID" ,dataType = "integer", required = true)
     private Integer productAttributeCategoryId;
     private String name;
+    @ApiModelProperty(value = "产品属性分类名称" ,dataType = "integer", required = true)
+    private String productAttributeCategoryName;
     @ApiModelProperty(value = "属性选择类型：0->唯一；1->单选；2->多选" ,dataType = "integer", required = true)
     private Integer selectType;
     @ApiModelProperty(value = "属性录入方式：0->手工录入；1->从列表中选取" ,dataType = "integer", required = true)
