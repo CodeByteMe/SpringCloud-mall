@@ -47,4 +47,16 @@ public class ProductListController {
         return new ResultVO(0,"success",pageInfo);
     }
 
+    @RequestMapping(value = "/allList",method = RequestMethod.GET)
+    @ApiOperation(value = "前台商品列表接口", notes = "不需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageInfo", value = "从第几行显示",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "一页显示多少数据",required = true, dataType = "int")
+    })
+    public ResultVO productAllList(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        PageInfo pageInfo = productListService.productList(page, pageSize);
+        return new ResultVO(0,"success",pageInfo);
+    }
+
+
 }
