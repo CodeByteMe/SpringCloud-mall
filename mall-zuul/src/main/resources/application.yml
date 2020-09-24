@@ -14,3 +14,4 @@ zuul:
     mall-product-list: /product/**
     mall-role-list: /role/**
     mall-user-list: /user/**
+    mall-admin-order-list: /order/**

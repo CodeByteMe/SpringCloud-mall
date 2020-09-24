@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.order.list.dao.OrderDAO">
+    <resultMap id="orderMap" type="Order">
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="member_username" property="memberUsername"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="promotion_amount" property="promotionAmount"/>
+        <result column="pay_type" property="payType"/>
+        <result column="status" property="status"/>
+        <result column="order_type" property="orderType"/>
+        <result column="auto_confirm_day" property="autoConfirmDay"/>
+        <result column="promotion_info" property="promotionInfo"/>
+        <result column="note" property="note"/>
+        <result column="confirm_status" property="confirmStatus"/>
+        <result column="payment_time" property="paymentTime"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="receive_time" property="receiveTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="company_id" property="companyId"/>
+        <association property="address" javaType="Address">
+            <result column="id" property="id"/>
+            <result column="address_id" property="addressId"/>
+            <result column="member_id" property="memberId"/>
+            <result column="name" property="name"/>
+            <result column="phone_number" property="phoneNumber"/>
+            <result column="default_status" property="defaultStatus"/>
+            <result column="post_code" property="postCode"/>
+            <result column="province" property="province"/>
+            <result column="city" property="city"/>
+            <result column="region" property="region"/>
+            <result column="detail_address" property="detailAddress"/>
+        </association>
+        <association property="memberUser" javaType="MemberUser">
+            <result column="id" property="id"/>
+            <result column="member_id" property="memberId"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="nickname" property="nickname"/>
+            <result column="phone" property="phone"/>
+            <result column="status" property="status"/>
+            <result column="create_time" property="createTime"/>
+            <result column="icon" property="icon"/>
+            <result column="gender" property="gender"/>
+            <result column="city" property="city"/>
+            <result column="job" property="job"/>
+            <result column="personalized_signature" property="personalizedSignature"/>
+        </association>
+    </resultMap>
+    <!--    public List<Order> listOrderByCompanyId(String companyId);-->
+    <select id="listOrderByCompanyId" resultSets="java.util.List" resultMap="orderMap">
+        select oms_order.id,oms_order.order_id,oms_order.create_time,oms_order.member_username,oms_order.total_amount,oms_order.pay_amount,oms_order.promotion_amount,oms_order.pay_type,oms_order.`status`,oms_order.order_type,oms_order.address_id,oms_order.auto_confirm_day,oms_order.promotion_info,oms_order.note,oms_order.confirm_status,oms_order.payment_time,oms_order.delivery_time,oms_order.receive_time,oms_order.modify_time,oms_order.company_id,ums_member_receive_address.id,ums_member_receive_address.address_id,ums_member_receive_address.member_id,ums_member_receive_address.name,ums_member_receive_address.phone_number,ums_member_receive_address.default_status,ums_member_receive_address.post_code,ums_member_receive_address.province,ums_member_receive_address.city,ums_member_receive_address.region,ums_member_receive_address.detail_address
+        from ums_admin inner join oms_order on ums_admin.company_id = oms_order.company_id inner join ums_member_receive_address on
+        oms_order.address_id = ums_member_receive_address.address_id
+        where ums_admin.id = 3
+    </select>
+<!--    public String getCompanyId(int id);-->
+    <select id="getCompanyId" resultType="String">
+        select company_id from ums_admin where id = #{id}
+    </select>
+</mapper>

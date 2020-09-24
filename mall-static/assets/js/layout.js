@@ -3,7 +3,7 @@ Vue.component("leftnav",{
 				<el-row class="tac">
 				  <el-col :span="12" style="width: 100%;">
 				    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
-				      @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+				      @close="handleClose" background-color="#304156" text-color="#fff" active-text-color="#ffd04b">
 						<template>
 							<el-submenu v-for="(item,index) in menu" :key="item.id" v-if="item.level == 0" :index="item.id">
 								<template slot="title">
