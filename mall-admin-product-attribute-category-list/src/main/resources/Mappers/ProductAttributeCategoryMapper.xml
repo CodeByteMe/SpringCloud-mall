@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.product.attribute.category.list.dao.ProductAttributeCategoryListDAO">
+
+    <resultMap id="productAttributeCategoryMap" type="com.mall.common.pojo.ProductAttributeCategory">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="attribute_count" property="attributeCount"/>
+        <result column="param_count" property="paramCount"/>
+    </resultMap>
+
+<!--    public List<ProductAttributeCategory> productAttributeCategoryList();-->
+    <select id="productAttributeCategoryList" resultMap="productAttributeCategoryMap">
+        select id,name,attribute_count,param_count
+        from pms_product_attribute_category
+    </select>
+</mapper>

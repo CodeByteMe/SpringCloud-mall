@@ -1,10 +1,10 @@
-package com.mall.product.list.controller;
+package com.mall.admin.product.attribute.category.list.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mall.admin.product.attribute.category.list.service.ProductAttributeCategoryListService;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
-import com.mall.product.list.service.ProductListService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.swagger.annotations.Api;
@@ -17,34 +17,36 @@ import javax.annotation.Resource;
 
 /*
  *   作者：官宣轩
- *   日期：2020-09-21
+ *   日期：2020-09-24
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/product")
-@Api(tags = "后台商品列表接口")
-public class ProductListController {
+@RequestMapping("/productAttributeCategory")
+@Api(tags = "后台商品类型列表接口")
+public class ProductAttributeCategoryListController {
 
     @Resource
-    private ProductListService productListService;
-
+    private ProductAttributeCategoryListService productAttributeCategoryListService;
     private ObjectMapper mapper = new ObjectMapper();
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @ApiOperation(value = "后台商品列表接口", notes = "需要携带token")
+    @ApiOperation(value = "后台商品类型列表接口", notes = "需要携带token")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "从第几页显示",required = true, dataType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "一页显示多少数据",required = true, dataType = "int"),
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })
-    public ResultVO productList(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestHeader(required = true) String token) {
+    public ResultVO productCategoryList(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
-//       String adminId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("admin".equals(issuer)){
+            PageInfo pageInfo = productAttributeCategoryListService.productAttributeCategoryList(page, pageSize);
+            return new ResultVO(0,"success",pageInfo);
+        }else {
+            return new ResultVO(1,"没有权限,请联系管理员!");
+        }
 
-        PageInfo pageInfo = productListService.productList(page, pageSize);
-        return new ResultVO(0,"success",pageInfo);
     }
-
 }
