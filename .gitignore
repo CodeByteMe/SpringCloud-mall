@@ -39,6 +39,9 @@ mall-role-iist/*.iml
 mall-user-list/target
 mall-user-iist/*.iml
 
+mall-user-action/target
+mall-user-action/*.iml
+
 mall-zuul/target
 mall-zuul/*.iml
 

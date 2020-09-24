@@ -4,7 +4,7 @@
 
 <!--namespace = 所需实现的接口全限定名-->
 <mapper namespace="com.mall.user.list.dao.UserDAO">
-    <resultMap id="adminMap" type="com.mall.common.pojo.AdminUser">
+    <resultMap id="adminMap" type="AdminUser">
         <id column="id" property="id"/>
         <result column="admin_id" property="adminId"/>
         <result column="username" property="username"/>
@@ -20,38 +20,16 @@
         <result column="company_name" property="companyName"/>
     </resultMap>
 
-<!--    public int userCount();-->
-    <select id="userCount" resultMap="adminMap">
-        select count(1)
-        FROM ums_admin
-        WHERE
-        company_id =#{companyId}
-    </select>
-<!--    public List<AdminUser> selectUserListBycompanyId(@Param("companyId") String companyId,-->
-<!--    @Param("start") int start,-->
-<!--    @Param("limit") int limit);-->
-    <select id="selectUserListBycompanyId" resultMap="adminMap">
-        select
-            id,
-            admin_id,
-            username,
-            password,
-            icon,
-            email,
-            nick_name,
-            note,
-            create_time,
-            login_time,
-            status,
-            company_name
-        FROM ums_admin
-        WHERE
-        company_id =#{companyId}
-    </select>
-<!--    public String selectCompanyId(String adminId);//通过登录的id拿到公司id-->
-    <select id="selectCompanyId" resultMap="adminMap">
+<!--    public int addUser(AdminUser adminUser);-->
+    <insert id="addUser">
+        insert into ums_admin(admin_id,username,password,email,note,create_time,status,company_id)
+        values (#{adminId},#{username},#{password},#{email},#{note},#{createTime},#{status},#{companyId})
+    </insert>
+<!--    public String getCompanyId(String id);-->
+    <select id="getCompanyId" resultMap="adminMap">
         select company_id
         FROM ums_admin
         where admin_id =#{adminId}
     </select>
+
 </mapper>
