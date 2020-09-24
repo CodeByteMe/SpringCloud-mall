@@ -45,20 +45,25 @@ public class HomeController {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
         String adminId = jws.getBody().getId();
-        String jsonStr = authService.getId(adminId);
-        System.out.println(jsonStr);
-        List<Menu> menus = null;
-        try {
-            Integer i = mapper.readValue(jsonStr, Integer.class);
-            menus = menuService.listMenu(i);
-            for (Menu menu:menus) {
-                Integer id = menu.getId();
-                List<Menu> children = menuService.listMenuChildren(i, id);
-                menu.setChildren(children);
+        String issuer = jws.getBody().getIssuer();
+        if ("admin".equals(issuer)) {
+            String jsonStr = authService.getId(adminId);
+            System.out.println(jsonStr);
+            List<Menu> menus = null;
+            try {
+                Integer i = mapper.readValue(jsonStr, Integer.class);
+                menus = menuService.listMenu(i);
+                for (Menu menu:menus) {
+                    Integer id = menu.getId();
+                    List<Menu> children = menuService.listMenuChildren(i, id);
+                    menu.setChildren(children);
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            return new ResultVO(0,"success",menus);
+        } else {
+            return new ResultVO(1,"没有权限，请联系管理员",null);
         }
-        return new ResultVO(0,"success",menus);
     }
 }

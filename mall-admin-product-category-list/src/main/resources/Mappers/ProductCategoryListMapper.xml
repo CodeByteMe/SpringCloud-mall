@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.product.category.list.dao.ProductCategoryListDAO">
+
+    <resultMap id="ProductCategoryListMap" type="com.mall.common.pojo.ProductCategory">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="name" property="name"/>
+        <result column="level" property="level"/>
+        <result column="product_count" property="productCount"/>
+        <result column="product_unit" property="productUnit"/>
+        <result column="nav_status" property="navStatus"/>
+        <result column="show_status" property="showStatus"/>
+        <result column="sort" property="sort"/>
+        <result column="icon" property="icon"/>
+        <result column="keywords" property="keywords"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+<!--    public List<Product> productCategoryList();-->
+    <select id="productCategoryList" resultMap="ProductCategoryListMap">
+        select id,parent_id,name,level,product_count,product_unit,nav_status,show_status,sort,icon,keywords,description
+        from pms_product_category where level=0
+    </select>
+
+<!--    public List<Product> productCategoryListByParentId(int parentId);-->
+    <select id="productCategoryListByParentId" resultMap="ProductCategoryListMap">
+        select id,parent_id,name,level,product_count,product_unit,nav_status,show_status,sort,icon,keywords,description
+        from pms_product_category where parent_id=#{parentId}
+    </select>
+
+</mapper>

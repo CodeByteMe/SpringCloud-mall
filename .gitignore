@@ -9,11 +9,20 @@
 *.war
 
 # out
+mall-address-list/target
+mall-address-list/*.iml
+
 mall-admin-auth/target
 mall-admin-auth/*.iml
 
 mall-admin-home/target
 mall-admin-home/*.iml
+
+mall-admin-product-attribute-category-list/target
+mall-admin-product-attribute-category-list/*.iml
+
+mall-admin-product-category-list/target
+mall-admin-product-category-list/*.iml
 
 mall-common/target
 mall-common/*.iml
@@ -33,5 +42,11 @@ mall-role-iist/*.iml
 mall-user-list/target
 mall-user-iist/*.iml
 
+mall-user-action/target
+mall-user-action/*.iml
+
 mall-zuul/target
 mall-zuul/*.iml
+
+mall-admin-order-list/target
+mall-admin-order-list/*.iml

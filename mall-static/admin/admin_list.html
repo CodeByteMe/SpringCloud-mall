@@ -50,6 +50,36 @@
 				</div>
 				<div id="" style="display: inline;margin-left: 88%;">
 					<el-button size="medium" @click="add">添加</el-button>
+					<el-dialog
+							title="添加用户"
+							:visible.sync="dialogVisible"
+							width="40%"
+							height="100%"
+							:before-close="handleClose"
+					>
+						<el-form :model="member">
+							<el-form-item label="用户名" :label-width="formLabelWidth">
+								<el-input v-model="member.username" autocomplete="off"></el-input>
+							</el-form-item>
+							<el-form-item label="密码" :label-width="formLabelWidth">
+								<el-input v-model="member.password" autocomplete="off"></el-input>
+							</el-form-item>
+							<el-form-item label="邮箱" :label-width="formLabelWidth">
+								<el-input v-model="member.email" autocomplete="off" onkeydown="/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/"></el-input>
+							</el-form-item>
+							<el-form-item label="备注" :label-width="formLabelWidth">
+								<el-input v-model="member.note" autocomplete="off"></el-input>
+							</el-form-item>
+							<el-form-item label="是否启用" :label-width="formLabelWidth">
+								<el-radio v-model="member.status" label="0">启用</el-radio>
+								<el-radio v-model="member.status" label="1">关闭</el-radio>
+							</el-form-item>
+						</el-form>
+						<span slot="footer" class="dialog-footer">
+					        <el-button @click="dialogVisible = false">取 消</el-button>
+					        <el-button type="primary" @click="submit">确 定</el-button>
+					      </span>
+					</el-dialog>
 				</div>
 			</div>
 					<template>
@@ -114,47 +144,55 @@
 		<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript">
-			var Vue = new Vue({
+			var vm = new Vue({
 				el:"#container"
 				,data:{
+					token:"",
+                	total: 100,
 					keyword:"",
-					boostatus:true,
 					currentPage3:5,
-					tableData: [{
-			          id: '1',
-			          adminId: '1233',
-			          username: '冬杨',
-			          email: '111@ad.com',
-			          status: 1,
-			          createTime: ',,,,',
-			          loginTime: '1212'
-			          
-			        }, {
-			             id: '1',
-			          adminId: '1233',
-			          username: '冬杨',
-			          email: '111@ad.com',
-			          createTime: ',,,,',
-			          status: 0,
-			          loginTime: '1212'
-			        }, {
-			             id: '1',
-			          adminId: '1233',
-			          username: '冬杨',
-			          email: '111@ad.com',
-			          createTime: ',,,,',
-			          status: 0,
-			          loginTime: '1212'
-			        }, {
-			             id: '1',
-			          adminId: '1233',
-			          username: '冬杨',
-			          email: '111@ad.com',
-			          createTime: ',,,,',
-			          status: 1,
-			          loginTime: '1212'
-			        }]
+					dialogVisible: false,
+					formLabelWidth: '120px',
+					member:{
+						username:"",
+						password:"",
+						email:"",
+						note:"",
+						status:0
+					},
+					tableData: []
+				},
+				beforeMount:function(){
+                var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
 				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+                axios({
+					method: 'get',
+					url: 'http://localhost:8766/user/user/list',
+					params: {
+						page: 1,
+						pageSize: 5
+					},
+                    headers: {
+                        'token': tokenStr
+                    }
+					})
+					.then(function(res){
+						console.log(res.data.data);
+                        vm.tableData = res.data.data.list;
+                        vm.total = res.data.data.total;
+					});
+            }
 				,methods:{
 					doSearch:function(keyword){
 						console.log(keyword),
@@ -179,14 +217,26 @@
 						console.log(row)
 					},
 					add:function(){
-						console.log("add")
+						console.log("add"),
+						this.dialogVisible = true;
 					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);
-				      },
-				      handleCurrentChange:function(val) {
+					},
+					handleCurrentChange:function(val) {
 				        console.log(`当前页: ${val}`);
-				      }
+					},
+					submit:function(){
+						console.log("submit"),
+								console.log(vm.member.status)
+					},
+					handleClose(done) {
+						this.$confirm('确认关闭？')
+								.then(_ => {
+							done();
+					})
+					.catch(_ => {});
+					}
 				}
 			})
 		</script>

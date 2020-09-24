@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -74,6 +75,10 @@ public class Product {
     private Integer promotionPerLimit;
     @ApiModelProperty(value = "促销类型" ,dataType = "integer", required = true)
     private Integer promotionType;
+    @ApiModelProperty(value = "套餐集合" ,dataType = "List<SkuStock>", required = true)
+    private List<SkuStock> SkuStock;
+    @ApiModelProperty(value = "公司id" ,dataType = "String", required = true)
+    private String companyId;
 
 
 }

@@ -33,7 +33,7 @@ public class ProductListController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ApiOperation(value = "后台商品列表接口", notes = "需要携带token")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageInfo", value = "从第几行显示",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "page", value = "从第几页显示",required = true, dataType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "一页显示多少数据",required = true, dataType = "int"),
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })
@@ -46,5 +46,17 @@ public class ProductListController {
         PageInfo pageInfo = productListService.productList(page, pageSize);
         return new ResultVO(0,"success",pageInfo);
     }
+
+    @RequestMapping(value = "/allList",method = RequestMethod.GET)
+    @ApiOperation(value = "前台商品列表接口", notes = "不需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageInfo", value = "从第几行显示",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "一页显示多少数据",required = true, dataType = "int")
+    })
+    public ResultVO productAllList(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        PageInfo pageInfo = productListService.productList(page, pageSize);
+        return new ResultVO(0,"success",pageInfo);
+    }
+
 
 }

@@ -60,5 +60,6 @@ public class Order {
     private Date receiveTime;
     @ApiModelProperty(value = "修改时间" ,dataType = "date", required = true)
     private Date modifyTime;
-
+    @ApiModelProperty(value = "公司id" ,dataType = "String", required = true)
+    private String companyId;
 }

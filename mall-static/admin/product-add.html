@@ -21,32 +21,100 @@
             clear: both
         }
         .box-card {
-            width: 600px;
+            width: 70%;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <el-card class="box-card">
-            <el-steps :active="active" finish-status="success">
-                <el-step title="填写商品信息"></el-step>
-                <el-step title="填写商品促销"></el-step>
-                <el-step title="填写商品属性"></el-step>
-            </el-steps>
-            <!-- 个人信息 -->
-            <div class="info" v-if="active==0">
-            我的信息
-            </div>
-            <div class="info" v-if="active==1">
-            我的步骤
-            </div>
-            <div class="info" v-if="active==2">
-            我的步骤222
-            </div>
-            <el-button style="margin-top: 12px;"v-if="active<2" @click="next">下一步</el-button>  
-            <el-button style="margin-top: 12px;" @click="submit" v-if="active==2">提交</el-button>
-            <el-button style="margin-top: 12px;" @click="pre" v-if="active>0">上一步</el-button>
-        </el-card>
+    <div id="container" style="margin:auto;">
+            <el-card class="box-card">
+                <el-steps :active="active" finish-status="success">
+                    <el-step title="填写商品信息"></el-step>
+                    <el-step title="填写商品属性"></el-step>
+                </el-steps>
+                <!-- 个人信息 -->
+                <div class="info" v-if="active==0">
+                    <!-- <span class="demonstration">商品分类：</span>
+                    <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader></br> -->
+                    <el-form ref="formData" :model="formData" label-width="100px">
+                        <el-form-item label="商品分类：">
+                            <template>
+                                <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader></br>
+                            </template>
+                        </el-form-item>
+                        <el-form-item label="商品名称：">
+                            <el-input v-model="formData.name" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="副标题：">
+                            <el-input v-model="formData.subTitle" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品介绍：">
+                            <el-input type="textarea" v-model="formData.description" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品售价：">
+                            <el-input type="number" v-model="formData.price" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="市场价：">
+                            <el-input type="number" v-model="formData.originalPrice" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品库存：">
+                            <el-input type="number" v-model="formData.stock" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="计量单位：">
+                            <el-input v-model="formData.unit" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品重量：">
+                            <el-input type="number" v-model="formData.weight" style="width: 300px;"></el-input> <label style="margin-left: 10px;">克</label>
+                        </el-form-item>
+                        <el-form-item label="排序：">
+                            <el-input type="number" v-model="formData.sort" style="width: 400px;"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div class="info" v-if="active==1">
+                    <el-form ref="formData" :model="formData" label-width="100px">
+                        <el-form-item label="预告商品：" prop="previewStatus">
+                            <el-switch v-model="formData.previewStatus" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="商品上架：" prop="publishStatus">
+                            <el-switch v-model="formData.publishStatus" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="详细页标题：">
+                            <el-input v-model="formData.detailTitle" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="详细页描述：">
+                            <el-input v-model="formData.detailDesc" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品关键字：">
+                            <el-input v-model="formData.keywords" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品备注：">
+                            <el-input v-model="formData.note" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="属性类型：">
+                            <el-select v-model="formData.productAttributeCategoryId" placeholder="请选择属性类型">
+                                <el-option label="区域一" value="0"></el-option>
+                                <el-option label="区域二" value="1"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="商品图片">
+							<el-upload
+							    class="upload-demo"
+							    action="http://localhost:8080/good/upload"
+							    :on-preview="handlePreview"
+							    :on-remove="handleRemove"
+							    :on-success="handleSuccess"
+							    list-type="picture">
+							    <el-button size="small" type="primary">选择图片</el-button>
+							    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+							</el-upload>
+						</el-form-item>
+                    </el-form>
+                </div>
+                <el-button style="margin-top: 12px;"v-if="active<1" @click="next">下一步</el-button>  
+                <el-button style="margin-top: 12px;" @click="submit" v-if="active==1">提交</el-button>
+                <el-button style="margin-top: 12px;" @click="pre" v-if="active>0">上一步</el-button>
+            </el-card>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
@@ -57,7 +125,41 @@
     var vm = new Vue({
             el:"#container",
             data:{
-                active: 0
+                formData:{
+                    name:"",
+                    subTitle:"",
+                    description:"",
+                    price:0.00,
+                    originalPrice:0.00,
+                    stock:0,
+                    unit:"",
+                    weight:0.00,
+                    sort:0,
+                    previewStatus:0,
+                    publishStatus:0,
+                    detailTitle:"",
+                    detailDesc:"",
+                    keywords:"",
+                    note:"",
+                    productAttributeCategoryId:""
+                },
+                active: 0,
+                value:"",
+                options:[
+                {
+                    value: 'ziyuan',
+                    label: '资源',
+                    children: [{
+                        value: 'axure',
+                        label: 'Axure Components'
+                    },{
+                        value: 'sketch',
+                        label: 'Sketch Templates'
+                    },{
+                        value: 'jiaohu',
+                        label: '组件交互文档'
+                    }]
+                }]
             },
             beforeMount:function(){
                 
@@ -71,7 +173,19 @@
                 },
                 submit:function(){
                     console.log("111");
-                }
+                },
+                handleChange:function(value){
+                    console.log(value);
+                },
+                handleRemove:function(file, fileList) {
+					console.log(file, fileList);
+				},
+				handlePreview:function(file) {
+					console.log(file);
+				},
+				handleSuccess:function(response, file, fileList) {
+					console.log(response);
+				}
             }
         });
     </script>
