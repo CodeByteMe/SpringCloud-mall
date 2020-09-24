@@ -41,3 +41,6 @@ mall-user-iist/*.iml
 
 mall-zuul/target
 mall-zuul/*.iml
+
+mall-admin-order-list/target
+mall-admin-order-list/*.iml
