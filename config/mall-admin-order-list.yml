@@ -28,3 +28,9 @@ eureka:
 mybatis:
   type-aliases-package: com.mall.common.pojo
   mapper-locations: classpath:mappers/*Mapper.xml
+  #pageHelper配置（官网推荐配置）
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
