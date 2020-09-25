@@ -73,6 +73,24 @@
     </insert>
 
     <update id="updateAddress">
-
+        update ums_member_receive_address
+        set name = #{name},phone_number = #{phoneNumber},post_code = #{postCode},province = #{province},city = #{city},region = #{region},detail_address = #{detailAddress}
+        where address_id = #{addressId}
     </update>
+
+    <update id="updateAddressStatus">
+        update ums_member_receive_address
+        set default_status = #{defaultStatus}
+        where address_id = #{addressId}
+        and member_id = #{memberId}
+    </update>
+    <select id="selectAddressIdByDefaultStatus" resultType="String">
+        select address_id from ums_member_receive_address
+        where member_id = #{memberId}
+        and default_status = 1
+    </select>
+
+    <delete id="deleteByIdAndMemberId">
+        delete from ums_member_receive_address where address_id = #{addressId}
+    </delete>
 </mapper>
