@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -58,11 +59,7 @@ public class AddressController {
         String issuer = jws.getBody().getIssuer();
         if ("member".equals(issuer)) {
             int i = addressService.deleteByIdAndMemberId(addressId);
-            if (i > 0) {
-                return new ResultVO(0, "删除成功");
-            } else {
-                return new ResultVO(1, "删除失败");
-            }
+            return new ResultVO(0, "删除成功");
         }else {
             return new ResultVO(1, "权限校验未通过");
         }
@@ -71,7 +68,7 @@ public class AddressController {
     @RequestMapping(value = "/insert", method = RequestMethod.GET)
     @ApiOperation(value = "前台用户地址添加接口", notes = "用户新增地址的接口")
     @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
-    public ResultVO insertAddress(String provinceId,String cityId,String regionId,@RequestHeader(required = true) String token) {
+    public ResultVO insertAddress(String provinceId,String cityId,String regionId,String name,String phoneNumber,String postCode,String detailAddress,@RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
@@ -79,12 +76,38 @@ public class AddressController {
         String issuer = jws.getBody().getIssuer();
         if ("member".equals(issuer)) {
             Province province = addressService.getProvince(provinceId);
-
-            int i = addressService.insertAddress(new Address());
+            String provinceName = province.getProvinceName();
+            City city = addressService.getCity(cityId);
+            String cityName = city.getCityName();
+            Region region = addressService.getRegion(regionId);
+            String regionName = region.getRegionName();
+            String addressId = UUID.randomUUID().toString().replace("-", "");
+            int i = addressService.insertAddress(new Address(null,addressId,memberId,name,phoneNumber,0,postCode,provinceName,cityName,regionName,detailAddress));
             if (i > 0) {
                 return new ResultVO(0, "添加成功");
             } else {
                 return new ResultVO(1, "添加失败");
+            }
+        }else {
+            return new ResultVO(1, "权限校验未通过");
+        }
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @ApiOperation(value = "修改地址接口", notes = "用户修改地址信息的接口")
+    @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    public ResultVO updateAddress(Address address,@RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            int i = addressService.updateAddress(address);
+            if (i>0) {
+                return new ResultVO(0, "查询成功");
+            } else {
+                return new ResultVO(1, "查询失败");
             }
         }else {
             return new ResultVO(1, "权限校验未通过");
