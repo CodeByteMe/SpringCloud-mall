@@ -30,4 +30,10 @@ public class ProductAttributeCategoryListServiceImpl implements ProductAttribute
         PageInfo pageInfo = new PageInfo(productAttributeCategories);
         return pageInfo;
     }
+
+    @Override
+    public List<ProductAttributeCategory> productAttributeCategoryListAll() {
+        List<ProductAttributeCategory> productAttributeCategories = productAttributeCategoryListDAO.productAttributeCategoryList();
+        return productAttributeCategories;
+    }
 }

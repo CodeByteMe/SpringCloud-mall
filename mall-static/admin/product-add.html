@@ -21,13 +21,13 @@
             clear: both
         }
         .box-card {
-            width: 70%;
+            width: 60%;
         }
     </style>
 </head>
 <body>
-    <div id="container" style="margin:auto;">
-            <el-card class="box-card">
+    <div id="container">
+            <el-card class="box-card" style="margin:0 auto;">
                 <el-steps :active="active" finish-status="success">
                     <el-step title="填写商品信息"></el-step>
                     <el-step title="填写商品属性"></el-step>
@@ -39,7 +39,7 @@
                     <el-form ref="formData" :model="formData" label-width="100px">
                         <el-form-item label="商品分类：">
                             <template>
-                                <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader></br>
+                                <el-cascader v-model="formData.value" :options="options" @change="handleChange"></el-cascader></br>
                             </template>
                         </el-form-item>
                         <el-form-item label="商品名称：">
@@ -84,9 +84,6 @@
                         </el-form-item>
                         <el-form-item label="详细页描述：">
                             <el-input v-model="formData.detailDesc" style="width: 400px;"></el-input>
-                        </el-form-item>
-                        <el-form-item label="商品关键字：">
-                            <el-input v-model="formData.keywords" style="width: 400px;"></el-input>
                         </el-form-item>
                         <el-form-item label="商品备注：">
                             <el-input v-model="formData.note" style="width: 400px;"></el-input>
@@ -139,7 +136,6 @@
                     publishStatus:0,
                     detailTitle:"",
                     detailDesc:"",
-                    keywords:"",
                     note:"",
                     productAttributeCategoryId:""
                 },
@@ -162,7 +158,29 @@
                 }]
             },
             beforeMount:function(){
-                
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'get',
+                        url: 'http://localhost:8766/productCategory/productCategory/options',
+                        headers: {
+                            'token': tokenStr
+                        }
+                        })
+                        .then(function(res){
+                            console.log(res.data.data);
+                        });
             },
             methods:{
                 next:function(){
@@ -173,6 +191,46 @@
                 },
                 submit:function(){
                     console.log("111");
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8766/productAdd/productAdd/add',
+                        params: {
+                            name:vm.name,
+                            subTitle:vm.subTitle,
+                            description:vm.description,
+                            price:vm.price,
+                            originalPrice:vm.originalPrice,
+                            stock:vm.stock,
+                            unit:vm.unit,
+                            weight:vm.weight,
+                            sort:vm.sort,
+                            previewStatus:vm.previewStatus,
+                            publishStatus:vm.publishStatus,
+                            detailTitle:vm.detailTitle,
+                            detailDesc:vm.detailDesc,
+                            note:vm.note,
+                            productAttributeCategoryId:vm.productAttributeCategoryId
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                        })
+                        .then(function(res){
+                            console.log(res.data.data);
+                        });
                 },
                 handleChange:function(value){
                     console.log(value);

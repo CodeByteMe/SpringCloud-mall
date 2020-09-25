@@ -2,6 +2,9 @@ package com.mall.admin.product.attribute.category.list.service;
 
 
 import com.github.pagehelper.PageInfo;
+import com.mall.common.pojo.ProductAttributeCategory;
+
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -10,5 +13,7 @@ import com.github.pagehelper.PageInfo;
 public interface ProductAttributeCategoryListService {
 
     public PageInfo productAttributeCategoryList(int pageNum, int pageSize);
+
+    public List<ProductAttributeCategory> productAttributeCategoryListAll();
 
 }
