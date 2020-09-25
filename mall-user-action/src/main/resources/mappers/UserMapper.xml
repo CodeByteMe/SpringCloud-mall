@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace = 所需实现的接口全限定名-->
-<mapper namespace="com.mall.user.list.dao.UserDAO">
+<mapper namespace="com.mall.user.action.dao.UserDAO">
     <resultMap id="adminMap" type="AdminUser">
         <id column="id" property="id"/>
         <result column="admin_id" property="adminId"/>

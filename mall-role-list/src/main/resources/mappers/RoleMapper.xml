@@ -4,5 +4,30 @@
 
 <!--namespace = 所需实现的接口全限定名-->
 <mapper namespace="com.mall.role.list.dao.RoleDAO">
-
+    <resultMap id="roleMap" type="com.mall.common.pojo.Role">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="admin_count" property="adminCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status" property="status"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+<!--    public List<Role> selectAllRole();-->
+    <select id="selectAllRole" resultMap="roleMap">
+        select
+            id,
+            name,
+            description,
+            admin_count,
+            create_time,
+            status,
+            sort
+        from ums_role
+    </select>
+<!--    public int insertRole(Role role);-->
+    <insert id="insertRole">
+        insert into ums_role (name ,description,admin_count,create_time,status,sort)
+        values (#{name},#{description},#{adminCount},#{createTime},#{status},#{sort})
+    </insert>
 </mapper>
