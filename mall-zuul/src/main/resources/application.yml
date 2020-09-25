@@ -16,4 +16,4 @@ zuul:
     mall-user-list: /user/**
     mall-admin-order-list: /order/**
     mall-admin-product-category-list: /productCategory/**
-    mall-admin-product-attribute-category-list: /productAttributeCategory/**\
+    mall-admin-product-attribute-category-list: /productAttributeCategory/**

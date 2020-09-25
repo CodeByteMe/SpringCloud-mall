@@ -2,5 +2,5 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      name: mall-product-list
+      name: mall-admin-product-attribute-category-list
       label: Dev

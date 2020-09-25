@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品类型</title>
+    <title>商品参数列表</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 </head>
 <style>
@@ -32,7 +32,7 @@
     <div id="container">
         <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
-                <span><i class="el-icon-tickets"></i> 数据列表</span>
+                <span><i class="el-icon-tickets"></i> 商品参数列表</span>
                 <el-button style="float: right;">添加</el-button>
             </div>
         </el-card>
@@ -41,15 +41,12 @@
                 <template>
                     <el-table :data="tableData" height="550" border style="width: 100%">
                         <el-table-column prop="id" label="编号"></el-table-column>
-                        <el-table-column prop="name" label="类型名称"></el-table-column>
-                        <el-table-column prop="attributeCount" label="属性数量"></el-table-column>
-                        <el-table-column prop="paramCount" label="参数数量"></el-table-column>
-                        <el-table-column label="设置" fixed="right">
-                            <template slot-scope="scope">
-                                <el-button size="mini" @click="attr(scope.row)">属性列表</el-button>
-                                <el-button size="mini" @click="parameter(scope.row)">参数列表</el-button>
-                            </template>
-                        </el-table-column>
+                        <el-table-column prop="name" label="属性名称"></el-table-column>
+                        <el-table-column prop="productAttributeCategoryName" label="商品类型"></el-table-column>
+                        <el-table-column prop="selectType" label="属性是否可选"></el-table-column>
+                        <el-table-column prop="inputType" label="属性值的录入方式"></el-table-column>
+                        <el-table-column prop="inputList" label="可选值列表""></el-table-column>
+                        <el-table-column prop="sort" label="排序"></el-table-column>
                         <el-table-column label="操作" fixed="right" width="250">
                             <template slot-scope="scope">
                                 <el-button size="mini" @click="">编辑</el-button>
@@ -82,9 +79,12 @@
                 tableData:[],
                 total:10,
                 currentPage4:1,
-                pageSize:5
+                id:0,
+                type:""
             },
             beforeMount:function(){
+                console.log(localStorage.getItem("id"));
+                id = localStorage.getItem("id");
                 var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
@@ -100,10 +100,11 @@
 				}
                 axios({
 					method: 'get',
-					url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
+					url: 'http://localhost:8766/productAttributeCategory/productAttribute/listParameter',
 					params: {
 						page: 1,
-						pageSize: 5
+						pageSize: 5,
+                        productAttributeCategoryId: id
 					},
                     headers: {
                         'token': tokenStr
@@ -111,6 +112,8 @@
 					})
 					.then(function(res){
 						console.log(res.data.data);
+                        vm.id = localStorage.getItem("id");
+                        localStorage.removeItem("id");
                         vm.tableData = res.data.data.list;
                         vm.total = res.data.data.total;
 					});
@@ -140,7 +143,7 @@
                         }
                         axios({
                             method: 'get',
-                            url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
+                            url: 'http://localhost:8766/productAttributeCategory/productAttribute/listParameter',
                             headers: {'token': tokenStr},
                             params: {
                                 pageSize:vm.pageSize,
@@ -167,7 +170,7 @@
                         }
                         axios({
                             method: 'get',
-                            url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
+                            url: 'http://localhost:8766/productAttributeCategory/productAttribute/listParameter',
                             headers: {'token': tokenStr},
                             params: {
                                 pageSize:vm.pageSize,
@@ -177,16 +180,6 @@
                             vm.tableData = res.data.data.list;
                         });
 				},
-                attr:function(row){
-                    console.log(row);
-                    localStorage.setItem("id", row.id);
-					location.href = "product-attribute.html";
-                },
-                parameter:function(row){
-                    console.log(row);
-                    localStorage.setItem("id", row.id);
-					location.href = "product-parameter.html";
-                }
             }
         });
     </script>
