@@ -8,6 +8,7 @@
 		<style type="text/css">
 			#container{
 				width: 88%;
+				height: 100%;
 			}
 			.form{
 				display: inline-block;
@@ -30,10 +31,10 @@
 					    <span class="demonstration">收货人：</span>
 					    <el-input v-model="form.name" placeholder="商品货号" style="width: 200px;"></el-input>
 					    <span class="demonstration">订单状态：</span>
-					    <el-cascader v-model="form.status" :options="options" @change="handleChange"></el-cascader>
+					    <el-cascader v-model="form.status"></el-cascader>
 					    <span class="demonstration">订单分类：</span>
 					    <el-select v-model="form.type" placeholder="请选择">
-					        <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value"></el-option>
+					        <!-- <el-option v-for="item in options1"></el-option> -->
 					    </el-select>
 					</div>
 				</div>
@@ -43,45 +44,122 @@
 				数据列表
 			</el-card>
 			
-			<template>
-				<el-table :data="tableData" border style="width: 100%; margin-top: 0.625rem;">
-					<el-table-column prop="orderId" label="订单编号" width="180"></el-table-column>
-					<el-table-column prop="createTime" label="提交时间" width="180"></el-table-column>
-					<el-table-column prop="memberUsername" label="用户账号"></el-table-column>
-					<el-table-column prop="totalAmount" label="应付金额"></el-table-column>
-					<el-table-column prop="payAmount" label="促销优化金额"></el-table-column>
-					<el-table-column prop="payType" label="支付方式">
-						<template slot-scope="scope">
-							<p v-if="scope.row.payType=='0'">未支付</p>
-							<p v-if="scope.row.payType=='1'">支付宝</p>
-							<p v-if="scope.row.payType=='2'">微信</p>
-						</template>
-					</el-table-column>
-					<el-table-column prop="status" label="订单状态">
-						<template slot-scope="scope">
-							<p v-if="scope.row.status=='0'">待付款</p>
-							<p v-if="scope.row.status=='1'">待发货</p>
-							<p v-if="scope.row.status=='2'">已发货</p>
-							<p v-if="scope.row.status=='3'">已完成</p>
-							<p v-if="scope.row.status=='4'">已关闭</p>
-							<p v-if="scope.row.status=='5'">无效订单</p>
-						</template>
-					</el-table-column>
-					<el-table-column prop="orderType" label="订单类型">
-						<template slot-scope="scope">
-							<p v-if="scope.row.orderType=='0'">正常订单</p>
-							<p v-if="scope.row.orderType=='1'">秒杀订单</p>
-						</template>
-					</el-table-column>
-					<el-table-column fixed="right" label="操作" width="80px">
-					    <template slot-scope="scope">
-					        <el-button @click="handleClick(scope.row)" type="primary" round size="small">查看</el-button>
-					        <el-button @click="deleteOrder(scope.row)" type="primary" round size="small">删除</el-button>
-					    </template>
-					</el-table-column>
-				</el-table>
-			</template>
-
+			<el-card class="box-card" style="margin-top: 0.625rem;">
+				<template>
+					<el-table max-height="500" :data="tableData" border style="width: 100%; margin-top: 0.625rem;">
+						<el-table-column prop="orderId" label="订单编号" width="180"></el-table-column>
+						<el-table-column prop="createTime" label="提交时间" width="180"></el-table-column>
+						<el-table-column prop="memberUsername" label="用户账号"></el-table-column>
+						<el-table-column prop="totalAmount" label="应付金额"></el-table-column>
+						<el-table-column prop="payAmount" label="促销优化金额"></el-table-column>
+						<el-table-column prop="payType" label="支付方式">
+							<template slot-scope="scope">
+								<p v-if="scope.row.payType=='0'">未支付</p>
+								<p v-if="scope.row.payType=='1'">支付宝</p>
+								<p v-if="scope.row.payType=='2'">微信</p>
+							</template>
+						</el-table-column>
+						<el-table-column prop="status" label="订单状态">
+							<template slot-scope="scope">
+								<p v-if="scope.row.status=='0'">待付款</p>
+								<p v-if="scope.row.status=='1'">待发货</p>
+								<p v-if="scope.row.status=='2'">已发货</p>
+								<p v-if="scope.row.status=='3'">已完成</p>
+								<p v-if="scope.row.status=='4'">已关闭</p>
+								<p v-if="scope.row.status=='5'">无效订单</p>
+							</template>
+						</el-table-column>
+						<el-table-column prop="orderType" label="订单类型">
+							<template slot-scope="scope">
+								<p v-if="scope.row.orderType=='0'">正常订单</p>
+								<p v-if="scope.row.orderType=='1'">秒杀订单</p>
+							</template>
+						</el-table-column>
+						<el-table-column fixed="right" label="操作" width="80px">
+							<template slot-scope="scope">
+								<el-button @click="handleClick(scope.row)" type="primary" round size="small">查看</el-button>
+								<el-button @click="deleteOrder(scope.row)" type="primary" round size="small">删除</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+				</template>
+			</el-card>
+			
+			<el-card class="box-card" style="margin-top: 0.625rem;margin-bottom: 3.5rem;">
+				<template>
+					<div class="block">
+						<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+						  :page-sizes="[10, 20, 50, 100]" :page-size="10"
+						  layout="total, sizes, prev, pager, next, jumper" :total="total">
+						</el-pagination>
+					</div>
+				</template>	
+			</el-card>
+			
+			<el-dialog title="详情" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+				<el-divider content-position="left">基本信息</el-divider>
+				<span>订单编号：{{detailRow.orderId}}</span>
+				<el-divider></el-divider>
+				<span>订单总金额：{{detailRow.totalAmount}}</span>
+				<el-divider></el-divider>
+				<span>应付金额：{{detailRow.payAmount}}</span>
+				<el-divider></el-divider>
+				<span>支付方式：</span>
+				<span v-if="detailRow.payType == 0">未支付</span>
+				<span v-if="detailRow.payType == 1">支付宝</span>
+				<span v-if="detailRow.payType == 2">微信</span>
+				<el-divider></el-divider>
+				<span>订单状态：</span>
+				<span v-if="detailRow.status == 0">待付款</span>
+				<span v-if="detailRow.status == 1">待发货</span>
+				<span v-if="detailRow.status == 2">已发货</span>
+				<span v-if="detailRow.status == 3">已完成</span>
+				<span v-if="detailRow.status == 4">已关闭</span>
+				<span v-if="detailRow.status == 5">无效订单</span>
+				<el-divider></el-divider>
+				<span>订单类型：</span>
+				<span v-if="detailRow.orderType == 0">正常订单</span>
+				<span v-if="detailRow.orderType == 1">秒杀订单</span>
+				<el-divider></el-divider>
+				<span>活动信息：{{detailRow.promotionInfo}}</span>
+				<el-divider></el-divider>
+				<span>订单备注：{{detailRow.note}}</span>
+				<el-divider></el-divider>
+				<span>确认收获状态：</span>
+				<span v-if="detailRow.confirmStatus == 0">未确认</span>
+				<span v-if="detailRow.confirmStatus == 1">已确认</span>
+				<el-divider></el-divider>
+				<span>支付时间：{{detailRow.paymentTime}}</span>
+				<el-divider></el-divider>
+				<span>发货时间：{{detailRow.deliveryTime}}</span>
+				<el-divider></el-divider>
+				<span>确认收获时间：{{detailRow.receiveTime}}</span>
+				<el-divider></el-divider>
+				<span>修改时间：{{detailRow.modifyTime}}</span>
+				<el-divider></el-divider>
+				<el-divider content-position="left">用户信息</el-divider>
+				<span>用户编号：{{rowMember.memberId}}</span>
+				<el-divider></el-divider>
+				<span>用户昵称：{{rowMember.nickname}}</span>
+				<el-divider></el-divider>
+				<el-divider content-position="left">地址信息</el-divider>
+				<span>收件人电话：{{rowAddress.phoneNumber}}</span>
+				<el-divider></el-divider>
+				<span>邮政编码：{{rowAddress.postCode}}</span>
+				<el-divider></el-divider>
+				<span>省：{{rowAddress.province}}</span>
+				<el-divider></el-divider>
+				<span>市：{{rowAddress.city}}</span>
+				<el-divider></el-divider>
+				<span>区：{{rowAddress.region}}</span>
+				<el-divider></el-divider>
+				<span>详细地址：{{rowAddress.detailAddress}}</span>
+				<el-divider></el-divider>
+				<span slot="footer" class="dialog-footer">
+			    <el-button @click="dialogVisible = false">取 消</el-button>
+			    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			  </span>
+			</el-dialog>
 		</div>
 		
 	</body>
@@ -101,7 +179,15 @@
 					status: "",
 					type: ""
 				},
-				tableData:[]
+				tableData:[],
+				currentPage: 1,
+				total: 100,
+				size: 1,
+				pageSize: 10,
+				dialogVisible: false,
+				detailRow: [],
+				rowAddress: [],
+				rowMember: []
 			},
 			beforeMount:function(){
 				var tokenStr = "";
@@ -120,13 +206,18 @@
 				axios({
 					method: 'get',
 					url: 'http://localhost:8766/order/order/list',
-					headers: {'token': tokenStr}
+					headers: {'token': tokenStr},
+					params: {
+						page: 1,
+						pageSize: 10
+					}
 				}).then(function(res) {
 					console.log(res);
 					if (res.data.code === 1) {
 						top.location = "login.html";
 					}
-					vm.tableData = res.data.data;
+					vm.tableData = res.data.data.list;
+					vm.total = res.data.data.total;
 				});
 				this.token = tokenStr;
 			},
@@ -136,9 +227,109 @@
 				},
 				handleClick:function(row){
 					console.log(row);
+					vm.dialogVisible = true;
+					vm.detailRow = row;
+					console.log(vm.detailRow.addressId);
+					console.log(vm.detailRow.memberId);
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/order/order/address',
+						headers: {'token': vm.token},
+						params: {
+							addressId: vm.detailRow.addressId
+						}
+					}).then(function(res) {
+						console.log(res);
+						vm.rowAddress = res.data.data;
+					});
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/order/order/member',
+						headers: {'token': vm.token},
+						params: {
+							memberId: vm.detailRow.memberId
+						}
+					}).then(function(res) {
+						console.log(res);
+						vm.rowMember = res.data.data;
+					});
 				},
-				deleteOrder:function(){
-					console.log("删除订单");
+				deleteOrder:function(row){
+					console.log(row.orderId);
+					this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/order/order/delete',
+							headers: {'token': vm.token},
+							params: {
+								orderId: row.orderId
+							}
+					  }).then(function(res) {
+						console.log(res);
+						if (res.data.code === 0) {
+							vm.$message({
+								message: '删除成功',
+								type: 'success'
+							});
+							setTimeout(function () {
+								location.href = "order-list.html";
+							},2000);
+					  	} else{
+					  		vm.$message.error({
+					  		    message: '删除失败'
+					  		});
+					  	}
+					  });
+					}).catch(() => {
+					  this.$message({
+						type: 'info',
+						message: '已取消删除'
+					  });          
+					});
+				},
+				handleSizeChange:function(event) {
+					console.log(event);
+					vm.pageSize = event;
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/order/order/list',
+						headers: {'token': vm.token},
+						params: {
+							page: vm.size,
+							pageSize: event
+						}
+					}).then(function(res) {
+						vm.tableData = res.data.data.list;
+						vm.total = res.data.data.total;
+					});
+				},
+				handleCurrentChange:function(event){
+					console.log(event);
+					console.log(vm.pageSize);
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/order/order/list',
+						headers: {'token': vm.token},
+						params: {
+							page: event,
+							pageSize: vm.pageSize
+						}
+					}).then(function(res) {
+						console.log(res);
+						vm.tableData = res.data.data.list;
+						vm.total = res.data.data.total;
+					});
+				},
+				handleClose(done) {
+					this.$confirm('确认关闭？')
+					  .then(_ => {
+						done();
+					  })
+					  .catch(_ => {});
 				}
 			}
 		});

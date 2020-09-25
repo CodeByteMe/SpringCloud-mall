@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mall</groupId>
-	<artifactId>mall-admin-order-list</artifactId>
+	<artifactId>mall-admin-order-return-apply</artifactId>
 	<version>1.0.0</version>
-	<name>mall-admin-order-list</name>
-	<description>后台订单管理服务</description>
+	<name>mall-admin-order-return-apply</name>
+	<description>退货申请服务</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -45,11 +45,6 @@
 			<groupId>com.mall</groupId>
 			<artifactId>mall-common</artifactId>
 			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>

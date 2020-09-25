@@ -1,5 +1,8 @@
 package com.mall.admin.order.list.service;
 
+import com.github.pagehelper.PageInfo;
+import com.mall.common.pojo.Address;
+import com.mall.common.pojo.MemberUser;
 import com.mall.common.pojo.Order;
 
 import java.util.List;
@@ -12,5 +15,8 @@ import java.util.List;
  */
 public interface OrderService {
     public String getCompanyId(int id);
-    public List<Order> listOrderByCompanyId(String companyId);
+    public PageInfo listOrderByCompanyId(int pageNum, int pageSize, String companyId);
+    public boolean deleteOrderById(String orderId);
+    public Address getAddressByAddressId(String addressId);
+    public MemberUser getMemberUserByMemberId(String memberId);
 }

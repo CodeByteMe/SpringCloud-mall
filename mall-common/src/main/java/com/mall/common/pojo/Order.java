@@ -24,8 +24,8 @@ public class Order {
     private Integer id;
     @ApiModelProperty(value = "订单UUID" ,dataType = "string", required = true)
     private String orderId;
-    @ApiModelProperty(value = "用户对象" ,dataType = "MemberUser", required = true)
-    private MemberUser memberUser;
+    @ApiModelProperty(value = "用户id" ,dataType = "String", required = true)
+    private String memberId;
     @ApiModelProperty(value = "提交时间" ,dataType = "date", required = true)
     private Date createTime;
     @ApiModelProperty(value = "用户账号" ,dataType = "string", required = true)
@@ -42,8 +42,8 @@ public class Order {
     private Integer status;
     @ApiModelProperty(value = "订单类型" ,dataType = "integer", required = true)
     private Integer orderType;
-    @ApiModelProperty(value = "地址对象" ,dataType = "address", required = true)
-    private Address address;
+    @ApiModelProperty(value = "地址id" ,dataType = "String", required = true)
+    private String addressId;
     @ApiModelProperty(value = "自动确认时间" ,dataType = "integer", required = true)
     private Integer autoConfirmDay;
     @ApiModelProperty(value = "活动信息" ,dataType = "string", required = true)
