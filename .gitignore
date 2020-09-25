@@ -50,3 +50,9 @@ mall-zuul/*.iml
 
 mall-admin-order-list/target
 mall-admin-order-list/*.iml
+
+mall-admin-order-return-apply/target
+mall-admin-order-return-apply/*.iml
+
+mall-admin-order-return-reason/target
+mall-admin-order-return-reason/*.iml
