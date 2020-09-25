@@ -36,4 +36,14 @@ public class UserConntroller {
             return new ResultVO(1,"添加失败");
         }
     }
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    public ResultVO delUser(int id, @RequestHeader(required = true) String token) {
+        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        int i = userService.delectUser(id);
+        if (i >0) {
+            return new ResultVO(0,"删除成功");
+        } else {
+            return new ResultVO(1,"删除失败");
+        }
+    }
 }
