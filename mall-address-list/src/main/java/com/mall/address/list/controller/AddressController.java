@@ -48,10 +48,10 @@ public class AddressController {
         }
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ApiOperation(value = "前台用户地址删除接口", notes = "用户删除地址的接口")
     @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
-    public ResultVO deleteAddress(String addressId,@RequestHeader(required = true) String token) {
+    public ResultVO deleteAddress(@RequestParam String addressId,@RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
@@ -65,24 +65,31 @@ public class AddressController {
         }
     }
 
-    @RequestMapping(value = "/insert", method = RequestMethod.GET)
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ApiOperation(value = "前台用户地址添加接口", notes = "用户新增地址的接口")
     @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
-    public ResultVO insertAddress(String provinceId,String cityId,String regionId,String name,String phoneNumber,String postCode,String detailAddress,@RequestHeader(required = true) String token) {
+    public ResultVO insertAddress(@RequestParam String province,
+                                  @RequestParam String city,
+                                  @RequestParam String region,
+                                  @RequestParam String name,
+                                  @RequestParam String phoneNumber,
+                                  @RequestParam String postCode,
+                                  @RequestParam String detailAddress,
+                                  @RequestParam @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
         String memberId = jws.getBody().getId();
         String issuer = jws.getBody().getIssuer();
         if ("member".equals(issuer)) {
-            Province province = addressService.getProvince(provinceId);
-            String provinceName = province.getProvinceName();
-            City city = addressService.getCity(cityId);
-            String cityName = city.getCityName();
-            Region region = addressService.getRegion(regionId);
-            String regionName = region.getRegionName();
+            Province province1 = addressService.getProvince(province);
+            String provinceName = province1.getProvinceName();
+            City city1 = addressService.getCity(city);
+            String cityName = city1.getCityName();
+            Region region1 = addressService.getRegion(region);
+            String regionName = region1.getRegionName();
             String addressId = UUID.randomUUID().toString().replace("-", "");
-            int i = addressService.insertAddress(new Address(null,addressId,memberId,name,phoneNumber,0,postCode,provinceName,cityName,regionName,detailAddress));
+            int i = addressService.insertAddress(new Address(addressId,memberId,name,phoneNumber,0,postCode,provinceName,cityName,regionName,detailAddress));
             if (i > 0) {
                 return new ResultVO(0, "添加成功");
             } else {
@@ -93,21 +100,51 @@ public class AddressController {
         }
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ApiOperation(value = "修改地址接口", notes = "用户修改地址信息的接口")
     @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
-    public ResultVO updateAddress(Address address,@RequestHeader(required = true) String token) {
+    public ResultVO updateAddress(@RequestParam String addressId,
+                                  @RequestParam String name,
+                                  @RequestParam String phoneNumber,
+                                  @RequestParam String postCode,
+                                  @RequestParam String province,
+                                  @RequestParam String city,
+                                  @RequestParam String region,
+                                  @RequestParam String detailAddress,
+                                  @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
         String memberId = jws.getBody().getId();
         String issuer = jws.getBody().getIssuer();
         if ("member".equals(issuer)) {
-            int i = addressService.updateAddress(address);
-            if (i>0) {
-                return new ResultVO(0, "查询成功");
+
+            boolean b = addressService.updateAddress(new Address(addressId,memberId,name,phoneNumber,0,postCode,province,city,region,detailAddress));
+            if (b) {
+                return new ResultVO(0, "修改成功");
             } else {
-                return new ResultVO(1, "查询失败");
+                return new ResultVO(1, "修改失败");
+            }
+        }else {
+            return new ResultVO(1, "权限校验未通过");
+        }
+    }
+
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    @ApiOperation(value = "修改默认地址接口", notes = "用户修改默认地址信息的接口")
+    @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    public ResultVO updateAddressStatus(String addressId,@RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            boolean b = addressService.updateAddressStatus(addressId,1,memberId);
+            if (b) {
+                return new ResultVO(0, "设置默认地址成功");
+            } else {
+                return new ResultVO(1, "设置默认地址失败");
             }
         }else {
             return new ResultVO(1, "权限校验未通过");

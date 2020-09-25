@@ -35,4 +35,16 @@ public class Address {
     private String region;
     private String detailAddress;
 
+    public Address(String addressId, String memberId, String name, String phoneNumber, Integer defaultStatus, String postCode, String province, String city, String region, String detailAddress) {
+        this.addressId = addressId;
+        this.memberId = memberId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.defaultStatus = defaultStatus;
+        this.postCode = postCode;
+        this.province = province;
+        this.city = city;
+        this.region = region;
+        this.detailAddress = detailAddress;
+    }
 }
