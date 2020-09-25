@@ -14,7 +14,10 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDAO userDAO;
 
-
+    @Override
+    public int delectUser(int id) {
+        return userDAO.delectUser(id);
+    }
     @Override
     public int addUser(AdminUser adminUser) {
         return userDAO.addUser(adminUser);
