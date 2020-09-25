@@ -65,6 +65,7 @@ public class AuthController {
     })
     public ResultVO memberLogin(@RequestParam String username,@RequestParam String password) {
         String s = MD5Util.md5(password);
+        System.out.println(s);
         MemberUser memberUser = memberService.loginByMemberUser(username, s);
         if (memberUser != null) {
             String token = JWTUtil.encrypt(memberUser.getUsername(), memberUser.getMemberId(), "member");

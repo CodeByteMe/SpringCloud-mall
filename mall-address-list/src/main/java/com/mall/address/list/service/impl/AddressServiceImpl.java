@@ -37,6 +37,12 @@ public class AddressServiceImpl implements AddressService {
         return addressDAO.insertAddress(address);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
+    @Override
+    public int updateAddress(Address address) {
+        return addressDAO.updateAddress(address);
+    }
+
     @Override
     public List<Province> listProvince() {
         return addressDAO.listProvince();
