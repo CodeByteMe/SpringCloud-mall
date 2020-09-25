@@ -97,4 +97,11 @@ public interface AddressDAO {
      * @return
      */
     public Region getRegion(String regionId);
+
+    /**
+     * 根据地址id查询地址信息
+     * @param addressId
+     * @return
+     */
+    public List<Address> getAddressByAddressId(String addressId);
 }

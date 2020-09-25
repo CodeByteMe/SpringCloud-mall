@@ -21,4 +21,6 @@ public interface AddressService {
     public Province getProvince(String provinceId); // 根据省份id查省份信息
     public City getCity(String cityId); // 根据城市id查询城市信息
     public Region getRegion(String regionId); // 根据区id查询区信息
+
+    public List<Address> getAddressByAddressId(String addressId);
 }

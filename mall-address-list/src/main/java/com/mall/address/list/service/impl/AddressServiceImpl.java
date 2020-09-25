@@ -97,4 +97,9 @@ public class AddressServiceImpl implements AddressService {
     public Region getRegion(String regionId) {
         return addressDAO.getRegion(regionId);
     }
+
+    @Override
+    public List<Address> getAddressByAddressId(String addressId) {
+        return addressDAO.getAddressByAddressId(addressId);
+    }
 }

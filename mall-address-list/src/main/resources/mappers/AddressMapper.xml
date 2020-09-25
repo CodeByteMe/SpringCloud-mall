@@ -93,4 +93,10 @@
     <delete id="deleteByIdAndMemberId">
         delete from ums_member_receive_address where address_id = #{addressId}
     </delete>
+
+    <select id="getAddressByAddressId" resultMap="addressMap">
+        select address_id,member_id,name,phone_number,default_status,post_code,province,city,region,detail_address
+        from ums_member_receive_address
+        where address_id = #{addressId}
+    </select>
 </mapper>

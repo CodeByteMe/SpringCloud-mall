@@ -19,4 +19,6 @@ public interface OrderService {
     public boolean deleteOrderById(String orderId);
     public Address getAddressByAddressId(String addressId);
     public MemberUser getMemberUserByMemberId(String memberId);
+    public List<Order> getOrderListByMemberId(String memberId);
+    public List<Order> getOrderByOrderId(String orderId);
 }

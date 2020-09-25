@@ -7,7 +7,6 @@ import com.mall.admin.order.list.service.AuthService;
 import com.mall.admin.order.list.service.OrderService;
 import com.mall.common.pojo.Address;
 import com.mall.common.pojo.MemberUser;
-import com.mall.common.pojo.Menu;
 import com.mall.common.pojo.Order;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
@@ -135,6 +134,48 @@ public class OrderController {
             }
         } else {
             return new ResultVO(1,"没有权限，请联系管理员",null);
+        }
+    }
+
+    @RequestMapping(value = "/memberList",method = RequestMethod.GET)
+    @ApiOperation(value = "当前前台用户所有订单查询接口" , notes = "根据用户id查询当前前台用户的所有订单信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    })
+    public ResultVO getOrderListByMemberId(@RequestHeader(required = true) String token){
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            List<Order> orderListByMemberId = orderService.getOrderListByMemberId(memberId);
+            if (orderListByMemberId != null) {
+                return new ResultVO(0,"查询成功",orderListByMemberId);
+            } else {
+                return new ResultVO(1,"查询失败",null);
+            }
+        } else {
+            return new ResultVO(1,"权限认证未通过，请先登录",null);
+        }
+    }
+
+    @RequestMapping(value = "/orderDetail",method = RequestMethod.GET)
+    @ApiOperation(value = "查询订单详情查询接口" , notes = "根据订单id查询当订单详细信息")
+    @ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    })
+    public ResultVO getOrderByOrderId(@RequestParam("orderId") String orderId,
+                                      @RequestHeader(required = true) String token){
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            List<Order> orderByOrderId = orderService.getOrderByOrderId(orderId);
+            if (orderByOrderId != null) {
+                return new ResultVO(0,"查询成功",orderByOrderId);
+            } else {
+                return new ResultVO(1,"查询失败",null);
+            }
+        } else {
+            return new ResultVO(1,"权限认证未通过，请先登录",null);
         }
     }
 

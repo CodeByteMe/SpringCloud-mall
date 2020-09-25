@@ -7,7 +7,6 @@ import com.mall.admin.order.list.service.OrderService;
 import com.mall.common.pojo.Address;
 import com.mall.common.pojo.MemberUser;
 import com.mall.common.pojo.Order;
-import com.mall.common.pojo.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -55,5 +54,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public MemberUser getMemberUserByMemberId(String memberId) {
         return orderDAO.getMemberUserByMemberId(memberId);
+    }
+
+    @Override
+    public List<Order> getOrderListByMemberId(String memberId) {
+        return orderDAO.getOrderListByMemberId(memberId);
+    }
+
+    @Override
+    public List<Order> getOrderByOrderId(String orderId) {
+        return orderDAO.getOrderByOrderId(orderId);
     }
 }
