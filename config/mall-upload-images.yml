@@ -1,0 +1,9 @@
+server:
+  port: 8600
+spring:
+  application:
+    name: mall-upload-images
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin123@localhost:8761/eureka/

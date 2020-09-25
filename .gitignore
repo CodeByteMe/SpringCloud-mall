@@ -51,6 +51,9 @@ mall-product-list/*.iml
 mall-role-list/target
 mall-role-iist/*.iml
 
+mall-upload-images/target
+mall-upload-images/*.iml
+
 mall-user-list/target
 mall-user-iist/*.iml
 

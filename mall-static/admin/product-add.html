@@ -90,14 +90,13 @@
                         </el-form-item>
                         <el-form-item label="属性类型：">
                             <el-select v-model="formData.productAttributeCategoryId" placeholder="请选择属性类型">
-                                <el-option label="区域一" value="0"></el-option>
-                                <el-option label="区域二" value="1"></el-option>
+                                <el-option v-for="productAttributeCategory in formData.productAttributeCategory" :label="productAttributeCategory.name" :value="productAttributeCategory.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="商品图片">
 							<el-upload
 							    class="upload-demo"
-							    action="http://localhost:8080/good/upload"
+							    action="http://localhost:8766/uploadImages/uploadImages/upload"
 							    :on-preview="handlePreview"
 							    :on-remove="handleRemove"
 							    :on-success="handleSuccess"
@@ -129,6 +128,7 @@
                     price:0.00,
                     originalPrice:0.00,
                     stock:0,
+                    value:"",
                     unit:"",
                     weight:0.00,
                     sort:0,
@@ -137,25 +137,12 @@
                     detailTitle:"",
                     detailDesc:"",
                     note:"",
-                    productAttributeCategoryId:""
+                    productAttributeCategoryId:"",
+                    pic:"111",
+                    productAttributeCategory:[]
                 },
                 active: 0,
-                value:"",
-                options:[
-                {
-                    value: 'ziyuan',
-                    label: '资源',
-                    children: [{
-                        value: 'axure',
-                        label: 'Axure Components'
-                    },{
-                        value: 'sketch',
-                        label: 'Sketch Templates'
-                    },{
-                        value: 'jiaohu',
-                        label: '组件交互文档'
-                    }]
-                }]
+                options:[]
             },
             beforeMount:function(){
                     var tokenStr = "";
@@ -177,10 +164,22 @@
                         headers: {
                             'token': tokenStr
                         }
-                        })
-                        .then(function(res){
-                            console.log(res.data.data);
-                        });
+                    })
+                    .then(function(res){
+                        console.log(res.data.data);
+                        vm.options = res.data.data;
+                    });
+                    axios({
+                    method: 'get',
+                    url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/listAll',
+                    headers: {
+                        'token': tokenStr
+                    }
+                    })
+                    .then(function(res){
+                        console.log(res.data.data);
+                        vm.formData.productAttributeCategory = res.data.data;
+                    });
             },
             methods:{
                 next:function(){
@@ -190,7 +189,23 @@
                     this.active--;
                 },
                 submit:function(){
-                    console.log("111");
+                    console.log(vm.formData.name);
+                    console.log(vm.formData.subTitle);
+                    console.log(vm.formData.description);
+                    console.log(vm.formData.price);
+                    console.log(vm.formData.originalPrice);
+                    console.log(vm.formData.stock);
+                    console.log(vm.formData.value[1]);
+                    console.log(vm.formData.unit);
+                    console.log(vm.formData.weight);
+                    console.log(vm.formData.sort);
+                    console.log(vm.formData.previewStatus);
+                    console.log(vm.formData.publishStatus);
+                    console.log(vm.formData.detailTitle);
+                    console.log(vm.formData.detailDesc);
+                    console.log(vm.formData.note);
+                    console.log(vm.formData.productAttributeCategoryId);
+                    console.log(vm.formData.pic);
                     var tokenStr = "";
                     var str = document.cookie;
                     var arr = str.split(";");
@@ -208,32 +223,34 @@
                         method: 'post',
                         url: 'http://localhost:8766/productAdd/productAdd/add',
                         params: {
-                            name:vm.name,
-                            subTitle:vm.subTitle,
-                            description:vm.description,
-                            price:vm.price,
-                            originalPrice:vm.originalPrice,
-                            stock:vm.stock,
-                            unit:vm.unit,
-                            weight:vm.weight,
-                            sort:vm.sort,
-                            previewStatus:vm.previewStatus,
-                            publishStatus:vm.publishStatus,
-                            detailTitle:vm.detailTitle,
-                            detailDesc:vm.detailDesc,
-                            note:vm.note,
-                            productAttributeCategoryId:vm.productAttributeCategoryId
+                            name:vm.formData.name,
+                            subTitle:vm.formData.subTitle,
+                            description:vm.formData.description,
+                            price:vm.formData.price,
+                            originalPrice:vm.formData.originalPrice,
+                            stock:vm.formData.stock,
+                            unit:vm.formData.unit,
+                            weight:vm.formData.weight,
+                            sort:vm.formData.sort,
+                            previewStatus:vm.formData.previewStatus,
+                            publishStatus:vm.formData.publishStatus,
+                            detailTitle:vm.formData.detailTitle,
+                            detailDesc:vm.formData.detailDesc,
+                            note:vm.formData.note,
+                            productAttributeCategoryId:vm.formData.productAttributeCategoryId,
+                            pic:vm.formData.pic,
+                            productCategoryId:vm.formData.value[1]
                         },
                         headers: {
                             'token': tokenStr
                         }
-                        })
-                        .then(function(res){
-                            console.log(res.data.data);
-                        });
+                    })
+                    .then(function(res){
+                        console.log(res);
+                    });
                 },
                 handleChange:function(value){
-                    console.log(value);
+                    console.log(value[1]);
                 },
                 handleRemove:function(file, fileList) {
 					console.log(file, fileList);
@@ -242,7 +259,9 @@
 					console.log(file);
 				},
 				handleSuccess:function(response, file, fileList) {
-					console.log(response);
+                    console.log(response);
+                    console.log(file);
+                    console.log(fileList);
 				}
             }
         });

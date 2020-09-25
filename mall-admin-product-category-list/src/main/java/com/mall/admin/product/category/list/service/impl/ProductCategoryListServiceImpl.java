@@ -41,7 +41,7 @@ public class ProductCategoryListServiceImpl implements ProductCategoryListServic
     }
 
     @Override
-    public OptionsVO productCategoryOptions() {
+    public List<OptionsVO> productCategoryOptions() {
         return productCategoryListDAO.productCategoryOptions();
     }
 
