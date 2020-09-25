@@ -153,7 +153,7 @@
 						password:"",
 						email:"",
 						note:"",
-						status:0
+						status:'0'
 					},
 					tableData: []
 				},
@@ -213,7 +213,6 @@
 					},
 					add:function(){
 						console.log("add"),
-						console.log(vm.adminUser.status),
 						this.dialogVisible = true;
 						
 					},
@@ -224,8 +223,9 @@
 				        console.log(`当前页: ${val}`);
 					},
 					submit:function(){
+						console.log(vm.adminUser.status);
 						console.log("submit");
-						 var tokenStr = "";
+						var tokenStr = "";
 						var str = document.cookie;
 						var arr = str.split(";");
 						for(var i=0;i<arr.length;i++){
@@ -242,7 +242,11 @@
 							method: 'post',
 							url: 'http://localhost:8766/userAction/userAction/add',
 							params: {
-								adminUser:vm.adminUser
+								username:vm.adminUser.username,
+								password:vm.adminUser.password,
+								email:vm.adminUser.email,
+								note:vm.adminUser.note,
+								status:vm.adminUser.status
 							},
 		                    headers: {
 		                        'token': tokenStr
@@ -250,7 +254,8 @@
 							})
 							.then(function(res){
 								if(res.data.code==0){
-									console.log("登陆成功")
+									vm.$message("添加成功");
+									vm.dialogVisible = false;
 								}
 							});
 					},

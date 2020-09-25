@@ -33,9 +33,9 @@ public class UserConntroller {
         Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
         String adminId = jws.getBody().getId();
         System.out.println(adminId);
-        String companyId = userService.getCid(adminId);
-        System.out.println(companyId);
-        PageInfo pageInfo = userService.UserListBycompanyId(companyId,page, pageSize);
+//        String companyId = userService.getCid(adminId);
+//        System.out.println(companyId);
+        PageInfo pageInfo = userService.UserListBycompanyId("15fdaa3baa74479c94c36337cc4a3f37",page, pageSize);
         System.out.println(pageInfo);
         return new ResultVO(0,"success",pageInfo);
     }

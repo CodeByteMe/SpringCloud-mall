@@ -46,8 +46,28 @@
 				<div style="display: inline;"><label style="line-height:50px;">数据列表</label>
 					
 				</div>
-				<div id="" style="display: inline;margin-left: 75%;">
+				<div id="" style="display: inline;margin-left: 85%;">
 					<el-button size="medium" @click="addRole">添加</el-button>
+					<el-dialog
+							title="添加角色"
+							:visible.sync="dialogVisible"
+							width="40%"
+							height="100%"
+							:before-close="handleClose"
+					>
+						<el-form :model="role">
+							<el-form-item label="名称" :label-width="formLabelWidth">
+								<el-input v-model="role.name" autocomplete="off"></el-input>
+							</el-form-item>
+							<el-form-item label="描述" :label-width="formLabelWidth">
+								<el-input  v-model="role.description" autocomplete="off"></el-input>
+							</el-form-item>
+						</el-form>
+						<span slot="footer" class="dialog-footer">
+					        <el-button @click="dialogVisible = false">取 消</el-button>
+					        <el-button type="primary" @click="submit">确 定</el-button>
+					      </span>
+					</el-dialog>
 				</div>
 			</div>
 				<div >
@@ -100,38 +120,47 @@
 		<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript">
-			var Vue = new Vue({
+			var vm = new Vue({
 				el:"#container"
 				,data:{
 					keyword:"",
 					value:true,
 					boostatus1:false,
-					tableData: [{
-			          id: '1',
-			          name: '冬杨',
-			          createTime: ',,,,',
-			          description: '1212',
-			          status: 1
-			        }, {
-			            id: '1',
-			          name: '冬杨',
-			          createTime: ',,,,',
-			          description: '1212',
-			          status: 0
-			        }, {
-			            id: '1',
-			          name: '冬杨',
-			          createTime: ',,,,',
-			          description: '1212',
-			          status: 1
-			        }, {
-			             id: '1',
-			          name: '冬杨',
-			          createTime: ',,,,',
-			          description: '1212',
-			          status: 0
-			        }]
+					dialogVisible: false,
+					tableData: [],
+					role:{
+						name:"",
+						description:""
+					}
+				},
+				beforeMount:function(){
+                var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
 				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+                axios({
+					method: 'get',
+					url: 'http://localhost:8766/role/role/list',
+					params: {
+					},
+                    headers: {
+                        'token': tokenStr
+                    }
+					})
+					.then(function(res){
+						console.log(res.data.data);
+                        vm.tableData = res.data.data;
+					});
+            }
 				,methods:{
 					doSearch:function(keyword){
 						axios({
@@ -139,8 +168,6 @@
 							url:"",
 							params:{
 								keyword:vm.keyword,
-								page:1,
-								limit:5
 							},
 							headers:{
 								'token':tokenStr
@@ -155,7 +182,48 @@
 						console.log(row)
 					},
 					addRole:function(){
-						console.log("添加")
+						console.log("添加");
+						this.dialogVisible = true;
+					},
+					submit:function(){
+						console.log("submit");
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/role/role/add',
+							params: {
+								name:vm.role.name,
+								description:vm.role.description,	
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("添加成功");
+									vm.dialogVisible = false;
+								}
+							});
+					},
+					handleClose(done) {
+						this.$confirm('确认关闭？')
+								.then(_ => {
+							done();
+					})
+					.catch(_ => {});
 					}
 				}
 			})

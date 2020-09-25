@@ -21,6 +21,7 @@ import java.util.Date;
 @ToString
 @ApiModel(value = "后台用户对象", description = "包含后台用户信息的对象")
 public class AdminUser {
+
     @ApiModelProperty(value = "用户id" ,dataType = "Integet", required = true)
     private Integer id;
     @ApiModelProperty(value = "用户uuid" ,dataType = "String", required = true)
@@ -41,4 +42,12 @@ public class AdminUser {
     private String companyId;
     @ApiModelProperty(value = "公司名称" ,dataType = "String", required = true)
     private String companyName;
+
+    public AdminUser(String username, String password, String email, String note, Integer status) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.note = note;
+        this.status = status;
+    }
 }
