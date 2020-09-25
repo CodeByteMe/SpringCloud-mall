@@ -18,11 +18,23 @@ mall-admin-auth/*.iml
 mall-admin-home/target
 mall-admin-home/*.iml
 
+mall-admin-product-add/target
+mall-admin-product-add/*.iml
+
 mall-admin-product-attribute-category-list/target
 mall-admin-product-attribute-category-list/*.iml
 
+mall-admin-product-category-add/target
+mall-admin-product-category-add/*.iml
+
 mall-admin-product-category-list/target
 mall-admin-product-category-list/*.iml
+
+mall-admin-product-category-ud/target
+mall-admin-product-category-ud/*.iml
+
+mall-admin-product-urd/target
+mall-admin-product-urd/*.iml
 
 mall-common/target
 mall-common/*.iml
