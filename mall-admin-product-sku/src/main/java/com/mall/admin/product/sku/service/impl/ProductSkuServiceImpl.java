@@ -22,8 +22,8 @@ public class ProductSkuServiceImpl implements ProductSkuService {
     }
 
     @Override
-    public List<SkuStock> productSkuList() {
-        return productSkuDAO.productSkuList();
+    public List<SkuStock> productSkuList(String productId) {
+        return productSkuDAO.productSkuList(productId);
     }
 
     @Override

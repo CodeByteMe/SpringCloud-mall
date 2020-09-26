@@ -153,12 +153,13 @@
         </el-card>
         <el-dialog title="套餐" :visible.sync="outerVisible">
             <el-table :data="skuData" border>
+                <!-- <el-table-column prop="skuId" label="套餐编号""></el-table-column> -->
+                <el-table-column :show-overflow-tooltip="true" prop="skuId" label="编号"></el-table-column>
                 <el-table-column prop="color" label="颜色"></el-table-column>
                 <el-table-column prop="size" label="尺寸/容量"></el-table-column>
                 <el-table-column prop="price" label="销售价格"></el-table-column>
                 <el-table-column prop="stock" label="库存"></el-table-column>
-                <el-table-column prop="sale" label="销量"></el-table-column>
-                <el-table-column label="操作" fixed="right" width="250">
+                <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" type="danger" @click.native.prevent="delProductSku(scope.row)">删除</el-button>
                     </template>
@@ -166,10 +167,29 @@
             </el-table>
             <el-dialog
               width="30%"
-              title="内层 Dialog"
+              title="套餐添加"
               :visible.sync="innerVisible"
               append-to-body>
-              111
+            <template>
+                <el-form ref="skuFormData" :model="skuFormData" label-width="100px">
+                    <el-form-item label="颜色：">
+                        <el-input v-model="skuFormData.color" style="width: 200px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="尺寸：">
+                        <el-input v-model="skuFormData.size" style="width: 200px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="售价：">
+                        <el-input v-model="skuFormData.price" style="width: 200px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="库存：">
+                        <el-input v-model="skuFormData.stock" style="width: 200px;"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="innerVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="productSkuSubmit">确定</el-button>
+                </div>
+            </template>
             </el-dialog>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="outerVisible = false">取 消</el-button>
@@ -200,6 +220,12 @@
                 value1: "",
                 tableData:[],
                 skuData:[],
+                skuFormData:{
+                    color:"",
+                    size:"",
+                    price:"",
+                    stock:""
+                },
                 options:[
                 {
                     value: 'ziyuan',
@@ -382,17 +408,17 @@
                 },
                 handleClose:function(done) {
 					this.$confirm('确认关闭？')
-					  .then(_ => {
+					.then(_ => {
 						done();
-					  })
-					  .catch(_ => {});
+					})
+					.catch(_ => {});
                 },
                 handleClose1:function(done) {
 					this.$confirm('确认关闭？')
-					  .then(_ => {
+					.then(_ => {
 						done();
-					  })
-					  .catch(_ => {});
+					})
+					.catch(_ => {});
                 },
                 handleClick:function(row){
                     console.log(row);
@@ -455,6 +481,7 @@
                 },
                 productSku:function(row){
                     console.log(row.productId);
+                    vm.productId = row.productId;
                     vm.outerVisible = true;
                     var tokenStr = "";
                     var str = document.cookie;
@@ -472,16 +499,21 @@
 					axios({
 						method: 'get',
 						url: 'http://localhost:8766/productSku/productSku/list',
-						headers: {'token': tokenStr}
+						headers: {'token': tokenStr},
+                        params:{
+                            productId:row.productId
+                        }
 					}).then(function(res) {
-						vm.tableData = res.data.data;
+						console.log(res.data.data)
+                        vm.skuData = res.data.data;
 					});
                 },
                 productSkuAdd:function(){
                     console.log("111");
                     vm.innerVisible = true;
                 },
-                delProductSku:function(){
+                delProductSku:function(row){
+                    console.log(row.skuId)
                     this.$confirm('此操作将永久删除该套餐, 是否继续?', '提示', {
 						confirmButtonText: '确定',
 						cancelButtonText: '取消',
@@ -505,7 +537,7 @@
 							url: 'http://localhost:8766/productSku/productSku/del',
 							headers: {'token': tokenStr},
 							params: {
-								productId:row.productId
+								skuId:row.skuId
 							}
 					    }).then(function(res) {
                             console.log(res);
@@ -523,12 +555,50 @@
                                 });
                             }
                         });
-                        }).catch(() => {
-                            this.$message({
-                                type: 'info',
-                                message: '已取消删除'
-                            });          
-                        });
+                    })
+                },
+                productSkuSubmit:function(){
+                    console.log(vm.skuFormData);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+						method: 'post',
+						url: 'http://localhost:8766/productSku/productSku/add',
+						headers: {'token': tokenStr},
+						params: {
+							productId:vm.productId,
+                            color:vm.skuFormData.color,
+                            size:vm.skuFormData.size,
+                            price:vm.skuFormData.price,
+                            stock:vm.skuFormData.stock
+						}
+					}).then(function(res) {
+                        console.log(res);
+                        if (res.data.code === 0) {
+                            vm.$message({
+                                message: '添加成功',
+                                type: 'success'
+                            });
+                            setTimeout(function () {
+                                location.href = "product-list.html";
+                            },2000);
+                        } else{
+                            vm.$message.error({
+                                message: '添加失败，请联系管理员！'
+                            });
+                        }
+                    });
                 }
             }
         });

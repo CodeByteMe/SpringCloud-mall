@@ -21,19 +21,19 @@
     </resultMap>
 
 <!--    public boolean productSkuAdd(SkuStock skuStock); //套餐添加-->
-    <update id="productSkuAdd">
-        update into pms_sku_stock (id,sku_id,product_id,price,stock,color,size)
-        values (#{id},#{skuId},#{productId},#{price},#{stock},#{spData},#{color},#{size})
-    </update>
+    <insert id="productSkuAdd">
+        insert into pms_sku_stock (sku_id,product_id,price,stock,color,size)
+        values (#{skuId},#{productId},#{price},#{stock},#{color},#{size})
+    </insert>
 
 <!--    public boolean productSkuDel(String skuId); //套餐删除-->
     <delete id="productSkuDel">
         delete from pms_sku_stock where sku_id = #{skuId}
     </delete>
 
-<!--    public List<SkuStock> productSkuList(); //套餐查询-->
+<!--    public List<SkuStock> productSkuList(String productId); //套餐查询-->
     <select id="productSkuList" resultMap="productSkuMap">
-        select id,sku_id,product_id,price,stock,low_stock,pic,sale,promotion_price,lock_stock,color,size from pms_sku_stock
+        select id,sku_id,product_id,price,stock,low_stock,pic,sale,promotion_price,lock_stock,color,size from pms_sku_stock where product_id = #{productId}
     </select>
 
 </mapper>
