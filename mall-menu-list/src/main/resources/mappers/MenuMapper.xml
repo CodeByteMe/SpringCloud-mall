@@ -16,14 +16,14 @@
         <result column="hidden" property="hidden"/>
     </resultMap>
 <!--    public List<Menu> selectMenu();-->
-    <select id="listMenu" resultSets="java.util.List" resultMap="menuMap">
+    <select id="selectMenu" resultSets="java.util.List" resultMap="menuMap">
         select ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
         ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden
         from ums_admin inner join ums_admin_role_relation on ums_admin.id = ums_admin_role_relation.admin_id
         inner join ums_role on ums_admin_role_relation.role_id = ums_role.id
         inner join ums_role_menu_relation on ums_role.id = ums_role_menu_relation.role_id
         inner join ums_menu on ums_role_menu_relation.menu_id = ums_menu.id
-        where ums_menu.level = 0;
+        where ums_menu.level = 0
     </select>
     <!--    public List<Menu> listMenuChildren(@Param("adminId") int adminId,
             @Param("parentId") int parentId);-->
@@ -34,21 +34,27 @@
         inner join ums_role on ums_admin_role_relation.role_id = ums_role.id
         inner join ums_role_menu_relation on ums_role.id = ums_role_menu_relation.role_id
         inner join ums_menu on ums_role_menu_relation.menu_id = ums_menu.id
-        where ums_menu.level = 1 and ums_menu.parent_id = #{parentId};
+        where ums_menu.level = 1 and ums_menu.parent_id = #{parentId}
     </select>
 
-<!--    public List<Menu>  firstMenu();-->
-    <select id="firstMenu" resultMap="menuMap">
-        select
-            create_time,
-            title,
-            parent_id,
-            sort,
-            url,
-            icon,
-            hidden
-            from ums_menu
-            where
-            level= '0'
-    </select>
+    <!--    public int addMenu(Menu menu);-->
+    <insert id="addMenu">
+        insert into ums_menu(parent_id,create_time,title,level,sort,url,icon,hidden)
+        values (#{parentId},#{createTime},#{title},#{level},#{sort},#{url},#{icon},#{hidden})
+    </insert>
+<!--    public int delMenu(int id);-->
+    <delete id="delMenu">
+        delete from  ums_menu
+        where id =#{id}
+    </delete>
+<!--    public int updateMenu(Menu menu);-->
+    <update id="updateMenu">
+        update ums_menu set
+        parent_id=#{parentId},
+        title=#{title},
+        sort=#{sort},
+        url=#{url},
+        hidden=#{hidden}
+        where id = #{id}
+    </update>
 </mapper>

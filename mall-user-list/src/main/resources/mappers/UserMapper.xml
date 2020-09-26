@@ -49,7 +49,7 @@
         company_id =#{companyId}
     </select>
 <!--    public String selectCompanyId(String adminId);//通过登录的id拿到公司id-->
-    <select id="selectCompanyId" resultMap="adminMap">
+    <select id="selectCompanyId" resultType="String">
         select company_id
         FROM ums_admin
         where admin_id =#{adminId}

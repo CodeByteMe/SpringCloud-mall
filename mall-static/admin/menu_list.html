@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 		<style type="text/css">
 			.shadow1{
-				width: 99%;
+				width: 88%;
 				height: 50px;
 			}
 		</style>
@@ -18,14 +18,51 @@
 						
 					</div>
 					<div id="" style="display: inline;margin-left: 88%;">
-						<el-button size="medium">添加</el-button>
+						<el-button size="medium" @click="add">添加</el-button>
+						<el-dialog
+							title="添加菜单"
+							:visible.sync="dialogVisible"
+							width="40%"
+							height="100%"
+							:before-close="handleClose"
+							>
+						<el-form :model="menu">
+							<el-form-item label="菜单名称" :label-width="formLabelWidth">
+								<el-input v-model="menu.title" autocomplete="off"></el-input>
+							</el-form-item>
+							<el-form-item label="排序" :label-width="formLabelWidth">
+								<el-input v-model="menu.sort" autocomplete="off"></el-input>
+							</el-form-item>
+							<el-form-item label="地址" :label-width="formLabelWidth">
+								<el-input v-model="menu.url" autocomplete="off"></el-input>
+							</el-form-item>
+							 <el-form-item label="上级菜单":label-width="formLabelWidth" prop="region">
+							    <template>
+								  <el-select v-model="menu.id" placeholder="请选择">
+								    <el-option label="商品" value="1"></el-option>
+        							<el-option label="订单" value="7"></el-option>
+        							<el-option label="营销" value="12"></el-option>
+        							<el-option label="权限" value="21"></el-option>
+								  </el-select>
+								</template>
+							  </el-form-item>
+							<el-form-item label="是否启用" :label-width="formLabelWidth">
+								<el-radio v-model="menu.hidden" label="0">启用</el-radio>
+								<el-radio v-model="menu.hidden" label="1">关闭</el-radio>
+							</el-form-item>
+						</el-form>
+						<span slot="footer" class="dialog-footer">
+					        <el-button @click="dialogVisible = false">取 消</el-button>
+					        <el-button type="primary" @click="submit">确 定</el-button>
+					      </span>
+					</el-dialog>
 					</div>
 				</div>
 						<template>
 						  <el-table
 						    :data="tableData"
 						    border
-						    style="width: 100%">
+						    style="width: 88%">
 						    <el-table-column
 						      prop="id"
 						      label="编号"
@@ -53,6 +90,8 @@
 	                                <el-switch
 	                                    on-color="#5B7BFA"
 	                                    off-color="#dadde5"
+	                                    :active-value="0"
+								     	:inactive-value="1"
 	                                    v-model="scope.row.hidden" 
 	                                    @change=change(scope.row)                
 	                                >
@@ -68,11 +107,14 @@
 								<el-button type="text"  @click="children(scope.row)">查看下级</el-button>
 								</template>
 							</el-table-column>
-							<el-table-column label="操作" fixed="right">
-						    	<el-button type="text">编辑</el-button>
-						    	<el-button type="text">删除</el-button>
-						    	
-							</el-table-column>
+								
+								<el-table-column label="操作" fixed="right">
+								<template slot-scope="scope">
+							    	<el-button type="text"  @click="redact(scope.row)">编辑</el-button>
+							    	<el-button type="text">删除</el-button>
+							    	</template>
+								</el-table-column>
+								
 						  </el-table>
 						</template>
 				<template>
@@ -86,6 +128,40 @@
 			    </el-pagination>
 				</template>
 			
+			<el-dialog title="编辑" :visible.sync="dialogFormVisible">
+								  <el-form :model="menu">
+								  	<el-form-item label="id" :label-width="formLabelWidth">
+								      <el-input v-model="menu.id" autocomplete="off" readonly="readonly"></el-input>
+								    </el-form-item>
+								    <el-form-item label="菜单名" :label-width="formLabelWidth">
+								      <el-input v-model="menu.title" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="排序" :label-width="formLabelWidth">
+								      <el-input v-model="menu.sort" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="url" :label-width="formLabelWidth">
+								      <el-input v-model="menu.url" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="父菜单" :label-width="formLabelWidth">
+								        <template>
+										  <el-select v-model="menu.parentId" placeholder="请选择">
+										    <el-option label="商品" value="1"></el-option>
+		        							<el-option label="订单" value="7"></el-option>
+		        							<el-option label="营销" value="12"></el-option>
+		        							<el-option label="权限" value="21"></el-option>
+										  </el-select>
+										</template>
+										<el-form-item label="是否启用" :label-width="formLabelWidth">
+											<el-radio v-model="menu.hidden" label="0">启用</el-radio>
+											<el-radio v-model="menu.hidden" label="1">关闭</el-radio>
+										</el-form-item>
+								    </el-form-item>
+								  </el-form>
+								  <div slot="footer" class="dialog-footer">
+								    <el-button @click="dialogFormVisible = false">取 消</el-button>
+								    <el-button type="primary" @click="reSubmit">确 定</el-button>
+								  </div>
+								</el-dialog>
 		</div>
 		<!-- 引入组件库 -->
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
@@ -93,41 +169,25 @@
 		<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript">
-			var Vue = new Vue({
+			var vm = new Vue({
 				el:"#container"
 				,data:{
 					keyword:"",
+					dialogVisible: false,
+					dialogTableVisible: false,
+        			dialogFormVisible: false,
 					currentPage3:5,
-					tableData: [{
-			          id: '1',
-			          title: 'kkkk',
-			          level: '一级',
-			          name: 'vhbjk',
-			          hidden: true,
-			          sort: '0'
-			          
-			        }, {
-			            id: '2',
-			          title: 'kkkk',
-			          level: '一级',
-			          name: 'vhbjk',
-			          hidden: false,
-			          sort: '0'
-			        }, {
-			            id: '3',
-			          title: 'kkkk',
-			          level: '一级',
-			          name: 'vhbjk',
-			          hidden: true,
-			          sort: '0'
-			        }, {
-			             id: '4',
-			          title: 'kkkk',
-			          level: '一级',
-			          name: 'vhbjk',
-			          hidden: false,
-			          sort: '0'
-			        }]
+					formLabelWidth: '120px',
+					tableData: [],
+					menu:{
+					  id:'',
+					  title: '',
+					  url:'',
+			          id: '',
+			          sort:'',
+			          hidden: '',
+			          parentId:''
+					},
 				},
 				beforeMount:function(){
                 var tokenStr = "";
@@ -171,9 +231,131 @@
 				        console.log(`当前页: ${val}`);
 				    },
 				    children:function(row){
-				    	console.log(row)
-				    }
+				    	console.log(row);
+				    	var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+		                axios({
+							method: 'get',
+							url: 'http://localhost:8766/menu/menu/listChildren',
+							params: {
+								id: row.id,
+								page: 1,
+								pageSize: 5
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								console.log(res.data.data);
+		                        vm.tableData = res.data.data.list;
+		                        vm.total = res.data.data.total;
+							});
+						    },
+					handleClose(done) {
+
+								this.$confirm('确认关闭？')
+										.then(_ => {
+									done();
+							})
+							.catch(_ => {});
+					},
+					add:function(){
+						console.log("add");
+						console.log(vm.tableData);
+						this.dialogVisible = true;
+					},
+					submit:function(){
+					console.log(vm.menu.id);
+					var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/menu/menu/add',
+							params: {
+							  title: vm.menu.title,
+					          id: vm.menu.id,
+					          sort:vm.menu.sort,
+					          url:vm.menu.url,
+					          hidden: vm.menu.hidden
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("添加成功");
+									vm.dialogVisible = false;
+								}
+							});
+					},
+					redact:function(row){
+						console.log(row);
+						vm.menu=row;
+						this. dialogFormVisible = true;
+					},
+					reSubmit:function(){
+						console.log(vm.menu.id);
+					var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/menu/menu/redact',
+							params: {
+							  id: vm.menu.id,
+							  title: vm.menu.title,
+					          parentId: vm.menu.parentId,
+					          sort:vm.menu.sort,
+					          url:vm.menu.url,
+					          hidden: vm.menu.hidden
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("修改成功");
+									vm.dialogFormVisible = false;
+								}
+							});
+					}
 				}
+					
 			})
 		</script>
 	</body>
