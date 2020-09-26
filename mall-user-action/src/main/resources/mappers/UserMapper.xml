@@ -29,7 +29,7 @@
         values (#{adminId},#{username},#{password},#{email},#{note},#{createTime},#{status},#{companyId})
     </insert>
 <!--    public String getCompanyId(String id);-->
-    <select id="getCompanyId" resultMap="adminMap">
+    <select id="getCompanyId" resultType="String">
         select company_id
         FROM ums_admin
         where admin_id =#{adminId}

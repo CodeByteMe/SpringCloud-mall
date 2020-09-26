@@ -45,6 +45,9 @@ mall-config/*.iml
 mall-eureka/target
 mall-eureka/*.iml
 
+mall-menu-list/target
+mall-menu-list/*.iml
+
 mall-product-list/target
 mall-product-list/*.iml
 

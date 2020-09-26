@@ -215,7 +215,10 @@
 								if(res.data.code==0){
 									vm.$message("添加成功");
 									vm.dialogVisible = false;
-								}
+								},
+								setTimeout(function () {
+								location.href = "order-list.html";
+							},2000);
 							});
 					},
 					handleClose(done) {
