@@ -71,6 +71,49 @@
 				</template>	
 			</el-card>
 			
+			<el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+				<el-divider content-position="left">退货商品</el-divider>
+				<span>商品图片：<img :src="updaterow.productPic" style="height: 3.125rem;" /></span>
+				<el-divider></el-divider>
+				<span>商品名称：{{updaterow.productName}}</span>
+				<el-divider></el-divider>
+				<span>价格：{{updaterow.productPrice}}</span>
+				<el-divider></el-divider>
+				<span>属性：{{updaterow.productAttr}}</span>
+				<el-divider></el-divider>
+				<span>数量：{{updaterow.productCount}}</span>
+				<el-divider></el-divider>
+				<span>小计：{{updaterow.returnAmount}}</span>
+				<el-divider></el-divider>
+				<el-divider content-position="left">服务单信息</el-divider>
+				<span>服务单号：{{updaterow.id}}</span>
+				<el-divider></el-divider>
+				<span>申请状态：</span>
+				<span v-if="updaterow.status == 0">待处理</span>
+				<span v-if="updaterow.status == 1">退货中</span>
+				<span v-if="updaterow.status == 2">已完成</span>
+				<span v-if="updaterow.status == 3">已拒绝</span>
+				<el-divider></el-divider>
+				<span>订单编号：{{updaterow.orderId}}</span>
+				<el-divider></el-divider>
+				<span>申请时间：{{updaterow.createTime}}</span>
+				<el-divider></el-divider>
+				<span>用户账号：{{updaterow.memberUsername}}</span>
+				<el-divider></el-divider>
+				<span>联系人：{{updaterow.returnName}}</span>
+				<el-divider></el-divider>
+				<span>联系电话：{{updaterow.returnPhone}}</span>
+				<el-divider></el-divider>
+				<span>退货原因：{{updaterow.reason}}</span>
+				<el-divider></el-divider>
+				<span slot="footer" class="dialog-footer">
+					<el-button @click="dialogVisible = false">取 消</el-button>
+					<el-button type="primary" @click="sumbitYes(updaterow.id)">确认退货</el-button>
+					<el-button type="primary" @click="sumbitNo(updaterow.id)">取消退货</el-button>
+					<el-button type="primary" @click="sumbitSuccess(updaterow.id)">完成退货</el-button>
+				</span>
+			</el-dialog>
+			
 		</div>
 		
 	</body>
@@ -83,6 +126,7 @@
 		var vm = new Vue({
 			el:"#container",
 			data:{
+				tableData:[],
 				token: "",
 				form:{
 					id: "",
@@ -92,7 +136,9 @@
 				currentPage: 1,
 				total: 100,
 				size: 1,
-				pageSize: 10
+				pageSize: 10,
+				dialogVisible: false,
+				updaterow: []
 			},
 			beforeMount:function(){
 				var tokenStr = "";
@@ -117,7 +163,6 @@
 						pageSize: 10
 					}
 				}).then(function(res) {
-					console.log(res);
 					if (res.data.code === 1) {
 						top.location = "login.html";
 					}
@@ -131,7 +176,6 @@
 					console.log("点击了搜索按钮");
 				},
 				handleSizeChange:function(event) {
-					console.log(event);
 					vm.pageSize = event;
 					axios({
 						method: 'get',
@@ -147,8 +191,6 @@
 					});
 				},
 				handleCurrentChange:function(event){
-					console.log(event);
-					console.log(vm.pageSize);
 					axios({
 						method: 'get',
 						url: 'http://localhost:8766/returnApply/apply/list',
@@ -161,6 +203,146 @@
 						console.log(res);
 						vm.tableData = res.data.data.list;
 						vm.total = res.data.data.total;
+					});
+				},
+				handleDelete:function(index,row){
+					this.$confirm('此操作将永久删除该申请, 是否继续?', '删除确认', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						axios({
+							method: 'delete',
+							url: 'http://localhost:8766/returnApply/apply/delete',
+							headers: {'token': vm.token},
+							params: {
+								id: row.id
+							}
+						}).then(function(res) {
+							if(res.data.code == 0) {
+								vm.$message({
+									message: '删除成功',
+									type: 'success'
+								});
+								setTimeout(function () {
+									location.href="return-apply.html";
+								},2000);
+							} else {
+								vm.$message.error('删除失败');
+							}
+						});
+					}).catch(() => {
+					  this.$message({
+						type: 'info',
+						message: '已取消删除'
+					  });          
+					});
+				},
+				handleEdit:function(index,row){
+					vm.dialogVisible = true;
+					let obj = JSON.parse(JSON.stringify(row));
+					vm.updaterow = obj;
+				},
+				sumbitYes:function(id){
+					this.$confirm('此操作风险操作, 是否继续?', '请确认', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/returnApply/apply/update',
+							headers: {'token': vm.token},
+							params: {
+								id: id,
+								status: 1
+							}
+						}).then(function(res) {
+							if(res.data.code == 0) {
+								vm.$message({
+									message: '退货处理成功',
+									type: 'success'
+								});
+								setTimeout(function () {
+									location.href="return-apply.html";
+								},2000);
+							} else {
+								vm.$message.error('退货处理失败');
+							}
+						});
+					}).catch(() => {
+					  this.$message({
+						type: 'info',
+						message: '失误啦！'
+					  });          
+					});
+				},
+				sumbitNo:function(id){
+					this.$confirm('此操作风险操作, 是否继续?', '请确认', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/returnApply/apply/update',
+							headers: {'token': vm.token},
+							params: {
+								id: id,
+								status: 3
+							}
+						}).then(function(res) {
+							if(res.data.code == 0) {
+								vm.$message({
+									message: '取消退货成功',
+									type: 'success'
+								});
+								setTimeout(function () {
+									location.href="return-apply.html";
+								},2000);
+							} else {
+								vm.$message.error('取消退货失败');
+							}
+						});
+					}).catch(() => {
+					  this.$message({
+						type: 'info',
+						message: '失误啦！'
+					  });          
+					});
+				},
+				sumbitSuccess:function(id){
+					this.$confirm('此操作风险操作, 是否继续?', '请确认', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/returnApply/apply/update',
+							headers: {'token': vm.token},
+							params: {
+								id: id,
+								status: 2
+							}
+						}).then(function(res) {
+							if(res.data.code == 0) {
+								vm.$message({
+									message: '已完成退货',
+									type: 'success'
+								});
+								setTimeout(function () {
+									location.href="return-apply.html";
+								},2000);
+							} else {
+								vm.$message.error('退货处理失败');
+							}
+						});
+					}).catch(() => {
+					  this.$message({
+						type: 'info',
+						message: '失误啦！'
+					  });          
 					});
 				},
 				handleClose(done) {

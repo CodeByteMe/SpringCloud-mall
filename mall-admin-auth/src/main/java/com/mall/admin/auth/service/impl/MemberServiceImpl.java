@@ -4,6 +4,9 @@ import com.mall.admin.auth.dao.MemberDAO;
 import com.mall.admin.auth.service.MemberService;
 import com.mall.common.pojo.MemberUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -19,6 +22,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public int insertMemberUser(MemberUser memberUser) {
         return memberDAO.insertMemberUser(memberUser);
     }
