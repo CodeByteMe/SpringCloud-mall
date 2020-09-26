@@ -5,10 +5,20 @@
 		<title>商品详情</title>
 		<meta name="keywords" content="首页" />
 		<meta name="description" content="首页" />
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 		<link rel="stylesheet" type="text/css" href="../assets/css/normalize.css" />
 		
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../assets/css/animate.min.css">
+		<link rel="stylesheet" href="css/magnific-popup.css">
+		<link href="https://s1.pstatp.com/cdn/expire-1-M/font-awesome/5.8.1/css/all.min.css" type="text/css" rel="stylesheet" />
+		<link rel="stylesheet" href="../assets/css/dripicons.css">
+		<link rel="stylesheet" href="../assets/css/slick.css">
+		<link rel="stylesheet" href="../assets/css/default.css">
+		<link rel="stylesheet" href="../assets/css/style.css">
+		<link rel="stylesheet" href="../assets/css/responsive.css">
+		
 		<script type="text/javascript" src="../assets/js/jquery-1.9.1.min.js"></script>
-		<script src="../assets/js/common.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				var showproduct = {
@@ -81,30 +91,59 @@
 		</script>
 	</head>
 	<body>
+		<header class="header-area">
+			<div id="header-sticky" class="menu-area">
+				<div class="container">
+					<div class="second-menu">
+						<div class="row align-items-center">
+							<div class="col-xl-2 col-lg-2">
+								<div class="logo">
+									<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 200px;height: 200px;"></a>
+								</div>
+							</div>
+							<div class="col-xl-8 col-lg-9">
+								<div class="responsive"><i class="icon dripicons-align-right"></i></div>
+								<div class="main-menu text-right text-xl-center">
+									<nav id="mobile-menu">
+										<ul>
+											<li class="has-sub">
+												<a href="#home">消息管理</a>
+											</li>
+											<li class="has-sub"><a href="#">个人中心</a>
+												<ul>
+													<li><a href="cart.html">购物车</a></li>
+													<li><a href="order_list.html">我的订单</a></li>
+													<li><a href="address_list.html">地址管理</a></li>
+												</ul>
+											</li>
+											<li><a href="register.html">送货上门</a></li>
+											<li class="has-sub"><a href="web/product_list.html">所有商品</a>
+											</li>
+										</ul>
+									</nav>
+								</div>
+							</div>
+							<div class="col-xl-2 text-right d-none d-xl-block">
+								<div class="header-btn second-header-btn">
+									<a href="web/login.html" class="btn">登录</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		
 		<div id="dongyang" style="width: 70%;margin: auto;">
-			<div class="showall">
+			<div class="showall" >
 				<!--left -->
 				<div class="showbot">
-					<div id="showbox">
-						<img :src="product.pic" width="400" height="400" />
+					<div id="showbox" >
 						<img src="../assets/img/a.jpg" width="400" height="400" />
-						<img :src="product.pic" width="400" height="400" />
-						<img :src="product.pic" width="400" height="400" />
-						<img :src="product.pic" width="400" height="400" />
-						<img :src="product.pic" width="400" height="400" />
 					</div>
-					<!--展示图片盒子-->
-					<div id="showsum">
-						<!--展示图片里边-->
-					</div>
-					<p class="showpage">
-						<a href="javascript:void(0);" id="showlast">
-							< </a> <a href="javascript:void(0);" id="shownext"> >
-						</a>
-					</p>
 				</div>
 				<!--conet -->
-				<div class="tb-property">
+				<div class="tb-property" style="margin-left: 100px;">
 					<div class="tr-nobdr">
 						<h3>{{product.name}}</h3>
 					</div>
@@ -112,7 +151,6 @@
 						<span class="nowprice">￥<a href="">{{product.price}}</a></span>
 						<div class="cumulative">
 							<span class="number ty1">销量<br /><em id="add_sell_num_363">{{product.sale}}</em></span>
-							<span class="number tyu">累计评价<br /><em id="add_sell_num_363">{{product.sale}}</em></span>
 						</div>
 					</div>
 
@@ -124,6 +162,9 @@
 						<input id="add" name="" type="button" value="+" />
 						<span class="Hgt">库存{{product.stock}}</span>
 					</div>
+					<div id="" style="margin: auto;">
+						颜色类型：<br><el-button plain v-for="item in skuData">{{item.spData}}</el-button>
+					</div>
 					<div class="nobdr-btns">
 						<button class="addcart hu"><img src="../assets/img/shop.png" width="25" height="25" />加入购物车</button>
 						<button class="addcart yh"><img src="../assets/img/ht.png" width="25" height="25" />立即购买</button>
@@ -132,34 +173,38 @@
 						<span>邮费：包邮&nbsp;&nbsp;支持货到付款</span>
 					</div>
 				</div>
-
-
 			</div>
-
-
-
 			<div class="gdetail">
-
-
 				<div class="detail">
-
-
 				</div>
 			</div>
 		</div>
 	</body>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
 	<script src="../assets/js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../assets/js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				product:[],
-				total:[]
+				skuData:[],
+				product:[]
 			},
 			beforeMount: function() {
-				this.product = JSON.parse(localStorage.getItem("item"));
-				console.log(this.product);
+				console.log(JSON.parse(localStorage.getItem("item")).productId)
+				axios({
+						method: 'get',
+						url: 'http://localhost:8766/product/product/productDetail',
+						params: {
+							productId:JSON.parse(localStorage.getItem("item")).productId
+						}
+					})
+					.then(function(res) {
+						console.log(res.data.data);
+						vm.product = res.data.data
+						vm.skuData = res.data.data.skuStock
+					});
 			},
 			methods:{
 				
