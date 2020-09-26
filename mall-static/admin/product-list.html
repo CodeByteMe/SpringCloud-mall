@@ -30,6 +30,43 @@
 </head>
 <body>
     <div id="container">
+        <el-dialog title="详情" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-divider content-position="left">{{detailRow.detailTitle}}</el-divider>
+            <span>商品编号：{{detailRow.productId}}</span>
+            <el-divider></el-divider>
+            <span>商品名称：{{detailRow.name}}</span>
+            <el-divider></el-divider>
+            <img :src="detailRow.pic" class="image" style="height: 200px;"/>
+            <el-divider></el-divider>
+            <span>商品分类名称：{{detailRow.productCategoryName}}</span>
+            <el-divider></el-divider>
+            <span>副标题：{{detailRow.subTitle}}</span>
+            <el-divider></el-divider>
+            <span>商品价格：{{detailRow.price}}</span>
+            <el-divider></el-divider>
+            <span>市场价：{{detailRow.originalPrice}}</span>
+            <el-divider></el-divider>
+            <span>商品描述：{{detailRow.description}}</span>
+            <el-divider></el-divider>
+            <span>销量：{{detailRow.sale}}</span>
+            <el-divider></el-divider>
+            <span>库存：{{detailRow.stock}}</span>
+            <el-divider></el-divider>
+            <span>库存预检值：{{detailRow.stock}}</span>
+            <el-divider></el-divider>
+            <span>单位：{{detailRow.unit}}</span>
+            <el-divider></el-divider>
+            <span>商品重量：{{detailRow.weight}} 克</span>
+            <el-divider></el-divider>
+            <span>是否为预告商品：</span>
+            <span v-if="detailRow.previewStatus == 0">不是</span>
+            <span v-if="detailRow.previewStatus == 1">是</span>
+            <el-divider></el-divider>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span><i class="el-icon-search"></i> 筛选查询</span>
@@ -59,7 +96,7 @@
         <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
                 <span><i class="el-icon-tickets"></i> 数据列表</span>
-                <el-button style="float: right;">添加</el-button>
+                <el-button style="float: right;" @click="addproduct">添加</el-button>
             </div>
         </el-card>
         <el-card class="box-card">
@@ -97,9 +134,9 @@
                         <el-table-column prop="sale" label="销量"></el-table-column>
                         <el-table-column label="操作" fixed="right" width="250">
                             <template slot-scope="scope">
-                                <el-button size="mini" @click="">详情</el-button>
-                                <el-button size="mini" @click="">编辑</el-button>
-                                <el-button size="mini" type="danger" @click.native.prevent="">删除</el-button>
+                                <el-button size="mini" @click="handleClick(scope.row)">详情</el-button>
+                                <el-button size="mini" @click="updateProduct(scope.row)">编辑</el-button>
+                                <el-button size="mini" type="danger" @click.native.prevent="delProduct(scope.row)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -125,6 +162,7 @@
         var vm = new Vue({
             el:"#container",
             data:{
+                dialogVisible:false,
                 token:"",
                 total: 100,
                 currentPage4:1,
@@ -169,7 +207,8 @@
                 ],
                 active: 0,
                 page:1,
-                pageSize:5
+                pageSize:5,
+                detailRow:[]
                 },
             beforeMount:function(){
                 var tokenStr = "";
@@ -272,7 +311,52 @@
 					}).then(function(res) {
 						vm.tableData = res.data.data.list;
 					});
-				},
+                },
+                addproduct:function(){
+                    location.href = "product-add.html";
+                },
+                handleClose:function(done) {
+					this.$confirm('确认关闭？')
+					  .then(_ => {
+						done();
+					  })
+					  .catch(_ => {});
+                },
+                handleClick:function(row){
+                    console.log(row);
+                    vm.detailRow = row;
+                    vm.dialogVisible = true;
+                },
+                updateProduct:function(row){
+                    localStorage.setItem("row", JSON.stringify(row));
+                    location.href = "product-update.html";
+                },
+                delProduct:function(row){
+                    console.log(row.productId);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+					axios({
+						method: 'delete',
+						url: 'http://localhost:8766/productUrd/productUrd/del',
+						headers: {'token': tokenStr},
+						params: {
+							productId:row.productId
+						}
+					}).then(function(res) {
+						console.log(res.data.data);
+					});
+                }
             }
         });
     </script>

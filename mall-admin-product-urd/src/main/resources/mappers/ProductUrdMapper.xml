@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.product.urd.dao.ProductUrdDAO">
+
+<!--    public boolean productUpdate(Product product);  //修改商品信息-->
+    <update id="productUpdate">
+        UPDATE pms_product SET name = #{name},sub_title = #{subTitle},description=#{description},price=#{price},original_price=#{originalPrice},
+        stock=#{stock},unit=#{unit},weight=#{weight},sort=#{sort},preview_status=#{previewStatus},publish_status=#{publishStatus},detail_title=#{detailTitle},
+        detail_desc=#{detailDesc},note=#{note},product_attribute_category_id=#{productAttributeCategoryId},pic#{pic}
+        where product_id =#{productId}
+    </update>
+
+<!--    public boolean productDel(Integer productId);   //删除商品-->
+    <delete id="productDel">
+        delete from pms_product where product_id = #{productId}
+    </delete>
+
+</mapper>
