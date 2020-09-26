@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.order.reason.dao.ReasonDAO">
+    <resultMap id="orderReturnReasonMap" type="OrderReturnReason">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sort" property="sort"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+<!--    public List<OrderReturnReason> listOrderReturnReason();-->
+    <select id="listOrderReturnReason" resultSets="java.util.List" resultMap="orderReturnReasonMap">
+        select id,name,sort,status,create_time
+        from oms_order_return_reason
+    </select>
+</mapper>

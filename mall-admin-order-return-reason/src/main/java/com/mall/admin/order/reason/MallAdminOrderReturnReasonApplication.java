@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-@MapperScan(basePackages = "com.mall.admin.home.dao")
+@MapperScan(basePackages = "com.mall.admin.order.reason.dao")
 public class MallAdminOrderReturnReasonApplication {
 
 	public static void main(String[] args) {
