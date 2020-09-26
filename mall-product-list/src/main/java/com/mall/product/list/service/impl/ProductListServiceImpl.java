@@ -3,6 +3,7 @@ package com.mall.product.list.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mall.common.pojo.Product;
+import com.mall.common.pojo.SkuStock;
 import com.mall.product.list.dao.ProductListDAO;
 import com.mall.product.list.service.ProductListService;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,15 @@ public class ProductListServiceImpl implements ProductListService {
         List<Product> products = productListDAO.productList();
         PageInfo pageInfo = new PageInfo(products);
         return pageInfo;
+    }
+
+    @Override
+    public Product productDetailByProductId(String productId) {
+        return productListDAO.productDetailByProductId(productId);
+    }
+
+    @Override
+    public List<SkuStock> getSkuStockByProductId(String productId) {
+        return productListDAO.getSkuStockByProductId(productId);
     }
 }

@@ -1,6 +1,7 @@
 package com.mall.admin.order.list.service;
 
 import com.github.pagehelper.PageInfo;
+import com.mall.common.pojo.OrderDTO;
 import com.mall.common.pojo.Address;
 import com.mall.common.pojo.MemberUser;
 import com.mall.common.pojo.Order;
@@ -20,5 +21,5 @@ public interface OrderService {
     public Address getAddressByAddressId(String addressId);
     public MemberUser getMemberUserByMemberId(String memberId);
     public List<Order> getOrderListByMemberId(String memberId);
-    public List<Order> getOrderByOrderId(String orderId);
+    public List<OrderDTO> getOrderByOrderId(String orderId);
 }

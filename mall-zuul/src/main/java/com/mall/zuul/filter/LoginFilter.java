@@ -65,7 +65,8 @@ public class LoginFilter extends ZuulFilter {
                 String token = request.getHeader("token");
                 if (token == null) {
                     if (uri.endsWith("/auth/adminLogin") || uri.endsWith("/auth/memberLogin")
-                        || uri.endsWith("/auth/register")||uri.endsWith("/product/allList")) {
+                        || uri.endsWith("/auth/register")||uri.endsWith("/product/allList")
+                        ||uri.endsWith("/product/productDetail")) {
                         // 放行
                         context.setSendZuulResponse(true);
                         context.setResponseStatusCode(200);
