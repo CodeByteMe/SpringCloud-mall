@@ -101,6 +101,10 @@
 					      label="邮箱">
 					    </el-table-column>
 					    <el-table-column
+					      prop="nickName"
+					      label="昵称">
+					    </el-table-column>
+					    <el-table-column
 					      prop="createTime"
 					      label="创建时间">
 					    </el-table-column>
@@ -110,18 +114,20 @@
 					     </el-table-column>
 					     <el-table-column label="是否启用">
 							<template scope="scope">
-								<el-switch v-model="scope.row.status"
+								<el-switch 
+									v-model="scope.row.status"
 								     :active-value="1"
 								     :inactive-value="0"
 								     @change=change(scope.row)>
 								</el-switch>
-							</template>V
+							</template>
 						</el-table-column>
 						<el-table-column label="操作" fixed="right">
+						<template slot-scope="scope">
 					    	<el-button type="text">分配角色</el-button>
-					    	<el-button type="text">编辑</el-button>
-					    	<el-button type="text">删除</el-button>
-					    	
+					    	<el-button type="text" @click="redact(scope.row)">编辑</el-button>
+					    	<el-button type="text" @click="del(scope.row)">删除</el-button>
+					    </template>
 						</el-table-column>
 					  </el-table>
 					</template>
@@ -133,6 +139,36 @@
 				      layout="prev, pager, next, jumper"
 				      :total="1000">
 			    </el-pagination>
+			    
+			    
+			    
+			    <el-dialog title="编辑" :visible.sync="dialogFormVisible">
+								  <el-form :model="adminUser">
+								  	<el-form-item label="登录名" :label-width="formLabelWidth">
+								      <el-input v-model="adminUser.username" autocomplete="off" readonly="readonly"></el-input>
+								    </el-form-item>
+								    <el-form-item label="密码" :label-width="formLabelWidth">
+								      <el-input v-model="adminUser.password" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="邮箱" :label-width="formLabelWidth">
+								      <el-input v-model="adminUser.email" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="昵称" :label-width="formLabelWidth">
+								      <el-input v-model="adminUser.nickName" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="备注" :label-width="formLabelWidth">
+								      <el-input v-model="adminUser.note" autocomplete="off"></el-input>
+								    </el-form-item>
+									<el-form-item label="是否启用" :label-width="formLabelWidth">
+										<el-radio v-model="adminUser.status" label="0">启用</el-radio>
+										<el-radio v-model="adminUser.status" label="1">关闭</el-radio>
+									</el-form-item>
+								  </el-form>
+								  <div slot="footer" class="dialog-footer">
+								    <el-button @click="dialogFormVisible = false">取 消</el-button>
+								    <el-button type="primary" @click="reSubmit">确 定</el-button>
+								  </div>
+								</el-dialog>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
 		<!-- 引入组件库 -->
@@ -147,13 +183,16 @@
 					keyword:"",
 					currentPage3:5,
 					dialogVisible: false,
+					dialogTableVisible: false,
+        			dialogFormVisible: false,
 					formLabelWidth: '120px',
 					adminUser:{
 						username:"",
 						password:"",
 						email:"",
+						nickName:'',
 						note:"",
-						status:'0'
+						status:'0',
 					},
 					tableData: []
 				},
@@ -216,6 +255,14 @@
 						this.dialogVisible = true;
 						
 					},
+					redact:function(row){
+					console.log(row);
+					vm.adminUser=row;
+					this. dialogFormVisible = true;
+					},
+					reSubmit:function(){
+						
+					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);
 					},
@@ -265,6 +312,38 @@
 							done();
 					})
 					.catch(_ => {});
+					},
+					del:function(row){
+					console.log(row.id);
+					var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/userAction/userAction/del',
+							params: {
+							 id:row.id
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("删除成功");
+									vm.dialogVisible = false;
+								}
+							});
 					}
 				}
 			})
