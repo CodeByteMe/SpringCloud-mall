@@ -32,7 +32,18 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> firstMenu() {
-        return menuDAO.firstMenu();
+    public int addMenu(Menu menu) {
+        return menuDAO.addMenu(menu);
     }
+
+    @Override
+    public int delMenu(int id) {
+        return menuDAO.delMenu(id);
+    }
+
+    @Override
+    public int updateMenu(Menu menu) {
+        return menuDAO.updateMenu(menu);
+    }
+
 }

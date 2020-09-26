@@ -1,9 +1,7 @@
 package com.mall.admin.order.reason.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mall.common.pojo.FlashPromotionProductRelation;
-
-import java.util.List;
+import com.mall.common.pojo.OrderReturnReason;
 
 /**
  * ReasonService
@@ -13,4 +11,7 @@ import java.util.List;
  */
 public interface ReasonService {
     public PageInfo listOrderReturnReason(int pageNum, int pageSize);
+    public boolean updateStatus(Integer status,Integer id);
+    public boolean deleteReason(Integer id);
+    public boolean insertReason(OrderReturnReason reason);
 }

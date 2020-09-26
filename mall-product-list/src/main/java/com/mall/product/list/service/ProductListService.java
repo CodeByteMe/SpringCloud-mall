@@ -1,6 +1,10 @@
 package com.mall.product.list.service;
 
 import com.github.pagehelper.PageInfo;
+import com.mall.common.pojo.Product;
+import com.mall.common.pojo.SkuStock;
+
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -9,5 +13,6 @@ import com.github.pagehelper.PageInfo;
 public interface ProductListService {
 
     public PageInfo productList(int pageNum,int pageSize);
-
+    public Product productDetailByProductId(String productId);
+    public List<SkuStock> getSkuStockByProductId(String productId);
 }

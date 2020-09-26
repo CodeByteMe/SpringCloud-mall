@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.order.apply.dao.ApplyDAO">
+    <resultMap id="returnMap" type="OrderReturn">
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="company_address_id" property="addressId"/>
+        <result column="product_id" property="productId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="member_username" property="memberUsername"/>
+        <result column="return_amount" property="returnAmount"/>
+        <result column="return_name" property="returnName"/>
+        <result column="return_phone" property="returnPhone"/>
+        <result column="status" property="status"/>
+        <result column="handle_time" property="handleTime"/>
+        <result column="product_pic" property="productPic"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_brand" property="productBrand"/>
+        <result column="product_attr" property="productAttr"/>
+        <result column="product_count" property="productCount"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="product_real_price" property="productRealPrice"/>
+        <result column="reason" property="reason"/>
+        <result column="description" property="description"/>
+        <result column="proof_pics" property="proofPics"/>
+        <result column="handle_note" property="handleNote"/>
+        <result column="handle_man" property="handleMan"/>
+        <result column="receive_man" property="receiveMan"/>
+        <result column="receive_time" property="receiveTime"/>
+        <result column="receive_note" property="receiveNote"/>
+    </resultMap>
+<!--    public List<OrderReturn> listOrderReturn(String adminId);-->
+    <select id="listOrderReturn" resultSets="java.util.List" resultMap="returnMap">
+        select oms_order_return_apply.id,oms_order_return_apply.order_id,oms_order_return_apply.company_address_id,
+        oms_order_return_apply.product_id,oms_order_return_apply.create_time,oms_order_return_apply.member_username,
+        oms_order_return_apply.return_amount,oms_order_return_apply.return_name,oms_order_return_apply.return_phone,
+        oms_order_return_apply.`status`,oms_order_return_apply.handle_time,oms_order_return_apply.product_pic,
+        oms_order_return_apply.product_name,oms_order_return_apply.product_brand,oms_order_return_apply.product_attr,
+        oms_order_return_apply.product_count,oms_order_return_apply.product_price,oms_order_return_apply.product_real_price,
+        oms_order_return_apply.reason,oms_order_return_apply.description,oms_order_return_apply.proof_pics,
+        oms_order_return_apply.handle_note,oms_order_return_apply.handle_man,oms_order_return_apply.receive_man,
+        oms_order_return_apply.receive_time,oms_order_return_apply.receive_note
+        from oms_order_return_apply inner join oms_order on oms_order_return_apply.order_id = oms_order.id
+        inner join ums_admin on oms_order.company_id = ums_admin.company_id
+        where ums_admin.admin_id = #{adminId}
+    </select>
+<!--    public int deleteOrderReturn(Integer id);-->
+    <delete id="deleteOrderReturn">
+        delete from oms_order_return_apply
+        where id = #{id}
+    </delete>
+<!--    public int updateApplyStatus(@Param("id") Integer id,
+        @Param("status") Integer status);-->
+    <update id="updateApplyStatus">
+        update oms_order_return_apply
+        set status = #{status}
+        where id = #{id}
+    </update>
+</mapper>

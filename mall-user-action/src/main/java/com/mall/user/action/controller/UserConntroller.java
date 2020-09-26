@@ -45,7 +45,7 @@ public class UserConntroller {
         }
     }
     @RequestMapping(value = "/del", method = RequestMethod.GET)
-    public ResultVO delUser(int id, @RequestHeader(required = true) String token) {
+    public ResultVO delUser(@RequestParam int id, @RequestHeader(required = true) String token) {
         Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
         int i = userService.delectUser(id);
         if (i >0) {

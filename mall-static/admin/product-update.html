@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品添加</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+    <style>
+        .text {
+            font-size: 14px;
+        }
+        .item {
+            margin-bottom: 18px;
+        }
+        .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";
+        }
+        .clearfix:after {
+            clear: both
+        }
+        .box-card {
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+            <el-card class="box-card" style="margin:0 auto;">
+                <el-steps :active="active" finish-status="success">
+                    <el-step title="填写商品信息"></el-step>
+                    <el-step title="填写商品属性"></el-step>
+                </el-steps>
+                <!-- 个人信息 -->
+                <div class="info" v-if="active==0">
+                    <!-- <span class="demonstration">商品分类：</span>
+                    <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader></br> -->
+                    <el-form ref="formData" :model="formData" label-width="100px">
+                        <el-form-item label="商品名称：">
+                            <el-input v-model="formData.name" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="副标题：">
+                            <el-input v-model="formData.subTitle" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品介绍：">
+                            <el-input type="textarea" v-model="formData.description" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品售价：">
+                            <el-input type="number" v-model="formData.price" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="市场价：">
+                            <el-input type="number" v-model="formData.originalPrice" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品库存：">
+                            <el-input type="number" v-model="formData.stock" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="计量单位：">
+                            <el-input v-model="formData.unit" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品重量：">
+                            <el-input type="number" v-model="formData.weight" style="width: 300px;"></el-input> <label style="margin-left: 10px;">克</label>
+                        </el-form-item>
+                        <el-form-item label="排序：">
+                            <el-input type="number" v-model="formData.sort" style="width: 400px;"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div class="info" v-if="active==1">
+                    <el-form ref="formData" :model="formData" label-width="100px">
+                        <el-form-item label="预告商品：" prop="previewStatus">
+                            <el-switch v-model="formData.previewStatus" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="商品上架：" prop="publishStatus">
+                            <el-switch v-model="formData.publishStatus" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="详细页标题：">
+                            <el-input v-model="formData.detailTitle" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="详细页描述：">
+                            <el-input v-model="formData.detailDesc" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品备注：">
+                            <el-input v-model="formData.note" style="width: 400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="属性类型：">
+                            <el-select v-model="formData.productAttributeCategoryId" placeholder="请选择属性类型">
+                                <el-option v-for="item in productAttributeCategory" :label="item.name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="商品图片">
+							<el-upload
+							    class="upload-demo"
+                                action="http://localhost:8766/uploadImages/uploadImages/upload"
+                                :headers="headers"
+							    :on-preview="handlePreview"
+							    :on-remove="handleRemove"
+                                :on-success="handleSuccess"
+                                :on-exceed="handleExceed"
+                                :file-list="fileList"
+                                :limit=1
+							    list-type="picture">
+							    <el-button size="small" type="primary">选择图片</el-button>
+							    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+							</el-upload>
+						</el-form-item>
+                    </el-form>
+                </div>
+                <el-button style="margin-top: 12px;"v-if="active<1" @click="next">下一步</el-button>  
+                <el-button style="margin-top: 12px;" @click="submit" v-if="active==1">提交</el-button>
+                <el-button style="margin-top: 12px;" @click="pre" v-if="active>0">上一步</el-button>
+            </el-card>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+    var vm = new Vue({
+            el:"#container",
+            data:{
+                formData:{
+                    productId:"",
+                    name:"",
+                    subTitle:"",
+                    description:"",
+                    price:0.00,
+                    originalPrice:0.00,
+                    stock:0,
+                    value:"",
+                    unit:"",
+                    weight:0.00,
+                    sort:0,
+                    previewStatus:0,
+                    publishStatus:0,
+                    detailTitle:"",
+                    detailDesc:"",
+                    note:"",
+                    productAttributeCategoryId:"",
+                    pic:""
+                },
+                active: 0,
+                options:[],
+                headers:{
+                    token:""
+                },
+                fileList:[
+                    {
+                        name: '', 
+                        url: ''
+                    }
+                ],
+                productAttributeCategory:[]
+            },
+            beforeMount:function(){
+                var row = JSON.parse(localStorage.getItem("row"));
+                this.formData.productId = row.productId;
+                this.formData.name = row.name;
+                this.formData.subTitle = row.subTitle;
+                this.formData.description = row.description;
+                this.formData.price = row.price;
+                this.formData.originalPrice = row.originalPrice;
+                this.formData.stock = row.stock;
+                this.formData.value = row.value;
+                this.formData.weight = row.weight;
+                this.formData.sort = row.sort;
+                this.formData.previewStatus = row.previewStatus;
+                this.formData.publishStatus = row.publishStatus;
+                this.formData.detailTitle = row.detailTitle;
+                this.formData.detailDesc = row.detailDesc;
+                this.formData.note = row.note;
+                this.formData.productAttributeCategoryId = row.productAttributeCategoryId;
+                this.formData.pic = row.pic;
+                this.formData.unit = row.unit;
+                var arr = this.formData.pic.split("/");
+                var end = arr.pop();
+                this.fileList[0].name = end;
+                this.fileList[0].url = this.formData.pic;
+                var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    this.headers.token = tokenStr
+                    axios({
+                        method: 'get',
+                        url: 'http://localhost:8766/productCategory/productCategory/options',
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        vm.options = res.data.data;
+                    });
+                    axios({
+                    method: 'get',
+                    url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/listAll',
+                    headers: {
+                        'token': tokenStr
+                    }
+                    })
+                    .then(function(res){
+                        vm.productAttributeCategory = res.data.data;
+                        console.log(vm.productAttributeCategory);
+                    });
+            },
+            methods:{
+                next:function(){
+                    this.active++;
+                },
+                pre:function() {
+                    this.active--;
+                },
+                submit:function(){
+                    // console.log(vm.formData.name);
+                    // console.log(vm.formData.subTitle);
+                    // console.log(vm.formData.description);
+                    // console.log(vm.formData.price);
+                    // console.log(vm.formData.originalPrice);
+                    // console.log(vm.formData.stock);
+                    // console.log(vm.formData.unit);
+                    // console.log(vm.formData.weight);
+                    // console.log(vm.formData.sort);
+                    // console.log(vm.formData.previewStatus);
+                    // console.log(vm.formData.publishStatus);
+                    // console.log(vm.formData.detailTitle);
+                    // console.log(vm.formData.detailDesc);
+                    // console.log(vm.formData.note);
+                    // console.log(vm.formData.productAttributeCategoryId);
+                    // console.log(vm.formData.pic);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8766/productUrd/productUrd/update',
+                        params: {
+                            productId:vm.formData.productId,
+                            name:vm.formData.name,
+                            subTitle:vm.formData.subTitle,
+                            description:vm.formData.description,
+                            price:vm.formData.price,
+                            originalPrice:vm.formData.originalPrice,
+                            stock:vm.formData.stock,
+                            unit:vm.formData.unit,
+                            weight:vm.formData.weight,
+                            sort:vm.formData.sort,
+                            previewStatus:vm.formData.previewStatus,
+                            publishStatus:vm.formData.publishStatus,
+                            detailTitle:vm.formData.detailTitle,
+                            detailDesc:vm.formData.detailDesc,
+                            note:vm.formData.note,
+                            productAttributeCategoryId:vm.formData.productAttributeCategoryId,
+                            pic:vm.formData.pic
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res);
+                        if (res.data.code === 0) {
+							vm.$message({
+								message: '修改成功',
+								type: 'success'
+							});
+							setTimeout(function () {
+								location.href = "product-list.html";
+							},2000);
+					  	} else{
+					  		vm.$message.error({
+					  		    message: '修改失败，请联系管理员！'
+					  		});
+					  	}
+                    });
+                },
+                handleChange:function(value){
+                    console.log(value[1]);
+                },
+                handleRemove:function(file, fileList) {
+					console.log(file, fileList);
+				},
+				handlePreview:function(file) {
+					console.log(file);
+				},
+				handleSuccess:function(response, file, fileList) {
+                    console.log(response);
+                    vm.fileList = fileList;
+                    vm.formData.pic = response.data;
+                    console.log(vm.fileList);
+                },
+                handleExceed:function(file, fileList){
+                    this.$message.error('最多只允许上传一张图片，请先删除再添加');
+                }
+            }
+        });
+    </script>
+</html>

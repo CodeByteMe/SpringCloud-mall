@@ -1,5 +1,6 @@
 package com.mall.admin.order.list.dao;
 
+import com.mall.common.pojo.OrderDTO;
 import com.mall.common.pojo.Address;
 import com.mall.common.pojo.MemberUser;
 import com.mall.common.pojo.Order;
@@ -59,5 +60,5 @@ public interface OrderDAO {
      * @param orderId
      * @return
      */
-    public List<Order> getOrderByOrderId(String orderId);
+    public List<OrderDTO> getOrderByOrderId(String orderId);
 }

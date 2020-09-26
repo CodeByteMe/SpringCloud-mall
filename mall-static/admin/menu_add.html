@@ -7,8 +7,11 @@
 	</head>
 	<body>
 		<div id="container">
-			<div style=" width:400px; height:400px;  position:absolute;  left:30%; " >
+			<div style=" width:400px; height:800px;  position:absolute;  left:30%; " >
 				<el-form :model="menu" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+				  <el-form-item label="菜单名称" prop="name">
+				    <el-input v-model="menu.name"></el-input>
+				  </el-form-item>
 				  <el-form-item label="菜单名称" prop="name">
 				    <el-input v-model="menu.name"></el-input>
 				  </el-form-item>
@@ -24,15 +27,12 @@
 					  </el-select>
 					</template>
 				  </el-form-item>
+				   <el-form-item>
 				  <el-form-item label="是否启用" prop="hidden">
 				    <el-radio-group v-model="menu.hidden">
 				      <el-radio label="0" >是</el-radio>
 				      <el-radio label="1">否</el-radio>
 				    </el-radio-group>
-				  </el-form-item>
-				  <el-form-item>
-				  	<el-form-item label="排序" prop="sort">
-				    <el-input v-model="menu.sort"></el-input>
 				  </el-form-item>
 				    <el-button type="primary" @click="submitForm('menu')">立即创建</el-button>
 				    <el-button @click="resetForm('menu')">重置</el-button>

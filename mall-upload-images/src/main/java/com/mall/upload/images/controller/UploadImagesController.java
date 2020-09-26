@@ -35,7 +35,7 @@ public class UploadImagesController {
         try {
             FTPClient ftpClient = new FTPClient();
             ftpClient.connect("47.100.38.50",21);
-            boolean state = ftpClient.login("springcloud", "6mLyx68jhWE8YADZ");
+            boolean state = ftpClient.login("springcloud", "55TCLEmeAb3Sk8RZ");
             int replyCode = ftpClient.getReplyCode();
             System.out.println("replyCode:"+replyCode);
             // 如果响应码在200到299之间，表示与FTP站点的连接是成功的

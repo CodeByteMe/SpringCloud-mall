@@ -22,8 +22,10 @@ zuul:
     mall-admin-product-attribute-category-list: /productAttributeCategory/**
     mall-admin-product-add: /productAdd/**
     mall-admin-product-urd: /productUrd/**
+    mall-cart-list: /cart/**
     mall-admin-product-category-add: /productCategoryAdd/**
     mall-admin-product-category-ud: /productCategoryUd/**
     mall-admin-order-return-apply: /returnApply/**
     mall-admin-order-return-reason: /returnReason/**
     mall-upload-images: /uploadImages/**
+    mall-admin-product-sku: /productSku/**

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mall.admin.order.list.dao.OrderDAO;
 import com.mall.admin.order.list.service.OrderService;
+import com.mall.common.pojo.OrderDTO;
 import com.mall.common.pojo.Address;
 import com.mall.common.pojo.MemberUser;
 import com.mall.common.pojo.Order;
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrderByOrderId(String orderId) {
+    public List<OrderDTO> getOrderByOrderId(String orderId) {
         return orderDAO.getOrderByOrderId(orderId);
     }
 }

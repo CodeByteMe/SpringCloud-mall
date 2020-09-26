@@ -2,6 +2,8 @@ package com.mall.product.list.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mall.common.pojo.Product;
+import com.mall.common.pojo.SkuStock;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
 import com.mall.product.list.service.ProductListService;
@@ -14,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -58,5 +61,16 @@ public class ProductListController {
         return new ResultVO(0,"success",pageInfo);
     }
 
+    @RequestMapping(value = "/productDetail",method = RequestMethod.GET)
+    @ApiOperation(value = "前台商品详情接口", notes = "不需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "productId", value = "商品id",required = true, dataType = "int")
+    })
+    public ResultVO productDetail(@RequestParam("productId") String productId) {
+        Product product = productListService.productDetailByProductId(productId);
+        List<SkuStock> skuStock = productListService.getSkuStockByProductId(productId);
+        product.setSkuStock(skuStock);
+        return new ResultVO(0,"success",product);
+    }
 
 }

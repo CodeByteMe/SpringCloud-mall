@@ -8,6 +8,9 @@ import com.mall.common.pojo.FlashPromotionProductRelation;
 import com.mall.common.pojo.Order;
 import com.mall.common.pojo.OrderReturnReason;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,5 +33,23 @@ public class ReasonServiceImpl implements ReasonService {
         List<OrderReturnReason> orderReturnReasons = reasonDAO.listOrderReturnReason();
         PageInfo pageInfo = new PageInfo(orderReturnReasons);
         return pageInfo;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
+    public boolean updateStatus(Integer status, Integer id) {
+        return reasonDAO.updateStatus(status, id) > 0;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
+    public boolean deleteReason(Integer id) {
+        return reasonDAO.deleteReason(id) > 0;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
+    public boolean insertReason(OrderReturnReason reason) {
+        return reasonDAO.insertReason(reason) > 0;
     }
 }

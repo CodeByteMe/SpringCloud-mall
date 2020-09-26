@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.product.sku.dao.ProductSkuDAO">
+
+    <resultMap id="productSkuMap" type="com.mall.common.pojo.SkuStock">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="low_stock" property="lowStock"/>
+        <result column="pic" property="pic"/>
+        <result column="sale" property="sale"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="lock_stock" property="lockStock"/>
+        <result column="color" property="color"/>
+        <result column="size" property="size"/>
+    </resultMap>
+
+<!--    public boolean productSkuAdd(SkuStock skuStock); //套餐添加-->
+    <update id="productSkuAdd">
+        update into pms_sku_stock (id,sku_id,product_id,price,stock,color,size)
+        values (#{id},#{skuId},#{productId},#{price},#{stock},#{spData},#{color},#{size})
+    </update>
+
+<!--    public boolean productSkuDel(String skuId); //套餐删除-->
+    <delete id="productSkuDel">
+        delete from pms_sku_stock where sku_id = #{skuId}
+    </delete>
+
+<!--    public List<SkuStock> productSkuList(); //套餐查询-->
+    <select id="productSkuList" resultMap="productSkuMap">
+        select id,sku_id,product_id,price,stock,low_stock,pic,sale,promotion_price,lock_stock,color,size from pms_sku_stock
+    </select>
+
+</mapper>

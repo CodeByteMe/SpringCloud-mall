@@ -41,4 +41,16 @@ public class Menu {
     private Integer hidden;
     @ApiModelProperty(value = "子级菜单" ,dataType = "menu", required = true)
     private List<Menu> children;
+
+    public Menu(Integer id, Integer parentId, Date createTime, String title, Integer level, Integer sort, String url, String icon, Integer hidden) {
+        this.id = id;
+        this.parentId = parentId;
+        this.createTime = createTime;
+        this.title = title;
+        this.level = level;
+        this.sort = sort;
+        this.url = url;
+        this.icon = icon;
+        this.hidden = hidden;
+    }
 }

@@ -96,7 +96,8 @@
                         <el-form-item label="商品图片">
 							<el-upload
 							    class="upload-demo"
-							    action="http://localhost:8766/uploadImages/uploadImages/upload"
+                                action="http://localhost:8766/uploadImages/uploadImages/upload"
+                                :headers="headers"
 							    :on-preview="handlePreview"
 							    :on-remove="handleRemove"
 							    :on-success="handleSuccess"
@@ -138,11 +139,14 @@
                     detailDesc:"",
                     note:"",
                     productAttributeCategoryId:"",
-                    pic:"111",
+                    pic:"",
                     productAttributeCategory:[]
                 },
                 active: 0,
-                options:[]
+                options:[],
+                headers:{
+                    token:""
+                }
             },
             beforeMount:function(){
                     var tokenStr = "";
@@ -158,6 +162,7 @@
                     if (tokenStr === "") {
                         top.location = "login.html";
                     }
+                    this.headers.token = tokenStr
                     axios({
                         method: 'get',
                         url: 'http://localhost:8766/productCategory/productCategory/options',
@@ -189,23 +194,23 @@
                     this.active--;
                 },
                 submit:function(){
-                    console.log(vm.formData.name);
-                    console.log(vm.formData.subTitle);
-                    console.log(vm.formData.description);
-                    console.log(vm.formData.price);
-                    console.log(vm.formData.originalPrice);
-                    console.log(vm.formData.stock);
-                    console.log(vm.formData.value[1]);
-                    console.log(vm.formData.unit);
-                    console.log(vm.formData.weight);
-                    console.log(vm.formData.sort);
-                    console.log(vm.formData.previewStatus);
-                    console.log(vm.formData.publishStatus);
-                    console.log(vm.formData.detailTitle);
-                    console.log(vm.formData.detailDesc);
-                    console.log(vm.formData.note);
-                    console.log(vm.formData.productAttributeCategoryId);
-                    console.log(vm.formData.pic);
+                    // console.log(vm.formData.name);
+                    // console.log(vm.formData.subTitle);
+                    // console.log(vm.formData.description);
+                    // console.log(vm.formData.price);
+                    // console.log(vm.formData.originalPrice);
+                    // console.log(vm.formData.stock);
+                    // console.log(vm.formData.value[1]);
+                    // console.log(vm.formData.unit);
+                    // console.log(vm.formData.weight);
+                    // console.log(vm.formData.sort);
+                    // console.log(vm.formData.previewStatus);
+                    // console.log(vm.formData.publishStatus);
+                    // console.log(vm.formData.detailTitle);
+                    // console.log(vm.formData.detailDesc);
+                    // console.log(vm.formData.note);
+                    // console.log(vm.formData.productAttributeCategoryId);
+                    // console.log(vm.formData.pic);
                     var tokenStr = "";
                     var str = document.cookie;
                     var arr = str.split(";");
@@ -247,6 +252,19 @@
                     })
                     .then(function(res){
                         console.log(res);
+                        if (res.data.code === 0) {
+							vm.$message({
+								message: '添加成功',
+								type: 'success'
+							});
+							setTimeout(function () {
+								location.href = "product-list.html";
+							},2000);
+					  	} else{
+					  		vm.$message.error({
+					  		    message: '添加失败，请联系管理员！'
+					  		});
+					  	}
                     });
                 },
                 handleChange:function(value){
@@ -260,8 +278,7 @@
 				},
 				handleSuccess:function(response, file, fileList) {
                     console.log(response);
-                    console.log(file);
-                    console.log(fileList);
+                    vm.formData.pic = response.data;
 				}
             }
         });

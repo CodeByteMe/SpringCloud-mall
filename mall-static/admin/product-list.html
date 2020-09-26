@@ -30,6 +30,43 @@
 </head>
 <body>
     <div id="container">
+        <el-dialog title="详情" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-divider content-position="left">{{detailRow.detailTitle}}</el-divider>
+            <span>商品编号：{{detailRow.productId}}</span>
+            <el-divider></el-divider>
+            <span>商品名称：{{detailRow.name}}</span>
+            <el-divider></el-divider>
+            <img :src="detailRow.pic" class="image" style="height: 200px;"/>
+            <el-divider></el-divider>
+            <span>商品分类名称：{{detailRow.productCategoryName}}</span>
+            <el-divider></el-divider>
+            <span>副标题：{{detailRow.subTitle}}</span>
+            <el-divider></el-divider>
+            <span>商品价格：{{detailRow.price}}</span>
+            <el-divider></el-divider>
+            <span>市场价：{{detailRow.originalPrice}}</span>
+            <el-divider></el-divider>
+            <span>商品描述：{{detailRow.description}}</span>
+            <el-divider></el-divider>
+            <span>销量：{{detailRow.sale}}</span>
+            <el-divider></el-divider>
+            <span>库存：{{detailRow.stock}}</span>
+            <el-divider></el-divider>
+            <span>库存预检值：{{detailRow.stock}}</span>
+            <el-divider></el-divider>
+            <span>单位：{{detailRow.unit}}</span>
+            <el-divider></el-divider>
+            <span>商品重量：{{detailRow.weight}} 克</span>
+            <el-divider></el-divider>
+            <span>是否为预告商品：</span>
+            <span v-if="detailRow.previewStatus == 0">不是</span>
+            <span v-if="detailRow.previewStatus == 1">是</span>
+            <el-divider></el-divider>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span><i class="el-icon-search"></i> 筛选查询</span>
@@ -59,7 +96,7 @@
         <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
                 <span><i class="el-icon-tickets"></i> 数据列表</span>
-                <el-button style="float: right;">添加</el-button>
+                <el-button style="float: right;" @click="addproduct">添加</el-button>
             </div>
         </el-card>
         <el-card class="box-card">
@@ -76,7 +113,7 @@
                         <el-table-column prop="promoteDesc" label="价格/货号"></el-table-column>
                         <el-table-column label="套餐" fixed="right" width=80>
                             <template slot-scope="scope">
-                                <el-button type="primary" icon="el-icon-edit" circle @click=""></el-button>
+                                <el-button type="primary" icon="el-icon-edit" circle @click="productSku(scope.row)"></el-button>
                             </template>
                         </el-table-column>
                         <el-table-column prop="publishStatus" label="是否上架">
@@ -87,7 +124,7 @@
                                     :active-value="1"
 								    :inactive-value="0"
                                     v-model="scope.row.publishStatus" 
-                                    @change=change(scope.$index,scope.row)                
+                                    @change=change(scope.row)                
                                 >
                                 </el-switch>
                                 </template>
@@ -97,9 +134,9 @@
                         <el-table-column prop="sale" label="销量"></el-table-column>
                         <el-table-column label="操作" fixed="right" width="250">
                             <template slot-scope="scope">
-                                <el-button size="mini" @click="">详情</el-button>
-                                <el-button size="mini" @click="">编辑</el-button>
-                                <el-button size="mini" type="danger" @click.native.prevent="">删除</el-button>
+                                <el-button size="mini" @click="handleClick(scope.row)">详情</el-button>
+                                <el-button size="mini" @click="updateProduct(scope.row)">编辑</el-button>
+                                <el-button size="mini" type="danger" @click.native.prevent="delProduct(scope.row)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -114,6 +151,31 @@
                 </template>
             </div>
         </el-card>
+        <el-dialog title="套餐" :visible.sync="outerVisible">
+            <el-table :data="skuData" border>
+                <el-table-column prop="color" label="颜色"></el-table-column>
+                <el-table-column prop="size" label="尺寸/容量"></el-table-column>
+                <el-table-column prop="price" label="销售价格"></el-table-column>
+                <el-table-column prop="stock" label="库存"></el-table-column>
+                <el-table-column prop="sale" label="销量"></el-table-column>
+                <el-table-column label="操作" fixed="right" width="250">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="danger" @click.native.prevent="delProductSku(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-dialog
+              width="30%"
+              title="内层 Dialog"
+              :visible.sync="innerVisible"
+              append-to-body>
+              111
+            </el-dialog>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="outerVisible = false">取 消</el-button>
+                <el-button type="primary" @click="productSkuAdd">添加</el-button>
+            </div>
+        </el-dialog>
     </div>
 </body>
 	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
@@ -125,6 +187,9 @@
         var vm = new Vue({
             el:"#container",
             data:{
+                outerVisible:false,
+                innerVisible:false,
+                dialogVisible:false,
                 token:"",
                 total: 100,
                 currentPage4:1,
@@ -134,6 +199,7 @@
                 value: [],
                 value1: "",
                 tableData:[],
+                skuData:[],
                 options:[
                 {
                     value: 'ziyuan',
@@ -169,7 +235,8 @@
                 ],
                 active: 0,
                 page:1,
-                pageSize:5
+                pageSize:5,
+                detailRow:[]
                 },
             beforeMount:function(){
                 var tokenStr = "";
@@ -195,16 +262,53 @@
                     headers: {
                         'token': tokenStr
                     }
-					})
-					.then(function(res){
-						console.log(res.data.data);
-                        vm.tableData = res.data.data.list;
-                        vm.total = res.data.data.total;
-					});
+				})
+				.then(function(res){
+					console.log(res.data.data);
+                    vm.tableData = res.data.data.list;
+                    vm.total = res.data.data.total;
+				});
             },
             methods:{
-                change:function(index,row){
+                change:function(row){
                     console.log(row.publishStatus);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8766/productUrd/productUrd/updateStatus',
+                        params: {
+                            publishStatus:row.publishStatus,
+                            productId:row.productId
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res.data);
+                        if (res.data.code === 0) {
+                            vm.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            });
+                        } else{
+                                vm.$message.error({
+                                    message: '修改失败'
+                                });
+                            }
+                    });
                 },
                 handleChange:function(value) {
                     console.log(value);
@@ -272,7 +376,160 @@
 					}).then(function(res) {
 						vm.tableData = res.data.data.list;
 					});
-				},
+                },
+                addproduct:function(){
+                    location.href = "product-add.html";
+                },
+                handleClose:function(done) {
+					this.$confirm('确认关闭？')
+					  .then(_ => {
+						done();
+					  })
+					  .catch(_ => {});
+                },
+                handleClose1:function(done) {
+					this.$confirm('确认关闭？')
+					  .then(_ => {
+						done();
+					  })
+					  .catch(_ => {});
+                },
+                handleClick:function(row){
+                    console.log(row);
+                    vm.detailRow = row;
+                    vm.dialogVisible = true;
+                },
+                updateProduct:function(row){
+                    localStorage.setItem("row", JSON.stringify(row));
+                    location.href = "product-update.html";
+                },
+                delProduct:function(row){
+                    console.log(row.productId);
+                    this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+						axios({
+							method: 'delete',
+							url: 'http://localhost:8766/productUrd/productUrd/del',
+							headers: {'token': tokenStr},
+							params: {
+								productId:row.productId
+							}
+					    }).then(function(res) {
+                            console.log(res);
+                            if (res.data.code === 0) {
+                                vm.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    location.href = "product-list.html";
+                                },2000);
+                            } else{
+                                vm.$message.error({
+                                    message: '删除失败'
+                                });
+                            }
+                        });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });          
+                        });
+                },
+                productSku:function(row){
+                    console.log(row.productId);
+                    vm.outerVisible = true;
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/productSku/productSku/list',
+						headers: {'token': tokenStr}
+					}).then(function(res) {
+						vm.tableData = res.data.data;
+					});
+                },
+                productSkuAdd:function(){
+                    console.log("111");
+                    vm.innerVisible = true;
+                },
+                delProductSku:function(){
+                    this.$confirm('此操作将永久删除该套餐, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+						axios({
+							method: 'delete',
+							url: 'http://localhost:8766/productSku/productSku/del',
+							headers: {'token': tokenStr},
+							params: {
+								productId:row.productId
+							}
+					    }).then(function(res) {
+                            console.log(res);
+                            if (res.data.code === 0) {
+                                vm.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    location.href = "product-list.html";
+                                },2000);
+                            } else{
+                                vm.$message.error({
+                                    message: '删除失败，请联系管理员！'
+                                });
+                            }
+                        });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });          
+                        });
+                }
             }
         });
     </script>

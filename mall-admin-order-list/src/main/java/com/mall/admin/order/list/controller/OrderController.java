@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.mall.admin.order.list.service.AuthService;
 import com.mall.admin.order.list.service.OrderService;
+import com.mall.common.pojo.OrderDTO;
 import com.mall.common.pojo.Address;
 import com.mall.common.pojo.MemberUser;
 import com.mall.common.pojo.Order;
@@ -168,9 +169,9 @@ public class OrderController {
         String memberId = jws.getBody().getId();
         String issuer = jws.getBody().getIssuer();
         if ("member".equals(issuer)) {
-            List<Order> orderByOrderId = orderService.getOrderByOrderId(orderId);
-            if (orderByOrderId != null) {
-                return new ResultVO(0,"查询成功",orderByOrderId);
+            List<OrderDTO> orderDTOList = orderService.getOrderByOrderId(orderId);
+            if (orderDTOList != null) {
+                return new ResultVO(0,"查询成功",orderDTOList);
             } else {
                 return new ResultVO(1,"查询失败",null);
             }

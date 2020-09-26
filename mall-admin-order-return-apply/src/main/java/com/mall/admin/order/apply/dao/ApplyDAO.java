@@ -1,6 +1,7 @@
 package com.mall.admin.order.apply.dao;
 
 import com.mall.common.pojo.OrderReturn;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,4 +17,20 @@ public interface ApplyDAO {
      * @return
      */
     public List<OrderReturn> listOrderReturn(String adminId);
+
+    /**
+     * 根据申请表的id删除一条数据
+     * @param id
+     * @return
+     */
+    public int deleteOrderReturn(Integer id);
+
+    /**
+     * 根据申请id，修改申请的状态
+     * @param id
+     * @param status
+     * @return
+     */
+    public int updateApplyStatus(@Param("id") Integer id,
+                                 @Param("status") Integer status);
 }
