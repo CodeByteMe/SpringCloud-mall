@@ -37,11 +37,6 @@
                     <!-- <span class="demonstration">商品分类：</span>
                     <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader></br> -->
                     <el-form ref="formData" :model="formData" label-width="100px">
-                        <el-form-item label="商品分类：">
-                            <template>
-                                <el-cascader v-model="formData.value" :options="options" @change="handleChange"></el-cascader></br>
-                            </template>
-                        </el-form-item>
                         <el-form-item label="商品名称：">
                             <el-input v-model="formData.name" style="width: 400px;"></el-input>
                         </el-form-item>
@@ -90,7 +85,7 @@
                         </el-form-item>
                         <el-form-item label="属性类型：">
                             <el-select v-model="formData.productAttributeCategoryId" placeholder="请选择属性类型">
-                                <el-option v-for="productAttributeCategory in formData.productAttributeCategory" :label="productAttributeCategory.name" :value="productAttributeCategory.id"></el-option>
+                                <el-option v-for="item in productAttributeCategory" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="商品图片">
@@ -100,7 +95,10 @@
                                 :headers="headers"
 							    :on-preview="handlePreview"
 							    :on-remove="handleRemove"
-							    :on-success="handleSuccess"
+                                :on-success="handleSuccess"
+                                :on-exceed="handleExceed"
+                                :file-list="fileList"
+                                :limit=1
 							    list-type="picture">
 							    <el-button size="small" type="primary">选择图片</el-button>
 							    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -123,6 +121,7 @@
             el:"#container",
             data:{
                 formData:{
+                    productId:"",
                     name:"",
                     subTitle:"",
                     description:"",
@@ -139,17 +138,46 @@
                     detailDesc:"",
                     note:"",
                     productAttributeCategoryId:"",
-                    pic:"",
-                    productAttributeCategory:[]
+                    pic:""
                 },
                 active: 0,
                 options:[],
                 headers:{
                     token:""
-                }
+                },
+                fileList:[
+                    {
+                        name: '', 
+                        url: ''
+                    }
+                ],
+                productAttributeCategory:[]
             },
             beforeMount:function(){
-                    var tokenStr = "";
+                var row = JSON.parse(localStorage.getItem("row"));
+                this.formData.productId = row.productId;
+                this.formData.name = row.name;
+                this.formData.subTitle = row.subTitle;
+                this.formData.description = row.description;
+                this.formData.price = row.price;
+                this.formData.originalPrice = row.originalPrice;
+                this.formData.stock = row.stock;
+                this.formData.value = row.value;
+                this.formData.weight = row.weight;
+                this.formData.sort = row.sort;
+                this.formData.previewStatus = row.previewStatus;
+                this.formData.publishStatus = row.publishStatus;
+                this.formData.detailTitle = row.detailTitle;
+                this.formData.detailDesc = row.detailDesc;
+                this.formData.note = row.note;
+                this.formData.productAttributeCategoryId = row.productAttributeCategoryId;
+                this.formData.pic = row.pic;
+                this.formData.unit = row.unit;
+                var arr = this.formData.pic.split("/");
+                var end = arr.pop();
+                this.fileList[0].name = end;
+                this.fileList[0].url = this.formData.pic;
+                var tokenStr = "";
                     var str = document.cookie;
                     var arr = str.split(";");
                     for(var i=0;i<arr.length;i++){
@@ -171,7 +199,6 @@
                         }
                     })
                     .then(function(res){
-                        console.log(res.data.data);
                         vm.options = res.data.data;
                     });
                     axios({
@@ -182,8 +209,8 @@
                     }
                     })
                     .then(function(res){
-                        console.log(res.data.data);
-                        vm.formData.productAttributeCategory = res.data.data;
+                        vm.productAttributeCategory = res.data.data;
+                        console.log(vm.productAttributeCategory);
                     });
             },
             methods:{
@@ -200,7 +227,6 @@
                     // console.log(vm.formData.price);
                     // console.log(vm.formData.originalPrice);
                     // console.log(vm.formData.stock);
-                    // console.log(vm.formData.value[1]);
                     // console.log(vm.formData.unit);
                     // console.log(vm.formData.weight);
                     // console.log(vm.formData.sort);
@@ -226,8 +252,9 @@
                     }
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8766/productAdd/productAdd/add',
+                        url: 'http://localhost:8766/productUrd/productUrd/update',
                         params: {
+                            productId:vm.formData.productId,
                             name:vm.formData.name,
                             subTitle:vm.formData.subTitle,
                             description:vm.formData.description,
@@ -243,8 +270,7 @@
                             detailDesc:vm.formData.detailDesc,
                             note:vm.formData.note,
                             productAttributeCategoryId:vm.formData.productAttributeCategoryId,
-                            pic:vm.formData.pic,
-                            productCategoryId:vm.formData.value[1]
+                            pic:vm.formData.pic
                         },
                         headers: {
                             'token': tokenStr
@@ -265,8 +291,13 @@
 				},
 				handleSuccess:function(response, file, fileList) {
                     console.log(response);
+                    vm.fileList = fileList;
                     vm.formData.pic = response.data;
-				}
+                    console.log(vm.fileList);
+                },
+                handleExceed:function(file, fileList){
+                    this.$message.error('最多只允许上传一张图片，请先删除再添加');
+                }
             }
         });
     </script>
