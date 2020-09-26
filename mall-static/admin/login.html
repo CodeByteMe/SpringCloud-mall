@@ -113,7 +113,6 @@
 					  }
 					})
 					.then(function(res){
-						console.log(res);
 						if(res.data.code == 0){
 							var token = res.data.data;
 							document.cookie = "token="+token;

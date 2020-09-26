@@ -16,4 +16,21 @@
         select id,name,sort,status,create_time
         from oms_order_return_reason
     </select>
+<!--    public int updateStatus(@Param("status") Integer status,
+        @Param("id") Integer id);-->
+    <update id="updateStatus">
+        update oms_order_return_reason
+        set status = #{status}
+        where id = #{id}
+    </update>
+<!--    public int deleteReason(Integer id);-->
+    <delete id="deleteReason">
+        delete from oms_order_return_reason
+        where id = #{id}
+    </delete>
+<!--    public int insertReason(OrderReturnReason reason);-->
+    <insert id="insertReason">
+        insert into oms_order_return_reason(name,sort,status,create_time)
+        values(#{name},#{sort},#{status},#{createTime})
+    </insert>
 </mapper>
