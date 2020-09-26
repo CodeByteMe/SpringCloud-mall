@@ -69,7 +69,6 @@ public class ProductUrdController {
         }else {
             return new ResultVO(1,"没有权限,请联系管理员!");
         }
-
     }
 
     @RequestMapping(value = "/del",method = RequestMethod.DELETE)
@@ -94,7 +93,30 @@ public class ProductUrdController {
         }else {
             return new ResultVO(1,"没有权限,请联系管理员!");
         }
+    }
 
+    @RequestMapping(value = "/updateStatus",method = RequestMethod.POST)
+    @ApiOperation(value = "后台商品修改接口", notes = "需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "productId", value = "需要删除商品的ID",required = true, dataType = "integer"),
+            @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    })
+    public ResultVO productUpdateStatus(@RequestParam String productId,@RequestParam Integer publishStatus, @RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+//        String adminId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("admin".equals(issuer)){
+            boolean b = productUrdService.productStatus(productId,publishStatus);
+            if (b){
+                return new ResultVO(0,"修改成功");
+            }else {
+                return new ResultVO(0,"修改失败，请联系管理员！");
+            }
+        }else {
+            return new ResultVO(1,"没有权限,请联系管理员!");
+        }
     }
 
 }

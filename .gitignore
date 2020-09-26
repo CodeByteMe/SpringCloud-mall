@@ -33,6 +33,9 @@ mall-admin-product-category-list/*.iml
 mall-admin-product-category-ud/target
 mall-admin-product-category-ud/*.iml
 
+mall-admin-product-sku/target
+mall-admin-product-sku/*.iml
+
 mall-admin-product-urd/target
 mall-admin-product-urd/*.iml
 

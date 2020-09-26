@@ -9,7 +9,7 @@
     <update id="productUpdate">
         UPDATE pms_product SET name = #{name},sub_title = #{subTitle},description=#{description},price=#{price},original_price=#{originalPrice},
         stock=#{stock},unit=#{unit},weight=#{weight},sort=#{sort},preview_status=#{previewStatus},publish_status=#{publishStatus},detail_title=#{detailTitle},
-        detail_desc=#{detailDesc},note=#{note},product_attribute_category_id=#{productAttributeCategoryId},pic#{pic}
+        detail_desc=#{detailDesc},note=#{note},product_attribute_category_id=#{productAttributeCategoryId},pic=#{pic}
         where product_id =#{productId}
     </update>
 
@@ -17,5 +17,10 @@
     <delete id="productDel">
         delete from pms_product where product_id = #{productId}
     </delete>
+
+<!--    public boolean productStatus(@Param("productId") String productId, @Param("publishStatus") Integer publishStatus);   //修改商品上架状态-->
+    <update id="productStatus">
+        update pms_product set publish_status = #{publishStatus} where product_id = #{productId}
+    </update>
 
 </mapper>
