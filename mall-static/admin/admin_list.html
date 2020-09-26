@@ -57,22 +57,22 @@
 							height="100%"
 							:before-close="handleClose"
 					>
-						<el-form :model="member">
+						<el-form :model="adminUser">
 							<el-form-item label="用户名" :label-width="formLabelWidth">
-								<el-input v-model="member.username" autocomplete="off"></el-input>
+								<el-input v-model="adminUser.username" autocomplete="off"></el-input>
 							</el-form-item>
 							<el-form-item label="密码" :label-width="formLabelWidth">
-								<el-input v-model="member.password" autocomplete="off"></el-input>
+								<el-input v-model="adminUser.password" autocomplete="off"></el-input>
 							</el-form-item>
 							<el-form-item label="邮箱" :label-width="formLabelWidth">
-								<el-input v-model="member.email" autocomplete="off" onkeydown="/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/"></el-input>
+								<el-input v-model="adminUser.email" autocomplete="off" onkeydown="/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/"></el-input>
 							</el-form-item>
 							<el-form-item label="备注" :label-width="formLabelWidth">
-								<el-input v-model="member.note" autocomplete="off"></el-input>
+								<el-input v-model="adminUser.note" autocomplete="off"></el-input>
 							</el-form-item>
 							<el-form-item label="是否启用" :label-width="formLabelWidth">
-								<el-radio v-model="member.status" label="0">启用</el-radio>
-								<el-radio v-model="member.status" label="1">关闭</el-radio>
+								<el-radio v-model="adminUser.status" label="0">启用</el-radio>
+								<el-radio v-model="adminUser.status" label="1">关闭</el-radio>
 							</el-form-item>
 						</el-form>
 						<span slot="footer" class="dialog-footer">
@@ -91,11 +91,6 @@
 					      prop="id"
 					      label="编号"
 					      width="80">
-					    </el-table-column>
-					    <el-table-column
-					      prop="adminId"
-					      label="用户id"
-					      width="100">
 					    </el-table-column>
 					    <el-table-column
 					      prop="username"
@@ -153,12 +148,12 @@
 					currentPage3:5,
 					dialogVisible: false,
 					formLabelWidth: '120px',
-					member:{
+					adminUser:{
 						username:"",
 						password:"",
 						email:"",
 						note:"",
-						status:0
+						status:'0'
 					},
 					tableData: []
 				},
@@ -219,6 +214,7 @@
 					add:function(){
 						console.log("add"),
 						this.dialogVisible = true;
+						
 					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);
@@ -227,8 +223,41 @@
 				        console.log(`当前页: ${val}`);
 					},
 					submit:function(){
-						console.log("submit"),
-								console.log(vm.member.status)
+						console.log(vm.adminUser.status);
+						console.log("submit");
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/userAction/userAction/add',
+							params: {
+								username:vm.adminUser.username,
+								password:vm.adminUser.password,
+								email:vm.adminUser.email,
+								note:vm.adminUser.note,
+								status:vm.adminUser.status
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("添加成功");
+									vm.dialogVisible = false;
+								}
+							});
 					},
 					handleClose(done) {
 						this.$confirm('确认关闭？')

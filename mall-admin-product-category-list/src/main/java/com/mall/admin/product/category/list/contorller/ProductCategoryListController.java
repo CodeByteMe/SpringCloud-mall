@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.mall.admin.product.category.list.service.ProductCategoryListService;
 import com.mall.common.util.JWTUtil;
+import com.mall.common.vo.OptionsVO;
 import com.mall.common.vo.ResultVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -68,6 +70,24 @@ public class ProductCategoryListController {
         if ("admin".equals(issuer)){
             PageInfo pageInfo = productCategoryListService.productCategoryListByParentId(parentId,page,pageSize);
             return new ResultVO(0,"success",pageInfo);
+        }else {
+            return new ResultVO(0,"没有权限,请联系管理员!");
+        }
+
+    }
+
+    @RequestMapping(value = "/options",method = RequestMethod.GET)
+    @ApiOperation(value = "后台商品分类子级列表接口", notes = "需要携带token")
+    @ApiImplicitParams(@ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String"))
+    public ResultVO productCategoryOptions(@RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+//       String adminId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("admin".equals(issuer)){
+            List<OptionsVO> optionsVOS = productCategoryListService.productCategoryOptions();
+            return new ResultVO(0,"success",optionsVOS);
         }else {
             return new ResultVO(0,"没有权限,请联系管理员!");
         }

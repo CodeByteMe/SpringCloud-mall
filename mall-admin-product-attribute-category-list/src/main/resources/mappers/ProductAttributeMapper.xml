@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.product.attribute.category.list.dao.ProductAttributeListDAO">
+
+    <resultMap id="ProductAttributeMap" type="com.mall.common.pojo.ProductAttribute">
+        <id column="id" property="id"/>
+        <result column="product_attribute_category_id" property="productAttributeCategoryId"/>
+        <result column="name" property="name"/>
+        <result column="productAttributeCategoryName" property="productAttributeCategoryName"/>
+        <result column="select_type" property="selectType"/>
+        <result column="input_type" property="inputType"/>
+        <result column="input_list" property="inputList"/>
+        <result column="sort" property="sort"/>
+        <result column="filter_type" property="filterType"/>
+        <result column="search_type" property="searchType"/>
+        <result column="related_status" property="relatedStatus"/>
+        <result column="hand_add_status" property="handAddStatus"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+<!--    public List<ProductAttribute> productAttributeListById(int productAttributeCategoryId);////查询属性列表-->
+    <select id="productAttributeListById" resultMap="ProductAttributeMap">
+        select ppa.id,ppa.product_attribute_category_id,ppa.name,ppa.select_type,ppa.input_type,ppa.input_list,ppa.sort,
+        ppa.filter_type,ppa.search_type,ppa.related_status,ppa.hand_add_status,ppa.type,ppac.name productAttributeCategoryName
+        from pms_product_attribute ppa
+        INNER JOIN pms_product_attribute_category ppac
+        ON ppa.product_attribute_category_id = ppac.id
+        AND ppa.product_attribute_category_id = #{productAttributeCategoryId}
+        and ppa.type  = 0
+    </select>
+
+<!--    public List<ProductAttribute> productParameterListById(int productAttributeCategoryId); //查询参数列表-->
+    <select id="productParameterListById" resultMap="ProductAttributeMap">
+        select ppa.id,ppa.product_attribute_category_id,ppa.name,ppa.select_type,ppa.input_type,ppa.input_list,ppa.sort,
+        ppa.filter_type,ppa.search_type,ppa.related_status,ppa.hand_add_status,ppa.type,ppac.name productAttributeCategoryName
+        from pms_product_attribute ppa
+        INNER JOIN pms_product_attribute_category ppac
+        ON ppa.product_attribute_category_id = ppac.id
+        AND ppa.product_attribute_category_id = #{productAttributeCategoryId}
+        and ppa.type  = 1
+    </select>
+
+</mapper>

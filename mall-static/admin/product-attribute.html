@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品属性列表</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+</head>
+<style>
+    #container{
+        width: 90%;
+    }
+    .text {
+        font-size: 14px;
+    }
+    .item {
+        margin-bottom: 18px;
+    }
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+    .box-card {
+        width: 100%;
+    }
+</style>
+<body>
+    <div id="container">
+        <el-card class="box-card" :body-style="{ padding: '0px' }">
+            <div slot="header" class="clearfix">
+                <span><i class="el-icon-tickets"></i> 商品属性列表</span>
+                <el-button style="float: right;">添加</el-button>
+            </div>
+        </el-card>
+        <el-card class="box-card">
+            <div class="text item">
+                <template>
+                    <el-table :data="tableData" height="550" border style="width: 100%">
+                        <el-table-column prop="id" label="编号"></el-table-column>
+                        <el-table-column prop="name" label="属性名称"></el-table-column>
+                        <el-table-column prop="productAttributeCategoryName" label="商品类型"></el-table-column>
+                        <el-table-column prop="selectType" label="属性是否可选"></el-table-column>
+                        <el-table-column prop="inputType" label="属性值的录入方式"></el-table-column>
+                        <el-table-column prop="inputList" label="可选值列表"></el-table-column>
+                        <el-table-column prop="sort" label="排序"></el-table-column>
+                        <el-table-column label="操作" fixed="right" width="250">
+                            <template slot-scope="scope">
+                                <el-button size="mini" @click="">编辑</el-button>
+                                <el-button size="mini" type="danger" @click.native.prevent="">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+                <template>
+                    <div class="block">
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                        </el-pagination>
+                    </div>
+                </template>
+            </div>
+        </el-card>
+    </div>
+</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el:"#container",
+            data:{
+                tableData:[],
+                total:10,
+                currentPage4:1,
+                id:0,
+                type:""
+            },
+            beforeMount:function(){
+                console.log(localStorage.getItem("id"));
+                id = localStorage.getItem("id");
+                var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+                axios({
+					method: 'get',
+					url: 'http://localhost:8766/productAttributeCategory/productAttribute/listAttribute',
+					params: {
+						page: 1,
+						pageSize: 5,
+                        productAttributeCategoryId: id
+					},
+                    headers: {
+                        'token': tokenStr
+                    }
+					})
+					.then(function(res){
+						console.log(res.data.data);
+                        vm.id = localStorage.getItem("id");
+                        localStorage.removeItem("id");
+                        vm.tableData = res.data.data.list;
+                        vm.total = res.data.data.total;
+					});
+            },
+            methods:{
+                next:function(){
+                    this.active++;
+                },
+                pre:function() {
+                    this.active--;
+                },
+                handleSizeChange:function(event){
+					console.log(event);
+                    vm.pageSize = event;
+                    var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:8766/productAttributeCategory/productAttribute/listAttribute',
+                            headers: {'token': tokenStr},
+                            params: {
+                                pageSize:vm.pageSize,
+                                page:1
+                            }
+                        }).then(function(res) {
+                            vm.tableData = res.data.data.list;
+                        });
+				},
+                handleCurrentChange:function(event){
+					console.log(event);
+                    var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:8766/productAttributeCategory/productAttribute/listAttribute',
+                            headers: {'token': tokenStr},
+                            params: {
+                                pageSize:vm.pageSize,
+                                page:event
+                            }
+                        }).then(function(res) {
+                            vm.tableData = res.data.data.list;
+                        });
+				},
+            }
+        });
+    </script>
+</html>

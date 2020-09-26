@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace = 所需实现的接口全限定名-->
-<mapper namespace="com.mall.user.list.dao.UserDAO">
+<mapper namespace="com.mall.user.action.dao.UserDAO">
     <resultMap id="adminMap" type="AdminUser">
         <id column="id" property="id"/>
         <result column="admin_id" property="adminId"/>
@@ -19,14 +19,17 @@
         <result column="company_id" property="companyId"/>
         <result column="company_name" property="companyName"/>
     </resultMap>
-
+    <!--    public int delectUser(int id);-->
+    <delete id="delectUser">
+        delete from ums_admin where id=#{id}
+    </delete>
 <!--    public int addUser(AdminUser adminUser);-->
     <insert id="addUser">
         insert into ums_admin(admin_id,username,password,email,note,create_time,status,company_id)
         values (#{adminId},#{username},#{password},#{email},#{note},#{createTime},#{status},#{companyId})
     </insert>
 <!--    public String getCompanyId(String id);-->
-    <select id="getCompanyId" resultMap="adminMap">
+    <select id="getCompanyId" resultType="String">
         select company_id
         FROM ums_admin
         where admin_id =#{adminId}

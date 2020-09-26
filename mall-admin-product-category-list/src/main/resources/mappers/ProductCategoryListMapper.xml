@@ -20,6 +20,15 @@
         <result column="description" property="description"/>
     </resultMap>
 
+    <resultMap id="optionsMap" type="com.mall.common.vo.OptionsVO">
+        <id column="id1" property="value"/>
+        <result column="name1" property="label"/>
+        <collection property="children" ofType="com.mall.common.vo.OptionsVO">
+            <id column="id2" property="value"/>
+            <result column="name2" property="label"/>
+        </collection>
+    </resultMap>
+
 <!--    public List<Product> productCategoryList();-->
     <select id="productCategoryList" resultMap="ProductCategoryListMap">
         select id,parent_id,name,level,product_count,product_unit,nav_status,show_status,sort,icon,keywords,description
@@ -30,6 +39,13 @@
     <select id="productCategoryListByParentId" resultMap="ProductCategoryListMap">
         select id,parent_id,name,level,product_count,product_unit,nav_status,show_status,sort,icon,keywords,description
         from pms_product_category where parent_id=#{parentId}
+    </select>
+
+<!--    public OptionsVO productCategoryOptions(); //下拉框-->
+    <select id="productCategoryOptions" resultMap="optionsMap">
+        SELECT ppc1.id id1,ppc1.name name1,ppc2.id id2,ppc2.name name2 FROM pms_product_category ppc1
+        INNER JOIN pms_product_category ppc2
+        ON ppc1.id = ppc2.parent_id
     </select>
 
 </mapper>

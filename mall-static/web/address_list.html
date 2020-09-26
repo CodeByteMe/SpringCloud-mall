@@ -214,13 +214,13 @@
 													</li>
 													<li class="has-sub"><a href="#">个人中心</a>
 														<ul>
-															<li><a href="#pricing">购物车</a></li>
-															<li><a href="#team">我的订单</a></li>
-															<li><a href="#testimonios">地址管理</a></li>
+															<li><a href="cart.html">购物车</a></li>
+															<li><a href="order_list.html">我的订单</a></li>
+															<li><a href="address_list.html">地址管理</a></li>
 														</ul>
 													</li>
 													<li><a href="#">送货上门</a></li>
-													<li class="has-sub"><a href="#">所有商品</a>
+													<li class="has-sub"><a href="product_list.html">所有商品</a>
 													</li>
 												</ul>
 											</nav>
@@ -237,23 +237,111 @@
 					</div>
 				</header>
 				<!-- body -->
+				<div style="width: 70%;margin-left: 300px;margin-top: 100px;">
+					<h5>收货地址</h3>
+				</div>
+				<div id="" style="width: 65%;margin: auto;margin-top: 50px;">
+					<span style="margin-left: 130px;color: red;">新增收货地址</span>
+					<div id="" style="margin-top: 50px;">
+						<el-form label-width="80px">
+							<el-form-item label="收货人">
+								<el-input v-model="name"></el-input>
+							</el-form-item>
+							<el-form-item label="联系电话">
+								<el-input v-model="phoneNumber"></el-input>
+							</el-form-item>
+							<el-form-item label="邮政编码">
+								<el-input v-model="postCode"></el-input>
+							</el-form-item>
+							<el-form-item label="省份">
+								<el-select v-model="province" placeholder="请选择省份" @change="provinceMethod">
+									<el-option v-for="item in provinceData" :label="item.provinceName" :value="item.provinceId" :key="item.provinceId"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="市">
+								<el-select v-model="city" placeholder="请选择城市" @change="cityMethod">
+									<el-option v-for="item in cityData" :label="item.cityName" :value="item.cityId" :key="item.cityId"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="地区">
+								<el-select v-model="region" placeholder="请选择区" @change="regionMethod">
+									<el-option v-for="item in regionData" :label="item.regionName" :value="item.regionId" :key="item.regionId"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="详细地址">
+								<el-input v-model="detailAddress"></el-input>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="primary" @click="onSubmit">立即添加</el-button>
+							</el-form-item>
+						</el-form>
+					</div>
+				</div>
+
 				<div id="" style="margin-top: 100px;">
 					<template>
 						<el-table :data="tableData" style="width: 77%;margin: auto;">
-							<el-table-column prop="date" label="收货人" width="180">
+							<el-table-column prop="name" label="收货人" width="180">
 							</el-table-column>
-							<el-table-column prop="name" label="所在地区" width="180">
+							<el-table-column label="所在地区" width="180">
+								<template slot-scope="scope">
+									{{scope.row.province+scope.row.city+scope.row.region}}
+								</template>
 							</el-table-column>
-							<el-table-column prop="post_code" label="邮政编码">
+							<el-table-column prop="postCode" label="邮政编码">
 							</el-table-column>
-							<el-table-column prop="post_code" label="联系电话">
+							<el-table-column prop="phoneNumber" label="联系电话">
 							</el-table-column>
-							<el-table-column prop="post_code" label="操作">
+							<el-table-column label="操作" fixed="right">
+								<template slot-scope="scope">
+									<el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+									<el-button type="text" size="small" @click.native.prevent="handleDelete(scope.$index, tableData)">删除</el-button>
+								</template>
 							</el-table-column>
-							<el-table-column prop="post_code" label="默认地址">
+							<el-table-column prop="defaultStatus" label="默认地址">
+								<template slot-scope="scope">
+									<el-button type="text" size="small" v-if="scope.row.defaultStatus=='0'" @click="updateStatus(scope.row)">设为默认</el-button>
+									<p v-if="scope.row.defaultStatus=='1'" style="color: #FFC107;">默认地址</p>
+								</template>
 							</el-table-column>
 						</el-table>
 					</template>
+
+					<el-dialog title="编辑地址信息" :visible.sync="dialogVisibleUpdate" width="30%" :before-close="handleClose">
+						<el-form label-width="80px">
+							<el-form-item label="收货人">
+								<el-input v-model="updaterow.name"></el-input>
+							</el-form-item>
+							<el-form-item label="省份">
+								<el-select v-model="province" placeholder="请选择省份" @change="provinceMethod">
+									<el-option v-for="item in provinceData" :label="item.provinceName" :value="item.provinceId"  :key="item.provinceId"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="市">
+								<el-select v-model="city" placeholder="请选择城市" @change="cityMethod">
+									<el-option v-for="item in cityData" :label="item.cityName" :value="item.cityId" :key="item.cityId"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="地区">
+								<el-select v-model="region" placeholder="请选择区" @change="regionMethod">
+									<el-option v-for="item in regionData" :label="item.regionName" :value="item.regionId" :key="item.regionId"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="邮政编码">
+								<el-input v-model="updaterow.postCode"></el-input>
+							</el-form-item>
+							<el-form-item label="联系电话">
+								<el-input v-model="updaterow.phoneNumber"></el-input>
+							</el-form-item>
+							<el-form-item label="详细地址">
+								<el-input v-model="updaterow.detailAddress"></el-input>
+							</el-form-item>
+						</el-form>
+						<span slot="footer" class="dialog-footer">
+							<el-button @click="dialogVisibleUpdate = false">取 消</el-button>
+							<el-button type="primary" @click="updatesubmit">确 定</el-button>
+						</span>
+					</el-dialog>
 				</div>
 
 				<!-- footer -->
@@ -375,15 +463,30 @@
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				tableData: []
+				dialogVisible: false,
+				dialogVisibleUpdate: false,
+				updateindex: 0,
+				updaterow: [],
+				tableData: [],
+				addressId: '',
+				name: '',
+				phoneNumber: '',
+				postCode: '',
+				province: '',
+				city: '',
+				region: '',
+				detailAddress: '',
+				provinceData: [],
+				cityData: [],
+				regionData: []
 			},
 			beforeMount: function() {
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
-				for(var i=0;i<arr.length;i++){
+				for (var i = 0; i < arr.length; i++) {
 					var s = arr[i];
-					if(s.split("=")[0].trim() == "token"){
+					if (s.split("=")[0].trim() == "token") {
 						tokenStr = s.split("=")[1];
 						break;
 					}
@@ -392,24 +495,210 @@
 					top.location = "login.html";
 				}
 				axios({
-						method: 'get',
-						url: 'http://localhost:8766/address/address/list',
-						params: {
-							page: 1,
-							pageSize: 6
-						}
-					})
-					.then(function(res) {
-						console.log(res.data.data);
-						vm.tableData = res.data.data.list;
-					});
+					method: 'get',
+					url: 'http://localhost:8766/address/address/list',
+					headers: {
+						'token': tokenStr,
+					}
+				}).then(function(res) {
+					vm.tableData = res.data.data;
+					console.log(vm.tableData);
+				});
+				axios({
+					method: 'get',
+					url: 'http://localhost:8766/address/address/province',
+					headers: {
+						'token': tokenStr
+					},
+				}).then(function(res) {
+					console.log(res);
+					if (res.data.code === 1) {
+						top.location = "login.html";
+					}
+					vm.provinceData = res.data.data;
+				});
+				this.token = tokenStr;
 			},
 			methods: {
-				// productDetail:function(item){
-				// 	alert(JSON.stringify(item));
-				// 	localStorage.setItem("item", JSON.stringify(item));
-				// 	location.href = "product_detail.html";
-				// }
+				provinceMethod: function() {
+					console.log(vm.province);
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/address/address/city',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							provinceId: vm.province
+						}
+					}).then(function(res) {
+						console.log(res);
+						if (res.data.code === 1) {
+							top.location = "login.html";
+						}
+						vm.cityData = res.data.data;
+					});
+				},
+				cityMethod: function() {
+					console.log("city");
+					console.log(vm.city);
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/address/address/region',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							cityId: vm.city
+						}
+					}).then(function(res) {
+						console.log(res);
+						if (res.data.code === 1) {
+							top.location = "login.html";
+						}
+						vm.regionData = res.data.data;
+					});
+				},
+				regionMethod: function() {
+					console.log("region");
+					console.log(vm.region);
+				},
+				onSubmit: function() {
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/address/address/insert',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							name: vm.name,
+							phoneNumber: vm.phoneNumber,
+							postCode: vm.postCode,
+							province: vm.province,
+							city: vm.city,
+							region: vm.region,
+							detailAddress: vm.detailAddress
+						}
+					}).then(function(res) {
+						console.log(res);
+						if (res.data.code === 1) {
+							top.location = "login.html";
+							vm.$message('添加失败');
+						}
+						vm.$message('添加成功');
+						location.href = "address_list.html";
+					});
+				},
+				updatesubmit: function(event) {
+					vm.dialogVisible = false;
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/address/address/update',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							addressId: vm.updaterow.addressId,
+							name: vm.updaterow.name,
+							phoneNumber: vm.updaterow.phoneNumber,
+							postCode: vm.updaterow.postCode,
+							province: vm.updaterow.province,
+							city: vm.updaterow.city,
+							region: vm.updaterow.region,
+							detailAddress: vm.updaterow.detailAddress
+						}
+					}).then(function(res) {
+						if (res.data.code === 1) {
+							vm.$message('更新失败');
+						}
+						if (res.data.code == 0) {
+							vm.$message('更新成功');
+							setTimeout(function() {
+								location.href = "address_list.html";
+							}, 2000);
+						}
+					});
+				},
+				handleDelete: function(index, rows) {
+					vm.pagesize = event;
+					vm.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						axios({
+							method: 'delete',
+							url: 'http://localhost:8766/address/address/delete',
+							headers: {
+								'token': vm.token
+							},
+							params: {
+								addressId: rows[index].addressId
+							}
+						}).then(function(res) {
+							if (res.data.code === 1) {
+								top.location = "login.html";
+							}
+							rows.splice(index, 1);
+							vm.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+						});
+					}).catch(() => {
+						vm.$message({
+							type: 'info',
+							message: '已取消删除'
+						});
+					});
+				},
+				handleClose: function(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handleEdit: function(index, row) {
+					vm.dialogVisibleUpdate = true;
+					vm.updateindex = index;
+
+					let obj = JSON.parse(JSON.stringify(row));
+					vm.updaterow = obj;
+				},
+				updateStatus: function(row) {
+					console.log(row.addressId)
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/address/address/updateStatus',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							addressId: row.addressId
+						}
+					}).then(function(res) {
+						if (res.data.code === 1) {
+							vm.$message('更新失败');
+						}
+						if (res.data.code == 0) {
+							vm.$message('更新成功');
+							setTimeout(function() {
+								location.href = "address_list.html";
+							}, 2000);
+						}
+					});
+				}
 			}
 		});
 	</script>

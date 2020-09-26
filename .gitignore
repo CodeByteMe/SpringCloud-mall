@@ -18,11 +18,23 @@ mall-admin-auth/*.iml
 mall-admin-home/target
 mall-admin-home/*.iml
 
+mall-admin-product-add/target
+mall-admin-product-add/*.iml
+
 mall-admin-product-attribute-category-list/target
 mall-admin-product-attribute-category-list/*.iml
 
+mall-admin-product-category-add/target
+mall-admin-product-category-add/*.iml
+
 mall-admin-product-category-list/target
 mall-admin-product-category-list/*.iml
+
+mall-admin-product-category-ud/target
+mall-admin-product-category-ud/*.iml
+
+mall-admin-product-urd/target
+mall-admin-product-urd/*.iml
 
 mall-common/target
 mall-common/*.iml
@@ -33,11 +45,17 @@ mall-config/*.iml
 mall-eureka/target
 mall-eureka/*.iml
 
+mall-menu-list/target
+mall-menu-list/*.iml
+
 mall-product-list/target
 mall-product-list/*.iml
 
 mall-role-list/target
 mall-role-iist/*.iml
+
+mall-upload-images/target
+mall-upload-images/*.iml
 
 mall-user-list/target
 mall-user-iist/*.iml
@@ -50,3 +68,9 @@ mall-zuul/*.iml
 
 mall-admin-order-list/target
 mall-admin-order-list/*.iml
+
+mall-admin-order-return-apply/target
+mall-admin-order-return-apply/*.iml
+
+mall-admin-order-return-reason/target
+mall-admin-order-return-reason/*.iml

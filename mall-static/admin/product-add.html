@@ -21,13 +21,13 @@
             clear: both
         }
         .box-card {
-            width: 70%;
+            width: 60%;
         }
     </style>
 </head>
 <body>
-    <div id="container" style="margin:auto;">
-            <el-card class="box-card">
+    <div id="container">
+            <el-card class="box-card" style="margin:0 auto;">
                 <el-steps :active="active" finish-status="success">
                     <el-step title="填写商品信息"></el-step>
                     <el-step title="填写商品属性"></el-step>
@@ -39,7 +39,7 @@
                     <el-form ref="formData" :model="formData" label-width="100px">
                         <el-form-item label="商品分类：">
                             <template>
-                                <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader></br>
+                                <el-cascader v-model="formData.value" :options="options" @change="handleChange"></el-cascader></br>
                             </template>
                         </el-form-item>
                         <el-form-item label="商品名称：">
@@ -85,22 +85,18 @@
                         <el-form-item label="详细页描述：">
                             <el-input v-model="formData.detailDesc" style="width: 400px;"></el-input>
                         </el-form-item>
-                        <el-form-item label="商品关键字：">
-                            <el-input v-model="formData.keywords" style="width: 400px;"></el-input>
-                        </el-form-item>
                         <el-form-item label="商品备注：">
                             <el-input v-model="formData.note" style="width: 400px;"></el-input>
                         </el-form-item>
                         <el-form-item label="属性类型：">
                             <el-select v-model="formData.productAttributeCategoryId" placeholder="请选择属性类型">
-                                <el-option label="区域一" value="0"></el-option>
-                                <el-option label="区域二" value="1"></el-option>
+                                <el-option v-for="productAttributeCategory in formData.productAttributeCategory" :label="productAttributeCategory.name" :value="productAttributeCategory.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="商品图片">
 							<el-upload
 							    class="upload-demo"
-							    action="http://localhost:8080/good/upload"
+							    action="http://localhost:8766/uploadImages/uploadImages/upload"
 							    :on-preview="handlePreview"
 							    :on-remove="handleRemove"
 							    :on-success="handleSuccess"
@@ -132,6 +128,7 @@
                     price:0.00,
                     originalPrice:0.00,
                     stock:0,
+                    value:"",
                     unit:"",
                     weight:0.00,
                     sort:0,
@@ -139,30 +136,50 @@
                     publishStatus:0,
                     detailTitle:"",
                     detailDesc:"",
-                    keywords:"",
                     note:"",
-                    productAttributeCategoryId:""
+                    productAttributeCategoryId:"",
+                    pic:"111",
+                    productAttributeCategory:[]
                 },
                 active: 0,
-                value:"",
-                options:[
-                {
-                    value: 'ziyuan',
-                    label: '资源',
-                    children: [{
-                        value: 'axure',
-                        label: 'Axure Components'
-                    },{
-                        value: 'sketch',
-                        label: 'Sketch Templates'
-                    },{
-                        value: 'jiaohu',
-                        label: '组件交互文档'
-                    }]
-                }]
+                options:[]
             },
             beforeMount:function(){
-                
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'get',
+                        url: 'http://localhost:8766/productCategory/productCategory/options',
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res.data.data);
+                        vm.options = res.data.data;
+                    });
+                    axios({
+                    method: 'get',
+                    url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/listAll',
+                    headers: {
+                        'token': tokenStr
+                    }
+                    })
+                    .then(function(res){
+                        console.log(res.data.data);
+                        vm.formData.productAttributeCategory = res.data.data;
+                    });
             },
             methods:{
                 next:function(){
@@ -172,10 +189,68 @@
                     this.active--;
                 },
                 submit:function(){
-                    console.log("111");
+                    console.log(vm.formData.name);
+                    console.log(vm.formData.subTitle);
+                    console.log(vm.formData.description);
+                    console.log(vm.formData.price);
+                    console.log(vm.formData.originalPrice);
+                    console.log(vm.formData.stock);
+                    console.log(vm.formData.value[1]);
+                    console.log(vm.formData.unit);
+                    console.log(vm.formData.weight);
+                    console.log(vm.formData.sort);
+                    console.log(vm.formData.previewStatus);
+                    console.log(vm.formData.publishStatus);
+                    console.log(vm.formData.detailTitle);
+                    console.log(vm.formData.detailDesc);
+                    console.log(vm.formData.note);
+                    console.log(vm.formData.productAttributeCategoryId);
+                    console.log(vm.formData.pic);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8766/productAdd/productAdd/add',
+                        params: {
+                            name:vm.formData.name,
+                            subTitle:vm.formData.subTitle,
+                            description:vm.formData.description,
+                            price:vm.formData.price,
+                            originalPrice:vm.formData.originalPrice,
+                            stock:vm.formData.stock,
+                            unit:vm.formData.unit,
+                            weight:vm.formData.weight,
+                            sort:vm.formData.sort,
+                            previewStatus:vm.formData.previewStatus,
+                            publishStatus:vm.formData.publishStatus,
+                            detailTitle:vm.formData.detailTitle,
+                            detailDesc:vm.formData.detailDesc,
+                            note:vm.formData.note,
+                            productAttributeCategoryId:vm.formData.productAttributeCategoryId,
+                            pic:vm.formData.pic,
+                            productCategoryId:vm.formData.value[1]
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res);
+                    });
                 },
                 handleChange:function(value){
-                    console.log(value);
+                    console.log(value[1]);
                 },
                 handleRemove:function(file, fileList) {
 					console.log(file, fileList);
@@ -184,7 +259,9 @@
 					console.log(file);
 				},
 				handleSuccess:function(response, file, fileList) {
-					console.log(response);
+                    console.log(response);
+                    console.log(file);
+                    console.log(fileList);
 				}
             }
         });

@@ -9,11 +9,21 @@ eureka:
       defaultZone: http://admin:admin123@localhost:8761/eureka/
 zuul:
   routes:
+    mall-address-list: /address/**
     mall-admin-auth: /auth/**
     mall-admin-home: /home/**
     mall-product-list: /product/**
     mall-role-list: /role/**
     mall-user-list: /user/**
+    mall-user-action: /userAction/**
+    mall-menu-list: /menu/**
     mall-admin-order-list: /order/**
     mall-admin-product-category-list: /productCategory/**
-    mall-admin-product-attribute-category-list: /productAttributeCategory/**\
+    mall-admin-product-attribute-category-list: /productAttributeCategory/**
+    mall-admin-product-add: /productAdd/**
+    mall-admin-product-urd: /productUrd/**
+    mall-admin-product-category-add: /productCategoryAdd/**
+    mall-admin-product-category-ud: /productCategoryUd/**
+    mall-admin-order-return-apply: /returnApply/**
+    mall-admin-order-return-reason: /returnReason/**
+    mall-upload-images: /uploadImages/**

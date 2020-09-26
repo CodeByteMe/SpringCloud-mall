@@ -21,6 +21,82 @@
     <select id="getAllListByMemberId" resultMap="addressMap">
         select address_id,member_id,name,phone_number,default_status,post_code,province,city,region,detail_address
         from ums_member_receive_address
+        where member_id = #{memberId}
+    </select>
+
+    <resultMap id="provinceMap" type="Province">
+        <id column="province_id" property="provinceId"/>
+        <result column="province_name" property="provinceName"/>
+    </resultMap>
+    <select id="listProvince" resultSets="java.util.List" resultMap="provinceMap">
+        select province_id,province_name from province
+    </select>
+    <!--    public Province getProvince(String provinceId); // 根据省份id查省份信息-->
+    <select id="getProvince" resultMap="provinceMap">
+        select province_id,province_name from province
+        where province_id = #{provinceId}
+    </select>
+
+    <resultMap id="cityMap" type="City">
+        <id column="city_id" property="cityId"/>
+        <result column="city_name" property="cityName"/>
+        <result column="province_id" property="provinceId"/>
+    </resultMap>
+    <select id="listCityByProvince" resultSets="java.util.List" resultMap="cityMap">
+        select city_id,city_name,province_id
+        from city where province_id = #{provinceId}
+    </select>
+    <select id="getCity" resultMap="cityMap">
+        select city_id,city_name,province_id
+        from city
+        where city_id = #{cityId}
+    </select>
+
+    <resultMap id="regionMap" type="Region">
+        <id column="region_id" property="regionId"/>
+        <result column="region_name" property="regionName"/>
+        <result column="city_id" property="cityId"/>
+    </resultMap>
+    <select id="listRegionByCity" resultSets="java.util.List" resultMap="regionMap">
+        select region_id,region_name,city_id
+        from region where city_id = #{cityId}
+    </select>
+    <!--    public Region getRegion(String regionId); // 根据区id查询区信息-->
+    <select id="getRegion" resultMap="regionMap">
+        select region_id,region_name,city_id from region
+        where region_id = #{regionId}
+    </select>
+
+    <insert id="insertAddress">
+        insert into ums_member_receive_address(member_id,name,phone_number,default_status,post_code,province,city,region,detail_address)
+        values (#{memberId},#{name},#{phoneNumber},#{defaultStatus},#{postCode},#{province},#{city},#{region},#{detailAddress})
+    </insert>
+
+    <update id="updateAddress">
+        update ums_member_receive_address
+        set name = #{name},phone_number = #{phoneNumber},post_code = #{postCode},province = #{province},city = #{city},region = #{region},detail_address = #{detailAddress}
+        where address_id = #{addressId}
+    </update>
+
+    <update id="updateAddressStatus">
+        update ums_member_receive_address
+        set default_status = #{defaultStatus}
+        where address_id = #{addressId}
+        and member_id = #{memberId}
+    </update>
+    <select id="selectAddressIdByDefaultStatus" resultType="String">
+        select address_id from ums_member_receive_address
+        where member_id = #{memberId}
+        and default_status = 1
+    </select>
+
+    <delete id="deleteByIdAndMemberId">
+        delete from ums_member_receive_address where address_id = #{addressId}
+    </delete>
+
+    <select id="getAddressByAddressId" resultMap="addressMap">
+        select address_id,member_id,name,phone_number,default_status,post_code,province,city,region,detail_address
+        from ums_member_receive_address
         where address_id = #{addressId}
     </select>
 </mapper>

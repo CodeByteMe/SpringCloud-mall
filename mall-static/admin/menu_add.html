@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<title>添加菜单</title>
+	</head>
+	<body>
+		<div id="container">
+			<div style=" width:400px; height:400px;  position:absolute;  left:30%; " >
+				<el-form :model="menu" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+				  <el-form-item label="菜单名称" prop="name">
+				    <el-input v-model="menu.name"></el-input>
+				  </el-form-item>
+				  <el-form-item label="上级菜单" prop="region">
+				    <template>
+					  <el-select v-model="menu.value" placeholder="请选择">
+					    <el-option
+					      v-for="item in options"
+					      :label="item.title"
+					      :value="item.parentId"
+					      >
+					    </el-option>
+					  </el-select>
+					</template>
+				  </el-form-item>
+				  <el-form-item label="是否启用" prop="hidden">
+				    <el-radio-group v-model="menu.hidden">
+				      <el-radio label="0" >是</el-radio>
+				      <el-radio label="1">否</el-radio>
+				    </el-radio-group>
+				  </el-form-item>
+				  <el-form-item>
+				  	<el-form-item label="排序" prop="sort">
+				    <el-input v-model="menu.sort"></el-input>
+				  </el-form-item>
+				    <el-button type="primary" @click="submitForm('menu')">立即创建</el-button>
+				    <el-button @click="resetForm('menu')">重置</el-button>
+				  </el-form-item>
+				</el-form>
+			</div>
+		</div>
+<!-- 引入组件库 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script type="text/javascript">
+			var Vue = new Vue({
+				el:"#container"
+				,data:{
+					menu: {
+			          name: '',
+			          level: '',
+			          icon: '',
+			          options: [],
+			          hidden: '',
+			          value:""
+			        },
+
+				},
+				beforeMount:function(){
+                var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+                axios({
+					method: 'get',
+					url: 'http://localhost:8766/menu/menu/firstMenu',
+					params: {
+					},
+                    headers: {
+                        'token': tokenStr
+                    }
+					})
+					.then(function(res){
+						console.log(res.data.data);
+                        vm.tableData = res.data.data;
+					});
+            },
+				 methods: {
+			      submitForm(formName) {
+			        this.$refs[formName].validate((valid) => {
+			          if (valid) {
+			            alert('submit!');
+			          } else {
+			            console.log('error submit!!');
+			            return false;
+			          }
+			        });
+			      },
+			      resetForm(formName) {
+			        this.$refs[formName].resetFields();
+			      }
+			  }
+			})
+		</script>
+	</body>
+</html>

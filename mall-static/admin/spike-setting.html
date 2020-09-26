@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<style type="text/css">
+			#container{
+				width: 88%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="container">
+			
+			<el-card class="box-card" style="width: 48%;margin: 0 auto; margin-bottom: 5rem;">
+				<div slot="header" class="clearfix">
+					<span>订单设置</span>
+				</div>
+				<el-form label-width="80px">
+					<el-form-item label="秒杀标题">
+					    <el-input v-model="title"></el-input>
+					</el-form-item>
+					<el-form-item label="开始日期">
+						<div class="block">
+							<el-date-picker v-model="startDate" type="datetime" placeholder="选择日期时间">
+							</el-date-picker>
+						</div>
+					</el-form-item>
+					<el-form-item label="结束日期">
+						<div class="block">
+							<el-date-picker v-model="endDate" type="datetime" placeholder="选择日期时间">
+							</el-date-picker>
+						</div>
+					</el-form-item>
+					<el-form-item label="上下线状态">
+						<el-switch v-model="status" active-color="#13ce66" inactive-color="#ff4949">
+						</el-switch>
+					</el-form-item>
+					<el-form-item label="秒杀时间段名称">
+					    <el-input v-model="createTime"></el-input>
+					</el-form-item>
+					<el-form-item label="关联的商品">
+						<el-select v-model="product" placeholder="请选择">
+						    <el-option v-for="item in productId" :key="item.value" :label="item.label" :value="item.value">
+						    </el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="限时购价格">
+					    <el-input v-model="flashPromotionPrice">
+							<template slot="append">元</template>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="限时购数量">
+					    <el-input v-model="flashPromotionCount">
+							<template slot="append">件/套</template>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="每人限购数量">
+					    <el-input v-model="flashPromotionLimit">
+							<template slot="append">件/套</template>
+						</el-input>
+					</el-form-item>
+					<el-form-item>
+					    <el-button type="primary" @click="onSubmit">立即创建</el-button>
+					</el-form-item>
+				</el-form>
+			</el-card>
+			
+		</div>
+		
+	</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#container",
+			data:{
+				title:"",
+				startDate:"",
+				endDate:"",
+				status:"",
+				createTime:"",
+				productId:[
+					{
+						label:"哇哈哈",
+						value:"dasuh214"
+					},
+					{
+						label:"康师傅",
+						value:"daju2"
+					}
+				],
+				flashPromotionPrice:"",
+				flashPromotionCount:"",
+				flashPromotionLimit:"",
+				product:""
+			},
+			methods:{
+				onSubmit:function(){
+					console.log(vm.title);
+					console.log(vm.startDate);
+					console.log(vm.endDate);
+					console.log(vm.status);
+					console.log(vm.createTime);
+					console.log(vm.product);
+					console.log(vm.flashPromotionPrice);
+					console.log(vm.flashPromotionCount);
+					console.log(vm.flashPromotionLimit);
+				}
+			}
+		});
+	</script>
+</html>

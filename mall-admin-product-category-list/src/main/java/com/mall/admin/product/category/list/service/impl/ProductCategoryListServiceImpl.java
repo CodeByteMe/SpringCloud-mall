@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.mall.admin.product.category.list.dao.ProductCategoryListDAO;
 import com.mall.admin.product.category.list.service.ProductCategoryListService;
 import com.mall.common.pojo.ProductCategory;
+import com.mall.common.vo.OptionsVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +38,11 @@ public class ProductCategoryListServiceImpl implements ProductCategoryListServic
         List<ProductCategory> productCategories = productCategoryListDAO.productCategoryListByParentId(parentId);
         PageInfo pageInfo = new PageInfo(productCategories);
         return pageInfo;
+    }
+
+    @Override
+    public List<OptionsVO> productCategoryOptions() {
+        return productCategoryListDAO.productCategoryOptions();
     }
 
 
