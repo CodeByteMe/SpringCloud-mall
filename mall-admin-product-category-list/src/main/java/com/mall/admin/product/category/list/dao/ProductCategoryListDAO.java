@@ -15,6 +15,6 @@ public interface ProductCategoryListDAO {
 
     public List<ProductCategory> productCategoryListByParentId(int parentId);
 
-    public OptionsVO productCategoryOptions(); //下拉框
+    public List<OptionsVO> productCategoryOptions(); //下拉框
 
 }

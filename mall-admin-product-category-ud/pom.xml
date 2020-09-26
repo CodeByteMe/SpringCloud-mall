@@ -21,6 +21,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.mall</groupId>
             <artifactId>mall-common</artifactId>
             <version>1.0.0</version>

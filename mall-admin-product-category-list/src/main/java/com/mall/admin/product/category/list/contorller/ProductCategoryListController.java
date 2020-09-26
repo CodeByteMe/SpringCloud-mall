@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /*
  *   作者：官宣轩
@@ -85,8 +86,8 @@ public class ProductCategoryListController {
 //       String adminId = jws.getBody().getId();
         String issuer = jws.getBody().getIssuer();
         if ("admin".equals(issuer)){
-            OptionsVO optionsVO = productCategoryListService.productCategoryOptions();
-            return new ResultVO(0,"success",optionsVO);
+            List<OptionsVO> optionsVOS = productCategoryListService.productCategoryOptions();
+            return new ResultVO(0,"success",optionsVOS);
         }else {
             return new ResultVO(0,"没有权限,请联系管理员!");
         }

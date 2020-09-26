@@ -24,4 +24,9 @@ public class ProductAddServiceImpl implements ProductAddService {
     public boolean productAdd(Product product) {
         return productAddDAO.productAdd(product);
     }
+
+    @Override
+    public String searchCompanyIdByAdminUUID(String adminId) {
+        return productAddDAO.searchCompanyIdByAdminUUID(adminId);
+    }
 }

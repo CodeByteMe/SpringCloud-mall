@@ -10,4 +10,6 @@ public interface ProductAddService {
 
     public boolean productAdd(Product product);
 
+    public String searchCompanyIdByAdminUUID(String adminId); //通过用户UUID查询公司ID
+
 }

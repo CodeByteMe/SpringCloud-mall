@@ -10,4 +10,6 @@ public interface ProductAddDAO {
 
     public boolean productAdd(Product product); //商品添加
 
+    public String searchCompanyIdByAdminUUID(String adminId); //通过用户UUID查询公司ID
+
 }

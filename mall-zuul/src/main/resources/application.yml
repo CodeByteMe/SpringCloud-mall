@@ -26,3 +26,4 @@ zuul:
     mall-admin-product-category-ud: /productCategoryUd/**
     mall-admin-order-return-apply: /returnApply/**
     mall-admin-order-return-reason: /returnReason/**
+    mall-upload-images: /uploadImages/**
