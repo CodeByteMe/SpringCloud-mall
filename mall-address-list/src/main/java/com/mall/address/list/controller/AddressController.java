@@ -213,4 +213,25 @@ public class AddressController {
             return new ResultVO(1, "权限校验未通过", null);
         }
     }
+
+    @RequestMapping(value = "/addressDetail", method = RequestMethod.GET)
+    @ApiOperation(value = "地址查询接口", notes = "用户根据地址id查询地址详细信息的接口")
+    @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    public ResultVO getAddressDetail(@RequestParam("addressId") String addressId,@RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            List<Address> addressByAddressId = addressService.getAddressByAddressId(addressId);
+            if (addressByAddressId != null) {
+                return new ResultVO(0, "查询成功", addressByAddressId);
+            } else {
+                return new ResultVO(1, "查询失败", null);
+            }
+        }else {
+            return new ResultVO(1, "权限校验未通过", null);
+        }
+    }
 }

@@ -82,4 +82,16 @@
         from ums_member
         where member_id = #{memberId}
     </select>
+
+    <select id="getOrderListByMemberId" resultMap="orderMap">
+        select oms_order.id,oms_order.order_id,oms_order.create_time,oms_order.member_username,oms_order.total_amount,oms_order.pay_amount,oms_order.promotion_amount,oms_order.pay_type,oms_order.`status`,oms_order.order_type,oms_order.address_id,oms_order.auto_confirm_day,oms_order.promotion_info,oms_order.note,oms_order.confirm_status,oms_order.payment_time,oms_order.delivery_time,oms_order.receive_time,oms_order.modify_time,oms_order.company_id,ums_member_receive_address.id,ums_member_receive_address.address_id,ums_member_receive_address.member_id,ums_member_receive_address.name,ums_member_receive_address.phone_number,ums_member_receive_address.default_status,ums_member_receive_address.post_code,ums_member_receive_address.province,ums_member_receive_address.city,ums_member_receive_address.region,ums_member_receive_address.detail_address
+        from ums_member inner join oms_order on ums_member.member_id = oms_order.member_id inner join ums_member_receive_address on
+        oms_order.address_id = ums_member_receive_address.address_id
+        where ums_member.member_id = #{memberId}
+    </select>
+
+    <select id="getOrderByOrderId" resultMap="orderMap">
+        select id,order_id,create_time,member_username,total_amount,pay_amount,promotion_amount,pay_type,status,oms_order.order_type,address_id,auto_confirm_day,promotion_info,note,confirm_status,payment_time,delivery_time,receive_time,modify_time,company_id
+        from oms_order where order_id = #{orderId}
+    </select>
 </mapper>

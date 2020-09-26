@@ -46,4 +46,18 @@ public interface OrderDAO {
      * @return
      */
     public MemberUser getMemberUserByMemberId(String memberId);
+
+    /**
+     * 根据前台用户id查询该用户所有订单记录
+     * @param memberId
+     * @return
+     */
+    public List<Order> getOrderListByMemberId(String memberId);
+
+    /**
+     * 根据订单id查询该订单的详细信息
+     * @param orderId
+     * @return
+     */
+    public List<Order> getOrderByOrderId(String orderId);
 }
