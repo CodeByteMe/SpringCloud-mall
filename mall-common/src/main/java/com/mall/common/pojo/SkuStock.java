@@ -36,7 +36,9 @@ public class SkuStock {
     private double promotionPrice;
     @ApiModelProperty(value = "锁定库存" ,dataType = "integer", required = true)
     private Integer lockStock;
-    @ApiModelProperty(value = "商品销售属性，json格式" ,dataType = "string", required = true)
-    private String spData;
+    @ApiModelProperty(value = "颜色" ,dataType = "string", required = true)
+    private String color;
+    @ApiModelProperty(value = "尺寸" ,dataType = "string", required = true)
+    private String size;
 
 }

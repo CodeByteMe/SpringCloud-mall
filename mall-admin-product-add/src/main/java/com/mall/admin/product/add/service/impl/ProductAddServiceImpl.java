@@ -4,6 +4,9 @@ import com.mall.admin.product.add.dao.ProductAddDAO;
 import com.mall.admin.product.add.service.ProductAddService;
 import com.mall.common.pojo.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -21,6 +24,7 @@ public class ProductAddServiceImpl implements ProductAddService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productAdd(Product product) {
         return productAddDAO.productAdd(product);
     }
