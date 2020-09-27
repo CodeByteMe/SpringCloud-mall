@@ -241,7 +241,7 @@
 				<el-form label-width="200px" style="width: 70%;margin: auto;">
 
 					<el-form-item label="选择收货地址">
-						<el-select v-model="addr" placeholder="请选择收货地址">
+						<el-select v-model="addressId" placeholder="请选择收货地址">
 							<el-option v-for="item in tableData" :key="item.addressId" :label="item.name+' '+item.province+' '+item.city+' '+item.region+' '+item.detailAddress+' '+item.phoneNumber"
 							 :value="item.addressId"></el-option>
 						</el-select>
@@ -286,7 +286,7 @@
 						</table>
 					</div>
 					<div class="cart-product-info">
-						<a class="btn-buy fr">提交订单</a>
+						<a class="btn-buy fr" @click="addOrder">提交订单</a>
 						<p class="fr product-total">￥<span>{{money}}</span></p>
 						<p class="fr check-num"><span>{{num}}</span>件商品总计（不含运费）：</p>
 					</div>
@@ -325,9 +325,12 @@
 			data: {
 				tableData: [],
 				productlist: [],
-				addr: "",
+				addressId: '',
 				money: 0,
-				num: 0
+				num: 0,
+				s1: "",
+				str: "",
+				jsonStr: ""
 			},
 			beforeMount: function() {
 				this.productList = JSON.parse(localStorage.getItem("productList"))
@@ -414,6 +417,39 @@
 								location.href = "address_list.html";
 							}, 2000);
 						}
+					});
+				},
+				addOrder: function() {
+					console.log(vm.addressId);
+					console.log(vm.productList);
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					// vm.jsonStr = JSON.stringify(vm.productList);
+					vm.jsonStr = "bhy";
+					console.log(vm.jsonStr);
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/addOrder/addOrder/add',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							addressId: vm.addressId,
+							jsonStrList: vm.jsonStr
+						}
+					}).then(function(res) {
+						console.log();
 					});
 				}
 			}

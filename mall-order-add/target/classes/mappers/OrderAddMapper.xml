@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.order.add.dao.OrderAddDAO">
+
+    <insert id="addOrder">
+        insert into oms_order(order_id,member_id,create_time,member_username,total_amount,pay_amount,promotion_amount,pay_type,status,order_type,address_id,auto_confirm_day,promotion_info,note,confirm_status,payment_time,delivery_time,receive_time,modify_time,company_id)
+        values (#{orderId},#{memberId},#{createTime},#{memberUsername},#{totalAmount},#{payAmount},#{promotionAmount},
+        #{payType},#{status},#{orderType},#{addressId},#{autoConfirmDay},#{promotionInfo},#{note},#{confirmStatus},#{paymentTime},#{deliveryTime},#{receiveTime},#{modifyTime},#{companyId})
+    </insert>
+</mapper>
