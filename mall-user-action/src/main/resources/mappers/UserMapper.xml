@@ -34,9 +34,10 @@
         FROM ums_admin
         where admin_id =#{adminId}
     </select>
-<!--    public int grantRole();-->
+<!--    public int grantRole(@Param("id") int id,@Param("rid")int rid);-->
     <insert id="grantRole">
-        insert into
+        insert into ums_admin_role_relation (admin_id,role_id)
+        values (#{id},#{rid})
     </insert>
 
 </mapper>
