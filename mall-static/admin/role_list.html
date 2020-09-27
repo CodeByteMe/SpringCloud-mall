@@ -97,7 +97,8 @@
 				<el-dialog title="提示" :visible.sync="dialogVisible1" width="30%" :before-close="handleClose">
 					<el-tree :data="parent" show-checkbox node-key="id" 
 						:default-expand-all=true
-						:default-checked-keys="[5]" 
+						:default-checked-keys=checkedData
+						ref="tree"
 						:props="defaultProps">
 					</el-tree>
 					<span slot="footer" class="dialog-footer">
@@ -121,7 +122,9 @@
 					value: true,
 					dialogVisible1: false,
 					dialogVisible: false,
+					roleId:'',
 					formLabelWidth: '120px',
+					checkedData: [],
 					tableData: [],
 					role: {
 						name: "",
@@ -221,7 +224,6 @@
 					},
 					grantmenu: function(row) {
 						vm.dialogVisible1 = true;
-						console.log(row);
 						var tokenStr = "";
 						var str = document.cookie;
 						var arr = str.split(";");
@@ -238,18 +240,70 @@
 						axios({
 								method: 'get',
 								url: 'http://localhost:8766/home/home/list',
-								params: {},
 								headers: {
 									'token': tokenStr
 								}
 							})
 							.then(function(res) {
-								console.log(res.data.data);
+								
 								vm.parent = res.data.data;
+							});
+						axios({
+								method: 'get',
+								url: 'http://localhost:8766/rolemenu/rolemenu/list',
+								headers: {
+									'token': tokenStr
+								},
+								params: {
+									roleId:row.id
+								}
+							})
+							.then(function(res) {
+								console.log("2");
+								console.log(res.data.data);
+								vm.checkedData = [];
+								vm.checkedData = res.data.data;
+								console.log(vm.checkedData);
+								vm.roleId = row.id;
 							});
 					},
 					grantSure: function() {
-						console.log(vm.parent);
+						console.log(vm.roleId);
+						vm.checkedData=this.$refs.tree.getCheckedNodes();
+						console.log(vm.checkedData);
+						var str = JSON.stringify(vm.checkedData);
+						console.log(str);
+//						vm.checkedData.forEach(function(element) {
+//						  console.log(element);
+//						});
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i = 0; i < arr.length; i++) {
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token") {
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if(tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+								method: 'post',
+								url: 'http://localhost:8766/rolemenu/rolemenu/addMenu',
+								params: {
+									roleId:vm.roleId,
+									str:this.str
+								},
+								headers: {
+									'token': tokenStr
+								}
+							})
+							.then(function(res) {
+								
+								
+							});
 					},
 					handleClose(done) {
 						this.$confirm('确认关闭？')
