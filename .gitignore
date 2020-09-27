@@ -63,6 +63,9 @@ mall-product-list/*.iml
 mall-role-list/target
 mall-role-iist/*.iml
 
+mall-role-menu/target
+mall-role-menu/*.iml
+
 mall-upload-images/target
 mall-upload-images/*.iml
 
@@ -83,3 +86,6 @@ mall-admin-order-return-apply/*.iml
 
 mall-admin-order-return-reason/target
 mall-admin-order-return-reason/*.iml
+
+mall-admin-spike/target
+mall-admin-spike/*.iml

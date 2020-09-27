@@ -1,66 +1,62 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>后台角色列表</title>
 		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 		<style>
-			.shadow{
+			.shadow {
 				width: 88%;
 				height: 150px;
 			}
-			.sera{
+			
+			.sera {
 				width: 30%;
 				padding-left: 100px;
 				display: block;
 			}
-			.doser{
+			
+			.doser {
 				padding-left: 90%;
 				display: block;
 			}
-			.shadow1{
+			
+			.shadow1 {
 				width: 88%;
 				height: 50px;
 			}
 		</style>
 	</head>
+
 	<body>
 		<div id="container">
 			<div class="shadow" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
 				<div>
 					<p>🔍筛选搜索</p>
 				</div>
-				<div class= "sera">
+				<div class="sera">
 					<label>查询搜索</label>
-					 <el-input
-					    placeholder="请输入内容"
-					    suffix-icon="el-icon-date"
-					    v-model="keyword">
-					 </el-input>
+					<el-input placeholder="请输入内容" suffix-icon="el-icon-date" v-model="keyword">
+					</el-input>
 				</div>
 				<div class="doser">
-					 <el-button type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
+					<el-button type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
 				</div>
 			</div>
 			<div class="shadow1" style=" box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
 				<div style="display: inline;"><label style="line-height:50px;">数据列表</label>
-					
+
 				</div>
 				<div id="" style="display: inline;margin-left: 85%;">
 					<el-button size="medium" @click="addRole">添加</el-button>
-					<el-dialog
-							title="添加角色"
-							:visible.sync="dialogVisible"
-							width="40%"
-							height="100%"
-							:before-close="handleClose"
-					>
+					<el-dialog title="添加角色" :visible.sync="dialogVisible" width="40%" height="100%" :before-close="handleClose">
 						<el-form :model="role">
 							<el-form-item label="名称" :label-width="formLabelWidth">
 								<el-input v-model="role.name" autocomplete="off"></el-input>
 							</el-form-item>
 							<el-form-item label="描述" :label-width="formLabelWidth">
-								<el-input  v-model="role.description" autocomplete="off"></el-input>
+								<el-input v-model="role.description" autocomplete="off"></el-input>
 							</el-form-item>
 						</el-form>
 						<span slot="footer" class="dialog-footer">
@@ -70,51 +66,47 @@
 					</el-dialog>
 				</div>
 			</div>
-				<div >
-					
-					<template>
-					  <el-table
-					    :data="tableData"
-					    border
-					    style="width: 88%">
-					    <el-table-column
-					      prop="id"
-					      label="编号"
-					      width="80">
-					    </el-table-column>
-					    <el-table-column
-					      prop="name"
-					      label="角色名"
-					      width="100">
-					    </el-table-column>
-					    <el-table-column
-					      prop="description"
-					      label="描述">
-					    </el-table-column>
-					    
-					    <el-table-column
-					      prop="createTime"
-					      label="创建时间">
-					    </el-table-column>
-					     <el-table-column prop="status" label="是否启用">
-	                            <template scope="scope">
-								<el-switch v-model="scope.row.status"
-								     :active-value="1"
-								     :inactive-value="0"
-								     @change=change(scope.row)>
-								</el-switch>
-							
-	                        </el-table-column>
-						<el-table-column label="操作" fixed="right">
-					    	<el-button type="text">分配菜单</el-button>
-					    	<el-button type="text">分配资源</el-button></br>
-					    	<el-button type="text">编辑</el-button>
-					    	<el-button type="text">删除</el-button>
+			<div>
+
+				<template>
+					<el-table :data="tableData" border style="width: 88%">
+						<el-table-column prop="id" label="编号" width="80">
 						</el-table-column>
-						</template>
-					  </el-table>
-					</template>
-				</div>	
+						<el-table-column prop="name" label="角色名" width="100">
+						</el-table-column>
+						<el-table-column prop="description" label="描述">
+						</el-table-column>
+
+						<el-table-column prop="createTime" label="创建时间">
+						</el-table-column>
+						<el-table-column prop="status" label="是否启用">
+							<template scope="scope">
+								<el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0" @change=change(scope.row)>
+								</el-switch>
+							</template>
+						</el-table-column>
+						<el-table-column label="操作" fixed="right">
+							<template slot-scope="scope">
+								<el-button type="text" @click="grantmenu(scope.row)">分配菜单</el-button>
+								<el-button type="text">编辑</el-button>
+								<el-button type="text">删除</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+				</template>
+				<el-dialog title="提示" :visible.sync="dialogVisible1" width="30%" :before-close="handleClose">
+					<el-tree :data="parent" show-checkbox node-key="id" 
+						:default-expand-all=true
+						:default-checked-keys="[5]" 
+						:props="defaultProps">
+					</el-tree>
+					<span slot="footer" class="dialog-footer">
+					    <el-button @click="dialogVisible1 = false">取 消</el-button>
+					    <el-button type="primary" @click="grantSure">确 定</el-button>
+					  </span>
+				</el-dialog>
+
+			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
 		<!-- 引入组件库 -->
@@ -122,116 +114,154 @@
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript">
 			var vm = new Vue({
-				el:"#container"
-				,data:{
-					keyword:"",
-					value:true,
-					boostatus1:false,
+				el: "#container",
+				data: {
+					parent: [],
+					keyword: "",
+					value: true,
+					dialogVisible1: false,
 					dialogVisible: false,
+					formLabelWidth: '120px',
 					tableData: [],
-					role:{
-						name:"",
-						description:""
-					}
-				},
-				beforeMount:function(){
-                var tokenStr = "";
-				var str = document.cookie;
-				var arr = str.split(";");
-				for(var i=0;i<arr.length;i++){
-					var s = arr[i];
-					if(s.split("=")[0].trim() == "token"){
-						tokenStr = s.split("=")[1];
-						break;
-					}
-				}
-				if (tokenStr === "") {
-					top.location = "login.html";
-				}
-                axios({
-					method: 'get',
-					url: 'http://localhost:8766/role/role/list',
-					params: {
+					role: {
+						name: "",
+						description: ""
 					},
-                    headers: {
-                        'token': tokenStr
-                    }
-					})
-					.then(function(res){
-						console.log(res.data.data);
-                        vm.tableData = res.data.data;
-					});
-            }
-				,methods:{
-					doSearch:function(keyword){
-						axios({
-							method:'get',
-							url:"",
-							params:{
-								keyword:vm.keyword,
-							},
-							headers:{
-								'token':tokenStr
+					defaultProps: {
+						children: 'children',
+						label: 'title'
+					},
+				},
+				beforeMount: function() {
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for(var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if(s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if(tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+							method: 'get',
+							url: 'http://localhost:8766/role/role/list',
+							params: {},
+							headers: {
+								'token': tokenStr
 							}
 						})
-						.then(function(res){
-							
-						})
-							
+						.then(function(res) {
+							console.log(res.data.data);
+							vm.tableData = res.data.data;
+						});
+				},
+				methods: {
+					doSearch: function(keyword) {
+						axios({
+								method: 'get',
+								url: "",
+								params: {
+									keyword: vm.keyword,
+								},
+								headers: {
+									'token': tokenStr
+								}
+							})
+							.then(function(res) {
+
+							})
+
 					},
-					change:function(row){
+					change: function(row) {
 						console.log(row)
 					},
-					addRole:function(){
+					addRole: function() {
 						console.log("添加");
 						this.dialogVisible = true;
 					},
-					submit:function(){
+					submit: function() {
 						console.log("submit");
 						var tokenStr = "";
 						var str = document.cookie;
 						var arr = str.split(";");
-						for(var i=0;i<arr.length;i++){
+						for(var i = 0; i < arr.length; i++) {
 							var s = arr[i];
-							if(s.split("=")[0].trim() == "token"){
+							if(s.split("=")[0].trim() == "token") {
 								tokenStr = s.split("=")[1];
 								break;
 							}
 						}
-						if (tokenStr === "") {
+						if(tokenStr === "") {
 							top.location = "login.html";
 						}
 						axios({
-							method: 'post',
-							url: 'http://localhost:8766/role/role/add',
-							params: {
-								name:vm.role.name,
-								description:vm.role.description,	
-							},
-		                    headers: {
-		                        'token': tokenStr
-		                    }
+								method: 'post',
+								url: 'http://localhost:8766/role/role/add',
+								params: {
+									name: vm.role.name,
+									description: vm.role.description,
+								},
+								headers: {
+									'token': tokenStr
+								}
 							})
-							.then(function(res){
-								if(res.data.code==0){
+							.then(function(res) {
+								if(res.data.code == 0) {
 									vm.$message("添加成功");
 									vm.dialogVisible = false;
 								}
-								setTimeout(function () {
-								location.href = "order-list.html";
-							},2000);
+								setTimeout(function() {
+									location.href = "order-list.html";
+								}, 2000);
 							});
+					},
+					grantmenu: function(row) {
+						vm.dialogVisible1 = true;
+						console.log(row);
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i = 0; i < arr.length; i++) {
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token") {
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if(tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+								method: 'get',
+								url: 'http://localhost:8766/home/home/list',
+								params: {},
+								headers: {
+									'token': tokenStr
+								}
+							})
+							.then(function(res) {
+								console.log(res.data.data);
+								vm.parent = res.data.data;
+							});
+					},
+					grantSure: function() {
+						console.log(vm.parent);
 					},
 					handleClose(done) {
 						this.$confirm('确认关闭？')
-								.then(_ => {
-							done();
-					})
-					.catch(_ => {});
+							.then(_ => {
+								done();
+							})
+							.catch(_ => {});
 					}
 				}
 			})
 		</script>
-			
+
 	</body>
+
 </html>

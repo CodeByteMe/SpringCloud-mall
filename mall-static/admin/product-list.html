@@ -109,7 +109,7 @@
                                 <img :src="scope.row.pic" class="image" style="width: 3.125rem;height: 3.125rem;" />
                             </template>
                         </el-table-column>
-                        <el-table-column prop="name" label="商品名称"></el-table-column>
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="商品名称"></el-table-column>
                         <el-table-column prop="promoteDesc" label="价格/货号"></el-table-column>
                         <el-table-column label="套餐" fixed="right" width=80>
                             <template slot-scope="scope">

@@ -27,4 +27,9 @@ public class UserServiceImpl implements UserService {
     public String getCompanyId(String adminId) {
         return userDAO.getCompanyId(adminId);
     }
+
+    @Override
+    public int grantRole(int id, int rid) {
+        return userDAO.grantRole(id,rid);
+    }
 }
