@@ -4,6 +4,19 @@
 
 <!--namespace = 所需实现的接口全限定名-->
 <mapper namespace="com.mall.admin.spike.dao.SpikeDAO">
+    <resultMap id="productListMap" type="com.mall.common.pojo.Product">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <resultMap id="flashPromotionMap" type="FlashPromotion">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
 <!--    public int insertSpike(FlashPromotion flashPromotion);-->
     <insert id="insertSpike" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into sms_flash_promotion(title,start_date,
@@ -18,4 +31,23 @@
         values(#{flashPromotionId},#{flashPromotionSessionId},#{productId},#{flashPromotionPrice},
         #{flashPromotionCount},#{flashPromotionLimit},#{sort})
     </insert>
+<!--    public List<Product> listProductByAdminId(String adminId);-->
+    <select id="listProductByAdminId" resultSets="java.util.List" resultMap="productListMap">
+        select pms_product.id,pms_product.product_id,pms_product.name
+        from pms_product inner join ums_admin on pms_product.company_id = ums_admin.company_id
+        where ums_admin.admin_id = #{adminId}
+    </select>
+<!--    public List<FlashPromotion> listFlashPromotion(String adminId);-->
+    <select id="listFlashPromotion" resultSets="java.util.List" resultMap="flashPromotionMap">
+        select sms_flash_promotion.id,sms_flash_promotion.title,sms_flash_promotion.start_date,sms_flash_promotion.end_date,sms_flash_promotion.status,sms_flash_promotion.create_time
+        from sms_flash_promotion
+--         inner join sms_flash_promotion_product_relation on sms_flash_promotion.id = sms_flash_promotion_product_relation.flash_promotion_id
+--         inner join pms_product on sms_flash_promotion_product_relation.product_id = pms_product.product_id
+--         inner join ums_admin on pms_product.company_id = ums_admin.company_id
+--         where ums_admin.admin_id = #{adminId}
+    </select>
+<!--    public int deleteFlashPromotion(Integer id);-->
+    <delete id="deleteFlashPromotion">
+        delete from sms_flash_promotion where id = #{id}
+    </delete>
 </mapper>

@@ -4,12 +4,14 @@ import com.mall.admin.spike.dao.SpikeDAO;
 import com.mall.admin.spike.service.SpikeService;
 import com.mall.common.pojo.FlashPromotion;
 import com.mall.common.pojo.FlashPromotionProductRelation;
+import com.mall.common.pojo.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * SpikeServiceImpl
@@ -42,5 +44,20 @@ public class SpikeServiceImpl implements SpikeService {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<Product> listProductByAdminId(String adminId) {
+        return spikeDAO.listProductByAdminId(adminId);
+    }
+
+    @Override
+    public List<FlashPromotion> listFlashPromotion(String adminId) {
+        return spikeDAO.listFlashPromotion(adminId);
+    }
+
+    @Override
+    public boolean deleteFlashPromotion(Integer id) {
+        return spikeDAO.deleteFlashPromotion(id) > 0;
     }
 }
