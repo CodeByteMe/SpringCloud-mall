@@ -124,24 +124,48 @@
 						</el-table-column>
 						<el-table-column label="操作" fixed="right">
 						<template slot-scope="scope">
-					    	<el-button type="text">分配角色</el-button>
+					    	<el-button type="text"@click="grant(scope.row)">分配角色</el-button>
 					    	<el-button type="text" @click="redact(scope.row)">编辑</el-button>
 					    	<el-button type="text" @click="del(scope.row)">删除</el-button>
 					    </template>
 						</el-table-column>
 					  </el-table>
 					</template>
-			<el-pagination
-				      @size-change="handleSizeChange"
-				      @current-change="handleCurrentChange"
-				      :current-page.sync="currentPage3"
-				      :page-size="100"
-				      layout="prev, pager, next, jumper"
-				      :total="1000">
-			    </el-pagination>
+			<template>
+                    <div class="block" style="margin-bottom: 3.5rem;">
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                        </el-pagination>
+                    </div>
+                </template>
 			    
 			    
-			    
+			    <el-dialog title="授予角色" :visible.sync="dialogFormVisible1">
+								  <el-form :model="adminRole">
+								  	<el-form-item label="id" :label-width="formLabelWidth">
+								      <el-input v-model="adminRole.id" autocomplete="off" readonly="readonly"></el-input>
+								    </el-form-item>
+								    <el-form-item label="昵称" :label-width="formLabelWidth">
+								      <el-input v-model="adminRole.nickName" autocomplete="off"></el-input>
+								    </el-form-item>
+								    <el-form-item label="选择角色" :label-width="formLabelWidth">
+								     <template>
+									  <el-select v-model="adminRole.rid" placeholder="请选择">
+									    <el-option
+									      v-for="item in role"
+									      :key="item.id"
+									      :label="item.name"
+									      :value="item.id">
+									    </el-option>
+									  </el-select>
+									</template>
+								  </el-form>
+								  <div slot="footer" class="dialog-footer">
+								    <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+								    <el-button type="primary" @click="confirm">确 定</el-button>
+								  </div>
+								</el-dialog>
 			    <el-dialog title="编辑" :visible.sync="dialogFormVisible">
 								  <el-form :model="adminUser">
 								  	<el-form-item label="登录名" :label-width="formLabelWidth">
@@ -181,19 +205,26 @@
 					token:"",
                 	total: 100,
 					keyword:"",
-					currentPage3:5,
+					currentPage4:5,
 					dialogVisible: false,
-					dialogTableVisible: false,
+					dialogFormVisible1: false,
         			dialogFormVisible: false,
 					formLabelWidth: '120px',
+					rid:0,
 					adminUser:{
 						username:"",
 						password:"",
 						email:"",
 						nickName:'',
 						note:"",
-						status:'0',
+						status:'0'
 					},
+					adminRole:{
+						id:'',
+						nickName:'',
+						rid:''
+					},
+					role:[],
 					tableData: []
 				},
 				beforeMount:function(){
@@ -255,19 +286,135 @@
 						this.dialogVisible = true;
 						
 					},
+					grant:function(row){
+						vm.adminRole.id=row.id;
+						vm.adminRole.nickName=row.nickName;
+						vm.dialogFormVisible1 = true;
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+		                axios({
+							method: 'get',
+							url: 'http://localhost:8766/role/role/list',
+							params: {
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								console.log(res.data.data);
+		                        vm.role = res.data.data;
+		                        
+							});
+					},
+					confirm:function(){
+						console.log(vm.adminRole);
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/userAction/userAction/grant',
+							params: {
+								id:vm.adminRole.id,
+								rid:vm.adminRole.rid
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("成功授予角色");
+									vm.dialogFormVisible1 = false;
+								}
+							});
+					},
 					redact:function(row){
 					console.log(row);
 					vm.adminUser=row;
 					this. dialogFormVisible = true;
 					},
 					reSubmit:function(){
-						
+											
 					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);
+				        vm.pageSize = val;
+				        var tokenStr = "";
+	                    var str = document.cookie;
+	                    var arr = str.split(";");
+	                    for(var i=0;i<arr.length;i++){
+	                        var s = arr[i];
+	                        if(s.split("=")[0].trim() == "token"){
+	                            tokenStr = s.split("=")[1];
+	                            break;
+	                        }
+	                    }
+	                    if (tokenStr === "") {
+	                        top.location = "login.html";
+	                    }
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/user/user/list',
+							headers: {'token': tokenStr},
+							params: {
+								page:1,
+								pageSize:vm.pageSize
+								
+							}
+						}).then(function(res) {
+							vm.tableData = res.data.data.list;
+						});
 					},
 					handleCurrentChange:function(val) {
-				        console.log(`当前页: ${val}`);
+				        console.log(val);
+	                    var tokenStr = "";
+	                    var str = document.cookie;
+	                    var arr = str.split(";");
+	                    for(var i=0;i<arr.length;i++){
+	                        var s = arr[i];
+	                        if(s.split("=")[0].trim() == "token"){
+	                            tokenStr = s.split("=")[1];
+	                            break;
+	                        }
+	                    }
+	                    if (tokenStr === "") {
+	                        top.location = "login.html";
+	                    }
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/user/user/list',
+							headers: {'token': tokenStr},
+							params: {
+								page:val,
+								pageSize:vm.pageSize
+								
+							}
+						}).then(function(res) {
+							vm.tableData = res.data.data.list;
+						});
 					},
 					submit:function(){
 						console.log(vm.adminUser.status);

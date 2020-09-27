@@ -54,4 +54,14 @@ public class UserConntroller {
             return new ResultVO(1,"删除失败");
         }
     }
+    @RequestMapping(value = "/grant", method = RequestMethod.POST)
+    public ResultVO grant(@RequestParam int id, @RequestParam int rid,@RequestHeader(required = true) String token) {
+        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        int i = userService.grantRole(id, rid);
+        if (i >0) {
+            return new ResultVO(0,"授予角色成功");
+        } else {
+            return new ResultVO(1,"授予角色失败");
+        }
+    }
 }

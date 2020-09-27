@@ -44,7 +44,7 @@
                         <el-table-column prop="name" label="类型名称"></el-table-column>
                         <el-table-column prop="attributeCount" label="属性数量"></el-table-column>
                         <el-table-column prop="paramCount" label="参数数量"></el-table-column>
-                        <el-table-column label="设置" fixed="right">
+                        <el-table-column label="设置" fixed="right" width="200">
                             <template slot-scope="scope">
                                 <el-button size="mini" @click="attr(scope.row)">属性列表</el-button>
                                 <el-button size="mini" @click="parameter(scope.row)">参数列表</el-button>

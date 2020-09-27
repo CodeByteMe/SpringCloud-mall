@@ -25,7 +25,7 @@ public class FlashPromotionProductRelation {
     @ApiModelProperty(value = "秒杀表编号" ,dataType = "Integer", required = true)
     private Integer flashPromotionId;
     private Integer flashPromotionSessionId;
-    private Integer productId;
+    private String productId;
     @ApiModelProperty(value = "限时购价格" ,dataType = "Integer", required = true)
     private double flashPromotionPrice;
     @ApiModelProperty(value = "限时购数量" ,dataType = "Integer", required = true)

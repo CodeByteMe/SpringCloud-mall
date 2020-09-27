@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.cart.list.dao.CartItemDAO">
+
+    <resultMap id="cartItemMap" type="CartItem">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_sku_id" property="productSkuId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="quantity" property="quantity"/>
+        <result column="price" property="price"/>
+        <result column="product_pic" property="productPic"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_sub_title" property="productSubTitle"/>
+        <result column="member_nickname" property="memberNickname"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="product_category_id" property="productCategoryId"/>
+        <result column="product_brand" property="productBrand"/>
+        <result column="product_attr" property="productAttr"/>
+    </resultMap>
+
+    <select id="getCartItemByMemberId" resultMap="cartItemMap">
+        SELECT id,product_id,product_sku_id,member_id,quantity,price,product_pic,product_name,
+        product_sub_title,member_nickname,create_date,modify_date,product_category_id,product_brand,product_attr
+		FROM oms_cart_item
+		WHERE member_id = #{memberId}
+    </select>
+
+    <delete id="deleteCart">
+        delete from oms_cart_item where id = #{id}
+    </delete>
+</mapper>

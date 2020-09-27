@@ -17,6 +17,8 @@ zuul:
     mall-user-list: /user/**
     mall-user-action: /userAction/**
     mall-menu-list: /menu/**
+    mall-order-add: /addOrder/**
+    mall-role-menu: /rolemenu/**
     mall-admin-order-list: /order/**
     mall-admin-product-category-list: /productCategory/**
     mall-admin-product-attribute-category-list: /productAttributeCategory/**
@@ -29,3 +31,4 @@ zuul:
     mall-admin-order-return-reason: /returnReason/**
     mall-upload-images: /uploadImages/**
     mall-admin-product-sku: /productSku/**
+    mall-admin-spike: /spike/**

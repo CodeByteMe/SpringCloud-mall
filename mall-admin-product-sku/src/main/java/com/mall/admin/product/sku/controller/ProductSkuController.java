@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 /*
  *   作者：官宣轩
@@ -30,19 +31,19 @@ public class ProductSkuController {
     private ProductSkuService productSkuService;
     private ObjectMapper mapper = new ObjectMapper();
 
-    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ApiOperation(value = "后台套餐查询接口", notes = "需要携带token")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })
-    public ResultVO productSkuList( @RequestHeader(required = true) String token) {
+    public ResultVO productSkuList(@RequestParam String productId, @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
 //        String adminId = jws.getBody().getId();
         String issuer = jws.getBody().getIssuer();
         if ("admin".equals(issuer)){
-            List<SkuStock> skuStocks = productSkuService.productSkuList();
+            List<SkuStock> skuStocks = productSkuService.productSkuList(productId);
             return new ResultVO(0,"成功",skuStocks);
         }else {
             return new ResultVO(1,"没有权限,请联系管理员!");
@@ -55,7 +56,7 @@ public class ProductSkuController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })
-    public ResultVO productSkuAdd( @RequestHeader(required = true) String token) {
+    public ResultVO productSkuAdd(@RequestParam String productId,@RequestParam String color,@RequestParam String size,@RequestParam double price,@RequestParam Integer stock, @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
@@ -63,6 +64,13 @@ public class ProductSkuController {
         String issuer = jws.getBody().getIssuer();
         if ("admin".equals(issuer)){
             SkuStock skuStock = new SkuStock();
+            String skuId = UUID.randomUUID().toString().replace("-", "");
+            skuStock.setColor(color);
+            skuStock.setSize(size);
+            skuStock.setProductId(productId);
+            skuStock.setPrice(price);
+            skuStock.setStock(stock);
+            skuStock.setSkuId(skuId);
             boolean b = productSkuService.productSkuAdd(skuStock);
             if (b){
                 return new ResultVO(0,"添加成功");
@@ -80,7 +88,7 @@ public class ProductSkuController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })
-    public ResultVO productSkuDel(@RequestHeader String skuId, @RequestHeader(required = true) String token) {
+    public ResultVO productSkuDel(@RequestParam String skuId, @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等

@@ -13,6 +13,7 @@ import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,7 @@ import java.util.UUID;
 @RestController
 @CrossOrigin
 @RequestMapping("/order")
+@Api(tags = "后台订单接口")
 public class OrderController {
 
     @Resource

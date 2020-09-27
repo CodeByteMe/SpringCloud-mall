@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品分类</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+</head>
+<style>
+    #container{
+        width: 90%;
+    }
+    .text {
+        font-size: 14px;
+    }
+    .item {
+        margin-bottom: 18px;
+    }
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+    .box-card {
+        width: 100%;
+    }
+</style>
+<body>
+    <div id="container">
+        <el-dialog width="30%" title="商品分类添加" :visible.sync="visible" append-to-body>
+            <template>
+                <el-form ref="CategoryData" :model="CategoryData" label-width="100px">
+                    <el-form-item label="分类名称：">
+                        <el-input v-model="CategoryData.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上级分类：">
+                        <el-select v-model="CategoryData.parentId">
+                            <el-option label="无上级分类" :value=0></el-option>
+                            <el-option label="服装" :value=1></el-option>
+                            <el-option label="手机数码" :value=2></el-option>
+                            <el-option label="家用电器" :value=3></el-option>
+                            <el-option label="家用家装" :value=4></el-option>
+                            <el-option label="汽车用品" :value=5></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="数量单位：">
+                        <el-input v-model="CategoryData.productUnit"></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序：">
+                        <el-input type="number" v-model="CategoryData.sort"></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述：">
+                        <el-input v-model="CategoryData.description"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="visible = false">取 消</el-button>
+                    <el-button type="primary" @click="productCategorySubmit">确定</el-button>
+                </div>
+            </template>
+        </el-dialog>
+        <el-dialog width="30%" title="商品分类修改" :visible.sync="visible1" append-to-body>
+            <template>
+                <el-form ref="CategoryData" :model="CategoryData" label-width="100px">
+                    <el-form-item label="分类名称：">
+                        <el-input v-model="CategoryData.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上级分类：">
+                        <el-select v-model="CategoryData.parentId">
+                            <el-option label="无上级分类" :value=0></el-option>
+                            <el-option label="服装" :value=1></el-option>
+                            <el-option label="手机数码" :value=2></el-option>
+                            <el-option label="家用电器" :value=3></el-option>
+                            <el-option label="家用家装" :value=4></el-option>
+                            <el-option label="汽车用品" :value=5></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="数量单位：">
+                        <el-input v-model="CategoryData.productUnit"></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序：">
+                        <el-input type="number" v-model="CategoryData.sort"></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述：">
+                        <el-input v-model="CategoryData.description"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="visible = false">取 消</el-button>
+                    <el-button type="primary" @click="productCategoryEdit">确定</el-button>
+                </div>
+            </template>
+        </el-dialog>
+        <el-card class="box-card" :body-style="{ padding: '0px' }">
+            <div slot="header" class="clearfix">
+                <span><i class="el-icon-tickets"></i> 数据列表</span>
+                <el-button style="float: right;" @click="visible = true">添加</el-button>
+            </div>
+        </el-card>
+        <el-card class="box-card">
+            <div class="text item">
+                <template>
+                    <el-table :data="tableData" height="550" border style="width: 100%">
+                        <el-table-column prop="id" label="编号"></el-table-column>
+                        <el-table-column prop="name" label="分类名称"></el-table-column>
+                        <el-table-column prop="level" label="级别"></el-table-column>
+                        <el-table-column prop="productCount" label="商品数量"></el-table-column>
+                        <el-table-column prop="productUnit" label="数量单位"></el-table-column>
+                        <!-- <el-table-column prop="navStatus" label="导航栏">
+                            <template scope="scope">
+                                <el-switch
+                                    on-color="#5B7BFA"
+                                    off-color="#dadde5"
+                                    :active-value="1"
+								    :inactive-value="0"
+                                    v-model="scope.row.navStatus" 
+                                    @change=change1(scope.row)
+                                >
+                                </el-switch>
+                                </template>
+                        </el-table-column> -->
+                        <!-- <el-table-column prop="showStatus" label="是否显示">
+                            <template scope="scope">
+                                <el-switch
+                                    on-color="#5B7BFA"
+                                    off-color="#dadde5"
+                                    :active-value="1"
+								    :inactive-value="0"
+                                    v-model="scope.row.showStatus" 
+                                    @change=change2(scope.row)
+                                >
+                                </el-switch>
+                                </template>
+                        </el-table-column> -->
+                        <el-table-column prop="sort" label="排序"></el-table-column>
+                        <el-table-column label="设置" fixed="right">
+                            <template slot-scope="scope">
+                                <el-button v-if="scope.row.level==0" size="mini" @click="findSon(scope.row)">查看下级</el-button>
+                                <el-button disabled v-if="scope.row.level==1" size="mini" @click="findSon(scope.row)">查看下级</el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" fixed="right" width="250">
+                            <template slot-scope="scope">
+                                <el-button size="mini" @click="edit(scope.row)">编辑</el-button>
+                                <el-button size="mini" type="danger" @click.native.prevent="productCategoryDelete(scope.row)">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+                <template>
+                    <div class="block" style="margin-bottom: 3.5rem;">
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                        </el-pagination>
+                    </div>
+                </template>
+            </div>
+        </el-card>
+    </div>
+</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el:"#container",
+            data:{
+                tableData:[],
+                total:100,
+                currentPage4:1,
+                pageSize:5,
+                id:0,
+                visible:false,
+                visible1:false,
+                CategoryData:{
+                    name:"",
+                    parentId:0,
+                    productUnit:"",
+                    sort:0,
+                    description:"",
+                    productCategoryId:0
+                }
+            },
+            beforeMount:function(){
+                var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+                axios({
+					method: 'get',
+					url: 'http://localhost:8766/productCategory/productCategory/list',
+					params: {
+						page: 1,
+						pageSize: 5
+					},
+                    headers: {
+                        'token': tokenStr
+                    }
+					})
+					.then(function(res){
+						console.log(res.data.data);
+                        vm.tableData = res.data.data.list;
+                        vm.total = res.data.data.total;
+					});
+            },
+            methods:{
+                change1:function(row){
+                    console.log(row)
+                },
+                change2:function(row){
+                    console.log(row)
+                },
+                next:function(){
+                    this.active++;
+                },
+                pre:function() {
+                    this.active--;
+                },
+                handleSizeChange:function(event){
+					console.log(event);
+                    vm.pageSize = event;
+                    console.log(vm.tableData[0].level);
+                    if (vm.tableData[0].level == 0){
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:8766/productCategory/productCategory/list',
+                            headers: {'token': tokenStr},
+                            params: {
+                                pageSize:vm.pageSize,
+                                page:1
+                            }
+                        }).then(function(res) {
+                            vm.tableData = res.data.data.list;
+                        });
+                    }else if(vm.tableData[0].level == 1){
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:8766/productCategory/productCategory/listByparentId',
+                            headers: {'token': tokenStr},
+                            params: {
+                                pageSize:vm.pageSize,
+                                page:1,
+                                parentId: vm.id
+                            }
+                        }).then(function(res) {
+                            vm.tableData = res.data.data.list;
+                        });
+                    }
+                    
+				},
+                handleCurrentChange:function(event){
+					console.log(event);
+                    if (vm.tableData[0].level == 0){
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:8766/productCategory/productCategory/list',
+                            headers: {'token': tokenStr},
+                            params: {
+                                pageSize:vm.pageSize,
+                                page:event
+                            }
+                        }).then(function(res) {
+                            vm.tableData = res.data.data.list;
+                        });
+                    }else if(vm.tableData[0].level == 1){
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:8766/productCategory/productCategory/listByparentId',
+                            headers: {'token': tokenStr},
+                            params: {
+                                pageSize:vm.pageSize,
+                                page:event,
+                                parentId: vm.id
+                            }
+                        }).then(function(res) {
+                            vm.tableData = res.data.data.list;
+                        });
+                    }
+				},
+                findSon:function(row){
+                    console.log(row);
+                    vm.id = row.id;
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'get',
+                        url: 'http://localhost:8766/productCategory/productCategory/listByparentId',
+                        params: {
+                            page: 1,
+                            pageSize: 5,
+                            parentId: vm.id
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res.data.data);
+                        vm.tableData = res.data.data.list;
+                        vm.total = res.data.data.total;
+                    });
+                },
+                productCategorySubmit:function(){
+                    console.log(vm.CategoryData);
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8766/productCategoryAdd/productCategoryAdd/add',
+                        params: {
+                            name:vm.CategoryData.name,
+                            parentId:vm.CategoryData.parentId,
+                            productUnit:vm.CategoryData.productUnit,
+                            sort:vm.CategoryData.sort,
+                            description:vm.CategoryData.description
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res.data);
+                        if (res.data.code === 0) {
+							vm.$message({
+								message: '添加成功',
+								type: 'success'
+							});
+						setTimeout(function () {
+							location.href = "product-category-list.html";
+						},2000);
+					    } else{
+					  	  vm.$message.error({
+					  		  message: '添加失败，请联系管理员！'
+					  	  });
+					    }
+                    });
+                },
+
+                edit:function(row){
+                    console.log(row);
+                    vm.visible1 = true;
+                    vm.CategoryData.name = row.name;
+                    vm.CategoryData.parentId = row.parentId;
+                    vm.CategoryData.productUnit = row.productUnit;
+                    vm.CategoryData.sort = row.sort;
+                    vm.CategoryData.description = row.description;
+                    vm.CategoryData.productCategoryId = row.id;
+                },
+                productCategoryDelete:function(row){
+                    console.log(row);
+                    this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+                        var tokenStr = "";
+                        var str = document.cookie;
+                        var arr = str.split(";");
+                        for(var i=0;i<arr.length;i++){
+                            var s = arr[i];
+                            if(s.split("=")[0].trim() == "token"){
+                                tokenStr = s.split("=")[1];
+                                break;
+                            }
+                        }
+                        if (tokenStr === "") {
+                            top.location = "login.html";
+                        }
+						axios({
+							method: 'delete',
+							url: 'http://localhost:8766/productCategoryUd/productCategoryUd/del',
+							headers: {'token': tokenStr},
+							params: {
+								productCategoryId:row.id
+							}
+					    }).then(function(res) {
+                            console.log(res);
+                            if (res.data.code === 0) {
+                                vm.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    location.href = "product-category-list.html";
+                                },2000);
+                            } else{
+                                vm.$message.error({
+                                    message: '删除失败'
+                                });
+                            }
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });          
+                    });
+                },
+                productCategoryEdit:function(){
+                    var tokenStr = "";
+                    var str = document.cookie;
+                    var arr = str.split(";");
+                    for(var i=0;i<arr.length;i++){
+                        var s = arr[i];
+                        if(s.split("=")[0].trim() == "token"){
+                            tokenStr = s.split("=")[1];
+                            break;
+                        }
+                    }
+                    if (tokenStr === "") {
+                        top.location = "login.html";
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8766/productCategoryUd/productCategoryUd/update',
+                        params: {
+                            name:vm.CategoryData.name,
+                            parentId:vm.CategoryData.parentId,
+                            productUnit:vm.CategoryData.productUnit,
+                            sort:vm.CategoryData.sort,
+                            description:vm.CategoryData.description,
+                            productCategoryId:vm.CategoryData.productCategoryId
+                        },
+                        headers: {
+                            'token': tokenStr
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res.data);
+                        if (res.data.code === 0) {
+							vm.$message({
+								message: '修改成功',
+								type: 'success'
+							});
+						setTimeout(function () {
+							location.href = "product-category-list.html";
+						},2000);
+					    } else{
+					  	  vm.$message.error({
+					  		  message: '修改失败，请联系管理员！'
+					  	  });
+					    }
+                    });
+                }
+            }
+        });
+    </script>
+</html>

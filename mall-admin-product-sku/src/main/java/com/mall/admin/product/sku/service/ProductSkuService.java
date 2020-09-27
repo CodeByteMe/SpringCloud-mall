@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ProductSkuService {
 
-    public List<SkuStock> productSkuList(); //套餐查询
+    public List<SkuStock> productSkuList(String productId); //套餐查询
 
     public boolean productSkuAdd(SkuStock skuStock); //套餐添加
 

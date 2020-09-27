@@ -201,7 +201,7 @@
 								<div class="row align-items-center">
 									<div class="col-xl-2 col-lg-2">
 										<div class="logo">
-											<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 200px;height: 200px;"></a>
+											<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 										</div>
 									</div>
 									<div class="col-xl-8 col-lg-9">
@@ -237,7 +237,7 @@
 					</div>
 				</header>
 				<!-- body -->
-				<div style="width: 70%;margin-left: 300px;margin-top: 100px;">
+				<div style="width: 80%;margin-left: 300px;margin-top: 100px;">
 					<h5>我的订单</h3>
 				</div>
 
@@ -381,9 +381,11 @@
 			</div>
 	</body>
 	<!-- JS here -->
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
 	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
-	<script src="../assets/js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script src="../assets/js/vendor/modernizr-3.5.0.min.js"></script>
 	<script src="../assets/js/vendor/jquery-1.12.4.min.js"></script>
 	<script src="../assets/js/popper.min.js"></script>
@@ -431,10 +433,6 @@
 				axios({
 					method: 'get',
 					url: 'http://localhost:8766/order/order/memberList',
-					params: {
-						page: 1,
-						pageSize: 100
-					},
 					headers: {
 						'token': tokenStr,
 					}

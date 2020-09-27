@@ -18,9 +18,9 @@
 			
 			<el-card class="box-card" style="width: 48%;margin: 0 auto; margin-bottom: 5rem;">
 				<div slot="header" class="clearfix">
-					<span>订单设置</span>
+					<span>秒杀设置</span>
 				</div>
-				<el-form label-width="80px">
+				<el-form label-width="100px">
 					<el-form-item label="秒杀标题">
 					    <el-input v-model="title"></el-input>
 					</el-form-item>
@@ -37,15 +37,13 @@
 						</div>
 					</el-form-item>
 					<el-form-item label="上下线状态">
-						<el-switch v-model="status" active-color="#13ce66" inactive-color="#ff4949">
+						<el-switch on-color="#5B7BFA" off-color="#dadde5" :active-value="1" :inactive-value="0"
+						 v-model="status" @change=change>
 						</el-switch>
 					</el-form-item>
-					<el-form-item label="秒杀时间段名称">
-					    <el-input v-model="createTime"></el-input>
-					</el-form-item>
 					<el-form-item label="关联的商品">
-						<el-select v-model="product" placeholder="请选择">
-						    <el-option v-for="item in productId" :key="item.value" :label="item.label" :value="item.value">
+						<el-select v-model="productId" placeholder="请选择">
+						    <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id">
 						    </el-option>
 						</el-select>
 					</el-form-item>
@@ -82,25 +80,44 @@
 		var vm = new Vue({
 			el:"#container",
 			data:{
+				token: "",
 				title:"",
 				startDate:"",
 				endDate:"",
 				status:"",
 				createTime:"",
-				productId:[
-					{
-						label:"哇哈哈",
-						value:"dasuh214"
-					},
-					{
-						label:"康师傅",
-						value:"daju2"
-					}
-				],
+				product:[],
 				flashPromotionPrice:"",
 				flashPromotionCount:"",
 				flashPromotionLimit:"",
-				product:""
+				productId:""
+			},
+			beforeMount:function(){
+				var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for(var i=0;i<arr.length;i++){
+					var s = arr[i];
+					if(s.split("=")[0].trim() == "token"){
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+				axios({
+				  method: 'get',
+				  url: 'http://localhost:8766/spike/spike/product',
+				  headers: {'token': tokenStr}
+				})
+				.then(function(res){
+					console.log(res);
+					if(res.data.code == 0){
+						vm.product = res.data.data;
+					}
+				});
+				this.token = tokenStr;
 			},
 			methods:{
 				onSubmit:function(){
@@ -108,11 +125,40 @@
 					console.log(vm.startDate);
 					console.log(vm.endDate);
 					console.log(vm.status);
-					console.log(vm.createTime);
-					console.log(vm.product);
+					console.log(vm.productId);
 					console.log(vm.flashPromotionPrice);
 					console.log(vm.flashPromotionCount);
 					console.log(vm.flashPromotionLimit);
+					axios({
+					  method: 'post',
+					  url: 'http://localhost:8766/spike/spike/insert',
+					  headers: {'token': vm.token},
+					  params: {
+						title: vm.title,
+						startDate: vm.startDate,
+						endDate: vm.endDate,
+						status: vm.status,
+						productId: vm.productId,
+						flashPromotionPrice: vm.flashPromotionPrice,
+						flashPromotionCount: vm.flashPromotionCount,
+						flashPromotionLimit: vm.flashPromotionLimit
+					  }
+					})
+					.then(function(res){
+						console.log(res);
+						if(res.data.code == 0){
+							
+							vm.$message('添加成功');
+							// setTimeout(function () {
+							// 	location.href="home.html";
+							// },2000);
+						}else{
+							vm.$message('添加失败，请稍后重试');
+						}
+					});
+				},
+				change:function(){
+					console.log(vm.status);
 				}
 			}
 		});
