@@ -29,3 +29,4 @@ zuul:
     mall-admin-order-return-reason: /returnReason/**
     mall-upload-images: /uploadImages/**
     mall-admin-product-sku: /productSku/**
+    mall-admin-spike: /spike/**

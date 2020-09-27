@@ -2,6 +2,5 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      name: mall-cart-list
+      name: mall-admin-spike
       label: Dev
-

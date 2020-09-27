@@ -80,3 +80,6 @@ mall-admin-order-return-apply/*.iml
 
 mall-admin-order-return-reason/target
 mall-admin-order-return-reason/*.iml
+
+mall-admin-spike/target
+mall-admin-spike/*.iml
