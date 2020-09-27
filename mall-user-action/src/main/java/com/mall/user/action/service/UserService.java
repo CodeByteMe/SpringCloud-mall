@@ -8,4 +8,5 @@ public interface UserService {
     public int delectUser(int id);
     public int addUser(AdminUser adminUser);
     public String getCompanyId(String adminId);
+    public int grantRole(int id,int rid);
 }

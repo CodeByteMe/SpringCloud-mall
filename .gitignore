@@ -60,6 +60,9 @@ mall-product-list/*.iml
 mall-role-list/target
 mall-role-iist/*.iml
 
+mall-role-menu/target
+mall-role-menu/*.iml
+
 mall-upload-images/target
 mall-upload-images/*.iml
 
