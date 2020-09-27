@@ -9,4 +9,5 @@ public interface UserDAO {
     public int delectUser(int id);
     public int addUser(AdminUser adminUser);//添加用户
     public String getCompanyId(String adminId);//通过登录的id拿到公司id
+    public int grantRole();
 }
