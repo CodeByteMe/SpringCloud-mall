@@ -2,6 +2,9 @@ package com.mall.admin.spike.service;
 
 import com.mall.common.pojo.FlashPromotion;
 import com.mall.common.pojo.FlashPromotionProductRelation;
+import com.mall.common.pojo.Product;
+
+import java.util.List;
 
 /**
  * SpikeService
@@ -17,4 +20,7 @@ public interface SpikeService {
      * @return
      */
     public boolean insertSpike(FlashPromotion flashPromotion,FlashPromotionProductRelation flashPromotionProductRelation);
+    public List<Product> listProductByAdminId(String adminId);
+    public List<FlashPromotion> listFlashPromotion(String adminId);
+    public boolean deleteFlashPromotion(Integer id);
 }
