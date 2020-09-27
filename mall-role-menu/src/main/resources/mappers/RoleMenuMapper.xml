@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.role.menu.dao.RmenuDAO">
+<!--    public List<RoleMenuRelation> selectById(int roleId);-->
+    <select id="selectById" resultSets="java.util.List" resultType="String">
+        select menu_id
+        from ums_role_menu_relation
+        where role_id=#{roleId}
+    </select>
+<!--    public int delById(int roleId);-->
+    <delete id="delById">
+        delete from ums_role_menu_relation
+        where role_id=#{roleId}
+    </delete>
+<!--    public int insertById(@Param("roleId") int roleId, @Param("menuId") int menuId);-->
+    <insert id="insertById">
+        insert into ums_role_menu_relation(role_id,menu_id)
+        values (#{roleId},#{menuId})
+    </insert>
+</mapper>
