@@ -59,10 +59,11 @@
         <result column="sale" property="sale"/>
         <result column="promotion_price" property="promotionPrice"/>
         <result column="lock_stock" property="lockStock"/>
-        <result column="sp_data" property="spData"/>
+        <result column="color" property="color"/>
+        <result column="size" property="size"/>
     </resultMap>
     <select id="getSkuStockByProductId" resultMap="skuStockMap">
-       	select id,sku_id,product_id,price,stock,low_stock,pic,sale,promotion_price,lock_stock,sp_data
+       	select id,sku_id,product_id,price,stock,low_stock,pic,sale,promotion_price,lock_stock,color,size
         from pms_sku_stock
 		WHERE product_id = #{productId}
     </select>

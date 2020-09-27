@@ -1,8 +1,8 @@
-package com.mall.cartlist.service.impl;
+package com.mall.cart.list.service.impl;
 
 
-import com.mall.cartlist.dao.CartItemDAO;
-import com.mall.cartlist.service.CartItemService;
+import com.mall.cart.list.dao.CartItemDAO;
+import com.mall.cart.list.service.CartItemService;
 import com.mall.common.pojo.CartItem;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +18,10 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public List<CartItem> getCartItemByMemberId(String memberId) {
         return cartItemDAO.getCartItemByMemberId(memberId);
+    }
+
+    @Override
+    public boolean deleteCart(int id) {
+        return cartItemDAO.deleteCart(id) > 0;
     }
 }

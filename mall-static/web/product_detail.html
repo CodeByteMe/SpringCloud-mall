@@ -98,7 +98,7 @@
 						<div class="row align-items-center">
 							<div class="col-xl-2 col-lg-2">
 								<div class="logo">
-									<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 200px;height: 200px;"></a>
+									<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 								</div>
 							</div>
 							<div class="col-xl-8 col-lg-9">
@@ -163,10 +163,10 @@
 						<span class="Hgt">库存{{product.stock}}</span>
 					</div>
 					<div id="" style="margin: auto;">
-						颜色类型：<br><el-button plain v-for="item in skuData">{{item.spData}}</el-button>
+						颜色类型：<br><el-button plain v-for="item in skuData">{{item.color}}+{{item.size}}</el-button>
 					</div>
 					<div class="nobdr-btns">
-						<button class="addcart hu"><img src="../assets/img/shop.png" width="25" height="25" />加入购物车</button>
+						<button class="addcart hu"><img src="../assets/img/shop.png" width="25" height="25" / @click="goCart">加入购物车</button>
 						<button class="addcart yh"><img src="../assets/img/ht.png" width="25" height="25" />立即购买</button>
 					</div>
 					<div class="guarantee">
@@ -180,9 +180,11 @@
 			</div>
 		</div>
 	</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
 	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
-	<script src="../assets/js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script src="../assets/js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		var vm = new Vue({
@@ -207,7 +209,9 @@
 					});
 			},
 			methods:{
-				
+				goCart:function(){
+					
+				}
 			}
 		});
 	</script>
