@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.product.category.add.dao.ProductCategoryDAO">
+
+<!--    public boolean productCategoryAdd(ProductCategory productCategory);    //添加商品分类-->
+    <insert id="productCategoryAdd">
+        insert into pms_product_category(parent_id,name,level,product_unit,sort,description)
+        values (#{parentId},#{name},#{level},#{productUnit},#{sort},#{description})
+    </insert>
+
+</mapper>
