@@ -57,7 +57,8 @@ public class AddressServiceImpl implements AddressService {
     public boolean updateAddressStatus(String addressId,int defaultStatus,String memberId){
         String s = addressDAO.selectAddressIdByDefaultStatus(1, memberId);
         if(s!=null){
-            return addressDAO.updateAddressStatus(s,0, memberId)>0;
+            addressDAO.updateAddressStatus(s,0, memberId);
+            return addressDAO.updateAddressStatus(addressId,1,memberId)>0;
         }else {
             return addressDAO.updateAddressStatus(addressId,1,memberId)>0;
         }

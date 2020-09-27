@@ -1,4 +1,4 @@
-package com.mall.cartlist;
+package com.mall.cart.list;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

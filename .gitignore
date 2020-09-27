@@ -54,6 +54,9 @@ mall-eureka/*.iml
 mall-menu-list/target
 mall-menu-list/*.iml
 
+mall-order-add-ud/target
+mall-order-add-ud/*.iml
+
 mall-product-list/target
 mall-product-list/*.iml
 

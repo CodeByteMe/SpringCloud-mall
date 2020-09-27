@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mall</groupId>
-    <artifactId>mall-address-list</artifactId>
+    <artifactId>mall-order-add</artifactId>
     <version>1.0.0</version>
-    <name>mall-address-list</name>
-    <description>地址列表</description>
+    <name>mall-order-add</name>
+    <description>录单服务</description>
 
     <properties>
         <java.version>1.8</java.version>

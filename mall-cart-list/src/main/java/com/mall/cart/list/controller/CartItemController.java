@@ -1,7 +1,7 @@
-package com.mall.cartlist.controller;
+package com.mall.cart.list.controller;
 
 
-import com.mall.cartlist.service.CartItemService;
+import com.mall.cart.list.service.CartItemService;
 import com.mall.common.pojo.CartItem;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
@@ -42,6 +42,27 @@ public class CartItemController {
             }
         }else {
             return new ResultVO(1, "权限校验未通过", null);
+        }
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @ApiOperation(value = "前台用户购物车删除接口", notes = "用户查询自己所有购物车的接口")
+    @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    public ResultVO getCartList(@RequestParam("id") Integer id,@RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            boolean b = cartItemService.deleteCart(id);
+            if (b) {
+                return new ResultVO(0, "删除成功");
+            } else {
+                return new ResultVO(1, "删除失败");
+            }
+        }else {
+            return new ResultVO(1, "权限校验未通过");
         }
     }
 }

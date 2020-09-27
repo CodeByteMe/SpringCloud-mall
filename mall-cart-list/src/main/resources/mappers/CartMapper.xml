@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace = 所需实现的接口全限定名-->
-<mapper namespace="com.mall.cartlist.dao.CartItemDAO">
+<mapper namespace="com.mall.cart.list.dao.CartItemDAO">
 
     <resultMap id="cartItemMap" type="CartItem">
         <id column="id" property="id"/>
@@ -24,8 +24,13 @@
     </resultMap>
 
     <select id="getCartItemByMemberId" resultMap="cartItemMap">
-        SELECT id,product_id,product_sku_id,member_id,quantity,price,product_pic,product_name,product_sub_title,member_nickname,create_date,modify_date,product_category_id,product_brand,product_attr
-				FROM oms_cart_item
-				WHERE member_id = #{memberId}
+        SELECT id,product_id,product_sku_id,member_id,quantity,price,product_pic,product_name,
+        product_sub_title,member_nickname,create_date,modify_date,product_category_id,product_brand,product_attr
+		FROM oms_cart_item
+		WHERE member_id = #{memberId}
     </select>
+
+    <delete id="deleteCart">
+        delete from oms_cart_item where id = #{id}
+    </delete>
 </mapper>

@@ -9,7 +9,7 @@
 		<title>巢庭万家</title>
 		<link rel="stylesheet" href="../assets/css/global.css">
 		<link rel="stylesheet" href="../assets/css/order.css">
-
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../assets/css/animate.min.css">
 		<link rel="stylesheet" href="css/magnific-popup.css">
@@ -211,7 +211,7 @@
 												</li>
 												<li class="has-sub"><a href="#">个人中心</a>
 													<ul>
-														<li><a href="#">购物车</a></li>
+														<li><a href="cart.html">购物车</a></li>
 														<li><a href="order_list.html">我的订单</a></li>
 														<li><a href="address_list.html">地址管理</a></li>
 													</ul>
@@ -234,64 +234,64 @@
 				</div>
 			</header>
 
+			<div style="width: 70%;margin-left: 300px;margin-top: 100px;">
+				<h5>确认订单信息</h3>
+			</div>
+			<div id="" style="margin-top: 40px;" style="width: 70%;margin: auto;">
+				<el-form label-width="200px" style="width: 70%;margin: auto;">
 
-			<div class="page-shopping-cart" id="shopping-cart">
-				<h4 class="cart-title">购物清单</h4>
-				<div class="cart-product clearfix">
-					<table>
-						<thead>
-							<tr class="cart-product-title">
-								
-								<th class="td-product">商品</th>
-								<th class="td-num">数量</th>
-								<th class="td-price">单价(元)</th>
-								<th class="td-total">金额(元)</th>
-								<th class="td-do">操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="(item,index) in productList" :key="index">
-								
-								<td class="td-product"><img :src="item.productPic" width="98" height="98">
-									<div class="product-info">
-										<h3>{{item.productName}}</h3>
-										<p>品牌：{{item.productBrand}}</p>
-										<p>规格:{{item.productSubTitle}}&nbsp;&nbsp;</p>
-									</div>
-									<div class="clearfix"></div>
-								</td>
-								<td class="td-num">
-									<div class="product-num">
-										<a href="javascript:;" class="num-reduce num-do fl" @click="minus(item)"><span></span></a>
-										<input type="text" class="num-input" v-model="item.quantity" @input="search($event,index)" @blur="check($event,index)">
-										<a href="javascript:;" class="num-add num-do fr" @click="add(item)"><span></span></a>
-									</div>
-								</td>
-								<td class="td-price">
-									<p class="red-text">￥<span class="price-text">{{item.price}}</span></p>
-								</td>
-								<td class="td-total">
-									<p class="red-text">￥<span class="total-text">{{(item.price*item.quantity)}}</span></p>
-								</td>
-								<td class="td-do"><a href="javascript:;" class="product-delect" @click="deleteOneProduct(item)">删除</a></td>
-							</tr>
+					<el-form-item label="选择收货地址">
+						<el-select v-model="addr" placeholder="请选择收货地址">
+							<el-option v-for="item in tableData" :key="item.addressId" :label="item.name+' '+item.province+' '+item.city+' '+item.region+' '+item.detailAddress+' '+item.phoneNumber"
+							 :value="item.addressId"></el-option>
+						</el-select>
+					</el-form-item>
+				</el-form>
 
-							<!-- 购物车为空时显示 -->
-							<tr>
-								<td colspan="7" v-show="productList == undefined || productList.length <= 0" class="cartEmpty">
-									购物车什么也没有，<span @click="$router.push({path:'/home/first'})">去逛逛&gt;</span>
-								</td>
-							</tr>
+				<div class="page-shopping-cart" id="shopping-cart">
+					<div class="cart-product clearfix" style="width:70%;margin: auto;">
+						<table>
+							<thead>
+								<tr class="cart-product-title">
 
-						</tbody>
-					</table>
+									<th class="td-product">商品</th>
+									<th class="td-num">数量</th>
+									<th class="td-price">单价(元)</th>
+									<th class="td-total">金额(元)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(item,index) in productList" :key="index">
+
+									<td class="td-product"><img :src="item.productPic" width="98" height="98">
+										<div class="product-info">
+											<p>{{item.productName}}</p>
+											<p>品牌：{{item.productBrand}}</p>
+										</div>
+										<div class="clearfix"></div>
+									</td>
+									<td class="td-num">
+										<div class="">
+											<p>{{item.quantity}}</p>
+										</div>
+									</td>
+									<td class="td-price">
+										<p class="red-text">￥<span class="price-text">{{item.price}}</span></p>
+									</td>
+									<td class="td-total">
+										<p class="red-text">￥<span class="total-text">{{(item.price*item.quantity)}}</span></p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="cart-product-info">
+						<a class="btn-buy fr">提交订单</a>
+						<p class="fr product-total">￥<span>{{money}}</span></p>
+						<p class="fr check-num"><span>{{num}}</span>件商品总计（不含运费）：</p>
+					</div>
 				</div>
-				<div class="cart-product-info">
-					<a class="keep-shopping" href="product_list.html">继续购物</a>
-					<a class="btn-buy fr" @click="jieSuan()">去结算</a>
-					<p class="fr product-total">￥<span>{{money}}</span></p>
-					<p class="fr check-num"><span>{{num}}</span>件商品总计（不含运费）：</p>
-				</div>
+
 			</div>
 		</div>
 	</body>
@@ -319,16 +319,19 @@
 	<script src="../assets/js/jquery.magnific-popup.min.js"></script>
 	<script src="../assets/js/element-in-view.js"></script>
 	<script src="../assets/js/main.js"></script>
-	<script>
+	<script type="text/javascript">
 		var vm = new Vue({
 			el: '#dongyang',
 			data: {
-				productList: [],
 				tableData: [],
-				money:0,
-				num:0
+				productlist: [],
+				addr: "",
+				money: 0,
+				num: 0
 			},
 			beforeMount: function() {
+				this.productList = JSON.parse(localStorage.getItem("productList"))
+				console.log(localStorage.getItem("productList"));
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
@@ -344,92 +347,74 @@
 				}
 				axios({
 					method: 'get',
-					url: 'http://localhost:8766/cart/cart/list',
+					url: 'http://localhost:8766/address/address/list',
 					headers: {
 						'token': tokenStr,
 					}
 				}).then(function(res) {
-					vm.productList = res.data.data;
-					console.log(vm.productList);
-					vm.productList.forEach((item,index) => {
-						vm.money+=item.price*item.quantity;
+					vm.tableData = res.data.data;
+					console.log(vm.tableData);
+					vm.productList.forEach((item, index) => {
+						vm.money += item.price * item.quantity;
 					});
-					vm.productList.forEach((item,index) => {
-						vm.num+=item.quantity;
+					vm.productList.forEach((item, index) => {
+						vm.num += item.quantity;
 					});
 				});
-				
 			},
 			methods: {
-				//数量-
-				minus(item) {
-					if (item.quantity > 1) {
-						item.quantity--
-						vm.money = vm.money - item.price;
-						vm.num = vm.num -1;
-					}
-					
-					// vm.productList.forEach((item,index) => {
-					// 	vm.money-=item.price*item.quantity;
-					// });
-					
-					// vm.productList.forEach((item,index) => {
-						
-					// });
-				},
-				//数量+
-				add(item) {
-					//请求商品库存，传入商品类别，id
-					item.quantity++
-					vm.money = 0;
-					vm.productList.forEach((item,index) => {
-						vm.money+=item.price*item.quantity;
-					});
-					vm.num = vm.num + 1;
-					// vm.productList.forEach((item,index) => {
-						
-					// });
-				},
-				deleteOneProduct:function(item){
-					var tokenStr = "";
-					var str = document.cookie;
-					var arr = str.split(";");
-					for (var i = 0; i < arr.length; i++) {
-						var s = arr[i];
-						if (s.split("=")[0].trim() == "token") {
-							tokenStr = s.split("=")[1];
-							break;
-						}
-					}
-					console.log(item.id)
-					console.log(tokenStr)
+				updatesubmit: function(event) {
+					vm.dialogVisible = false;
 					axios({
-						method: 'delete',
-						url: 'http://localhost:8766/cart/cart/delete',
+						method: 'post',
+						url: 'http://localhost:8766/address/address/update',
 						headers: {
-							'token': tokenStr,
+							'token': vm.token
 						},
 						params: {
-							id: item.id
+							addressId: vm.updaterow.addressId,
+							name: vm.updaterow.name,
+							phoneNumber: vm.updaterow.phoneNumber,
+							postCode: vm.updaterow.postCode,
+							province: vm.updaterow.province,
+							city: vm.updaterow.city,
+							region: vm.updaterow.region,
+							detailAddress: vm.updaterow.detailAddress
 						}
 					}).then(function(res) {
 						if (res.data.code === 1) {
-							vm.$message('删除失败');
+							vm.$message('更新失败');
 						}
 						if (res.data.code == 0) {
-							vm.$message('删除成功');
+							vm.$message('更新成功');
 							setTimeout(function() {
-								location.href = "cart.html";
+								location.href = "address_list.html";
 							}, 2000);
 						}
 					});
 				},
-				jieSuan:function(){
-					let pro = JSON.stringify(vm.productList);
-					console.log(pro);
-					localStorage.setItem("productList", pro);
-					
-					location.href = "submitOrder.html";
+				updateStatus: function(row) {
+					console.log(row.addressId)
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/address/address/updateStatus',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							addressId: row.addressId
+						}
+					}).then(function(res) {
+						if (res.data.code === 1) {
+							vm.$message('更新失败');
+						}
+						if (res.data.code == 0) {
+							vm.$message('更新成功');
+							setTimeout(function() {
+								location.href = "address_list.html";
+							}, 2000);
+						}
+					});
 				}
 			}
 		})
