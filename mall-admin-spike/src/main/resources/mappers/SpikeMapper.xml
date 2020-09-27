@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.mall.admin.spike.dao.SpikeDAO">
+<!--    public int insertSpike(FlashPromotion flashPromotion);-->
+    <insert id="insertSpike" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into sms_flash_promotion(title,start_date,
+        end_date,status,create_time)
+        values(#{title},#{startDate},#{endDate},#{status},#{createTime})
+    </insert>
+<!--    public int insertSpikeProduct(FlashPromotionProductRelation flashPromotionProductRelation);-->
+    <insert id="insertSpikeProduct">
+        insert into sms_flash_promotion_product_relation(flash_promotion_id,
+        flash_promotion_session_id,product_id,flash_promotion_price,
+        flash_promotion_count,flash_promotion_limit,sort)
+        values(#{flashPromotionId},#{flashPromotionSessionId},#{productId},#{flashPromotionPrice},
+        #{flashPromotionCount},#{flashPromotionLimit},#{sort})
+    </insert>
+</mapper>

@@ -37,11 +37,9 @@
 						</div>
 					</el-form-item>
 					<el-form-item label="上下线状态">
-						<el-switch v-model="status" active-color="#13ce66" inactive-color="#ff4949">
+						<el-switch on-color="#5B7BFA" off-color="#dadde5" :active-value="1" :inactive-value="0"
+						 v-model="status" @change=change>
 						</el-switch>
-					</el-form-item>
-					<el-form-item label="秒杀时间段名称">
-					    <el-input v-model="createTime"></el-input>
 					</el-form-item>
 					<el-form-item label="关联的商品">
 						<el-select v-model="product" placeholder="请选择">
@@ -108,11 +106,13 @@
 					console.log(vm.startDate);
 					console.log(vm.endDate);
 					console.log(vm.status);
-					console.log(vm.createTime);
 					console.log(vm.product);
 					console.log(vm.flashPromotionPrice);
 					console.log(vm.flashPromotionCount);
 					console.log(vm.flashPromotionLimit);
+				},
+				change:function(){
+					console.log(vm.status);
 				}
 			}
 		});
