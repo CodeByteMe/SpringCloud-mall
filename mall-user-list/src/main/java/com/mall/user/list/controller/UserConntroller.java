@@ -25,7 +25,7 @@ public class UserConntroller {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ApiOperation(value = "后台用户列表接口", notes = "需要携带token")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageInfo", value = "从第几行显示",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "page", value = "从第几行显示",required = true, dataType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "一页显示多少数据",required = true, dataType = "int"),
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })

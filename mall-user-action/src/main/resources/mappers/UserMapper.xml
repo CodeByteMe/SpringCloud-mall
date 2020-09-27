@@ -34,6 +34,9 @@
         FROM ums_admin
         where admin_id =#{adminId}
     </select>
-
+<!--    public int grantRole();-->
+    <insert id="grantRole">
+        insert into
+    </insert>
 
 </mapper>

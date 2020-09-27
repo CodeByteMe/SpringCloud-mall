@@ -131,14 +131,14 @@
 						</el-table-column>
 					  </el-table>
 					</template>
-			<el-pagination
-				      @size-change="handleSizeChange"
-				      @current-change="handleCurrentChange"
-				      :current-page.sync="currentPage3"
-				      :page-size="100"
-				      layout="prev, pager, next, jumper"
-				      :total="1000">
-			    </el-pagination>
+			<template>
+                    <div class="block" style="margin-bottom: 3.5rem;">
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                        </el-pagination>
+                    </div>
+                </template>
 			    
 			    
 			    
@@ -181,7 +181,7 @@
 					token:"",
                 	total: 100,
 					keyword:"",
-					currentPage3:5,
+					currentPage4:5,
 					dialogVisible: false,
 					dialogTableVisible: false,
         			dialogFormVisible: false,
@@ -265,9 +265,60 @@
 					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);
+				        vm.pageSize = val;
+				        var tokenStr = "";
+	                    var str = document.cookie;
+	                    var arr = str.split(";");
+	                    for(var i=0;i<arr.length;i++){
+	                        var s = arr[i];
+	                        if(s.split("=")[0].trim() == "token"){
+	                            tokenStr = s.split("=")[1];
+	                            break;
+	                        }
+	                    }
+	                    if (tokenStr === "") {
+	                        top.location = "login.html";
+	                    }
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/user/user/list',
+							headers: {'token': tokenStr},
+							params: {
+								page:1,
+								pageSize:vm.pageSize
+								
+							}
+						}).then(function(res) {
+							vm.tableData = res.data.data.list;
+						});
 					},
 					handleCurrentChange:function(val) {
-				        console.log(`当前页: ${val}`);
+				        console.log(val);
+	                    var tokenStr = "";
+	                    var str = document.cookie;
+	                    var arr = str.split(";");
+	                    for(var i=0;i<arr.length;i++){
+	                        var s = arr[i];
+	                        if(s.split("=")[0].trim() == "token"){
+	                            tokenStr = s.split("=")[1];
+	                            break;
+	                        }
+	                    }
+	                    if (tokenStr === "") {
+	                        top.location = "login.html";
+	                    }
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/user/user/list',
+							headers: {'token': tokenStr},
+							params: {
+								page:val,
+								pageSize:vm.pageSize
+								
+							}
+						}).then(function(res) {
+							vm.tableData = res.data.data.list;
+						});
 					},
 					submit:function(){
 						console.log(vm.adminUser.status);
