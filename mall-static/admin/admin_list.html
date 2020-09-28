@@ -134,10 +134,11 @@
 			<template>
                     <div class="block" style="margin-bottom: 3.5rem;">
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :current-page="currentPage4" :page-sizes="[10, 20, 50, 100]" 
                         :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
                         </el-pagination>
                     </div>
+                    <div style="height: 100px;"></div>
                 </template>
 			    
 			    
@@ -184,8 +185,8 @@
 								      <el-input v-model="adminUser.note" autocomplete="off"></el-input>
 								    </el-form-item>
 									<el-form-item label="是否启用" :label-width="formLabelWidth">
-										<el-radio v-model="adminUser.status" label="0">启用</el-radio>
-										<el-radio v-model="adminUser.status" label="1">关闭</el-radio>
+										<el-radio v-model="adminUser.status" label="0">关闭</el-radio>
+										<el-radio v-model="adminUser.status" label="1">启用</el-radio>
 									</el-form-item>
 								  </el-form>
 								  <div slot="footer" class="dialog-footer">
@@ -204,8 +205,10 @@
 				,data:{
 					token:"",
                 	total: 100,
+                	size: 1,
+                	pageSize: 10,
 					keyword:"",
-					currentPage4:5,
+					currentPage4:1,
 					dialogVisible: false,
 					dialogFormVisible1: false,
         			dialogFormVisible: false,
@@ -247,7 +250,7 @@
 					url: 'http://localhost:8766/user/user/list',
 					params: {
 						page: 1,
-						pageSize: 5
+						pageSize: 10
 					},
                     headers: {
                         'token': tokenStr
@@ -256,6 +259,7 @@
 					.then(function(res){
 						console.log(res.data.data);
                         vm.tableData = res.data.data.list;
+                        console.log(vm.tableData);
                         vm.total = res.data.data.total;
 					});
             }
@@ -445,8 +449,8 @@
 							url: 'http://localhost:8766/user/user/list',
 							headers: {'token': tokenStr},
 							params: {
-								page:1,
-								pageSize:vm.pageSize
+								page:vm.size,
+								pageSize:val
 								
 							}
 						}).then(function(res) {
@@ -515,6 +519,9 @@
 								if(res.data.code==0){
 									vm.$message("添加成功");
 									vm.dialogVisible = false;
+									var int=self.setInterval(function(){
+									      location.reload();   
+									      },2000)
 								}
 							});
 					},
@@ -553,7 +560,9 @@
 							.then(function(res){
 								if(res.data.code==0){
 									vm.$message("删除成功");
-									vm.dialogVisible = false;
+									var int=self.setInterval(function(){
+									      location.reload();   
+									      },1000)
 								}
 							});
 					}

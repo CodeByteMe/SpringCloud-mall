@@ -31,7 +31,7 @@ public class UserConntroller {
                             @RequestParam String status,
                             @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
-        String companyId = jws.getBody().getId();
+        String companyId = userService.getCompanyId(jws.getBody().getId());
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String pwd = MD5Util.md5(password);
         AdminUser adminUser =new AdminUser(username,pwd,email,note,Integer.parseInt(status));
