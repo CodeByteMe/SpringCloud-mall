@@ -35,3 +35,4 @@ zuul:
     mall-admin-product-attribute-category-add: /productAttributeCategoryAdd/**
     mall-admin-product-attribute-category-ud: /productAttributeCategoryUd/**
     mall-pay: /pay/**
+  ignored-services: mall-pay

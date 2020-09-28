@@ -31,7 +31,7 @@ public class PayController {
             data.put("spbill_create_ip", "123.12.12.123");
 
             //付款状态的回调接口
-            data.put("notify_url", " http://dongyang.free.idcfengye.com/pay/callback");
+            data.put("notify_url", " http://dy.free.idcfengye.com/pay/callback");
             data.put("trade_type", "NATIVE");  // 此处指定为扫码支付
             data.put("product_id", "12");
 

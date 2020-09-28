@@ -41,9 +41,7 @@ public class PayCallbackController {
             String s = orderService.updateStatus(orderId);
             if (s.equals("true")) {
                 //3. 推送消息到付款页面
-
                 WebSocket.sendMessage(orderId, "success");
-
                 //3.响应微信平台
                 String str =  "<xml>" +
                         "   <return_code><![CDATA[" + map.get("return_code") + "]]></return_code>" +
