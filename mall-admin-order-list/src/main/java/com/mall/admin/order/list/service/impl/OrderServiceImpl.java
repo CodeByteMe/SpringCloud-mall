@@ -6,10 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mall.admin.order.list.dao.OrderDAO;
 import com.mall.admin.order.list.service.OrderService;
-import com.mall.common.pojo.OrderDTO;
-import com.mall.common.pojo.Address;
-import com.mall.common.pojo.MemberUser;
-import com.mall.common.pojo.Order;
+import com.mall.common.pojo.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -109,5 +106,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getOrderByOrderId(String orderId) {
         return orderDAO.getOrderByOrderId(orderId);
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemByOrderId(String orderId) {
+        return orderDAO.getOrderItemByOrderId(orderId);
     }
 }

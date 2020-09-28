@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.mall.admin.order.list.service.AuthService;
 import com.mall.admin.order.list.service.OrderService;
-import com.mall.common.pojo.OrderDTO;
-import com.mall.common.pojo.Address;
-import com.mall.common.pojo.MemberUser;
-import com.mall.common.pojo.Order;
+import com.mall.common.pojo.*;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
 import io.jsonwebtoken.Claims;
@@ -185,5 +182,26 @@ public class OrderController {
     public static void main(String[] args) {
         String s = UUID.randomUUID().toString().replace("-", "");
         System.out.println(s);
+    }
+
+    @RequestMapping(value = "/orderItemDetail",method = RequestMethod.GET)
+    @ApiOperation(value = "查询订单详情查询接口" , notes = "根据订单id查询当订单详细信息")
+    @ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    })
+    public ResultVO getOrderItemByOrderId(@RequestParam("orderId") String orderId,
+                                      @RequestHeader(required = true) String token){
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            List<OrderItem> orderItemByOrderId = orderService.getOrderItemByOrderId(orderId);
+            if (orderItemByOrderId != null) {
+                return new ResultVO(0,"查询成功",orderItemByOrderId);
+            } else {
+                return new ResultVO(1,"查询失败",null);
+            }
+        } else {
+            return new ResultVO(1,"权限认证未通过，请先登录",null);
+        }
     }
 }

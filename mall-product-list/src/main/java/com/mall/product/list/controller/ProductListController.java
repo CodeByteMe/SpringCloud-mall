@@ -69,8 +69,11 @@ public class ProductListController {
     public ResultVO productDetail(@RequestParam("productId") String productId) {
         Product product = productListService.productDetailByProductId(productId);
         List<SkuStock> skuStock = productListService.getSkuStockByProductId(productId);
-        product.setSkuStock(skuStock);
-        return new ResultVO(0,"success",product);
+        if(skuStock!=null){
+            product.setSkuStock(skuStock);
+            return new ResultVO(0,"success",product);
+        }
+        return new ResultVO(0,"fail",product);
     }
 
 }
