@@ -8,4 +8,5 @@ public interface CartItemService {
 
     public List<CartItem> getCartItemByMemberId(String memberId);
     public boolean deleteCart(int id);
+    public boolean addCart(CartItem cartItem);
 }

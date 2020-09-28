@@ -34,7 +34,7 @@ textarea{resize:none}
 .showbot{float: left;}
 #showbox { background:#eee;}
 #showbox img{ width:400px;height: 400px;}
-#showbox span { background:url(../images/whitebg.png) repeat;}
+#showbox span { background:url(../img/海绵宝宝.jpg) repeat;}
 #showsum { left:25px; margin-top:10px;}
 #showsum span { border:1px solid #ddd;}
 #showsum span.sel { border:1px solid #f60;}

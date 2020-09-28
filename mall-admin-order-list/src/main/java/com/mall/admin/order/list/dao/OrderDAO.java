@@ -1,9 +1,6 @@
 package com.mall.admin.order.list.dao;
 
-import com.mall.common.pojo.OrderDTO;
-import com.mall.common.pojo.Address;
-import com.mall.common.pojo.MemberUser;
-import com.mall.common.pojo.Order;
+import com.mall.common.pojo.*;
 
 import java.util.List;
 
@@ -61,4 +58,11 @@ public interface OrderDAO {
      * @return
      */
     public List<OrderDTO> getOrderByOrderId(String orderId);
+
+    /**
+     * 根据订单id查询该订单的详细信息
+     * @param orderId
+     * @return
+     */
+    public List<OrderItem> getOrderItemByOrderId(String orderId);
 }

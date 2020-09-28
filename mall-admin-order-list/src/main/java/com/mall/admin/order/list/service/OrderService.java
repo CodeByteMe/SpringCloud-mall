@@ -1,10 +1,7 @@
 package com.mall.admin.order.list.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mall.common.pojo.OrderDTO;
-import com.mall.common.pojo.Address;
-import com.mall.common.pojo.MemberUser;
-import com.mall.common.pojo.Order;
+import com.mall.common.pojo.*;
 
 import java.util.List;
 
@@ -22,4 +19,5 @@ public interface OrderService {
     public MemberUser getMemberUserByMemberId(String memberId);
     public List<Order> getOrderListByMemberId(String memberId);
     public List<OrderDTO> getOrderByOrderId(String orderId);
+    public List<OrderItem> getOrderItemByOrderId(String orderId);
 }
