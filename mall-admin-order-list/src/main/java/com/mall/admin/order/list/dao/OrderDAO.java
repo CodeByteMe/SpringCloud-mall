@@ -1,6 +1,7 @@
 package com.mall.admin.order.list.dao;
 
 import com.mall.common.pojo.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -65,4 +66,15 @@ public interface OrderDAO {
      * @return
      */
     public List<OrderItem> getOrderItemByOrderId(String orderId);
+
+    /**
+     * 支付成功之后修改订单支付状态
+     * @param orderId
+     * @param status
+     * @param payType
+     * @return
+     */
+    public int updateStatus(@Param("orderId") String orderId,
+                            @Param("status") int status,
+                            @Param("payType") int payType);
 }

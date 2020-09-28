@@ -1,5 +1,5 @@
 server:
-  port: 8510
+  port: 8550
 spring:
   application:
     name: mall-pay
