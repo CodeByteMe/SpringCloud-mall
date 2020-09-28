@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.product.attribute.category.ud.dao.ProductAttributeCategoryUdDAO">
+
+<!--    public boolean productAttributeCategoryUpdate(@Param("name") String name, @Param("id") Integer id);    //修改商品分类-->
+    <update id="productAttributeCategoryUpdate">
+        update pms_product_attribute_category set name = #{name} where id = #{id}
+    </update>
+
+<!--    public boolean productAttributeCategoryDel(Integer id);   //删除商品分类属性-->
+    <delete id="productAttributeCategoryDel">
+        delete from pms_product_attribute_category where id = #{id}
+    </delete>
+
+</mapper>

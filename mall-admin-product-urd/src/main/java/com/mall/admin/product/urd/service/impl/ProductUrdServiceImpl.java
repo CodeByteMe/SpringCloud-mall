@@ -36,6 +36,7 @@ public class ProductUrdServiceImpl implements ProductUrdService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productStatus(String productId, Integer publishStatus) {
         return productUrdDAO.productStatus(productId, publishStatus);
     }

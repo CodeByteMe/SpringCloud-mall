@@ -69,9 +69,9 @@ public class ProductAddController {
             product.setCompanyId(companyId);
             boolean b = productAddService.productAdd(product);
             if (b){
-                return new ResultVO(0,"success");
+                return new ResultVO(0,"添加成功");
             }else {
-                return new ResultVO(0,"fail");
+                return new ResultVO(1,"添加失败，请联系管理员！");
             }
         }else {
             return new ResultVO(1,"没有权限,请联系管理员!");

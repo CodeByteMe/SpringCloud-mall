@@ -32,3 +32,5 @@ zuul:
     mall-upload-images: /uploadImages/**
     mall-admin-product-sku: /productSku/**
     mall-admin-spike: /spike/**
+    mall-admin-product-attribute-category-add: /productAttributeCategoryAdd/**
+    mall-admin-product-attribute-category-ud: /productAttributeCategoryUd/**
