@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品类型</title>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
-</head>
-<style>
-    #container{
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>商品类型</title>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+	</head>
+	<style>
+		#container{
         width: 90%;
     }
     .text {
@@ -28,69 +28,99 @@
         width: 100%;
     }
 </style>
-<body>
-    <div id="container">
-        <el-card class="box-card" :body-style="{ padding: '0px' }">
-            <div slot="header" class="clearfix">
-                <span><i class="el-icon-tickets"></i> 数据列表</span>
-                <el-button style="float: right;">添加</el-button>
-            </div>
-        </el-card>
-        <el-card class="box-card">
-            <div class="text item">
-                <template>
-                    <el-table :data="tableData" height="550" border style="width: 100%">
-                        <el-table-column prop="id" label="编号"></el-table-column>
-                        <el-table-column prop="name" label="类型名称"></el-table-column>
-                        <el-table-column prop="attributeCount" label="属性数量"></el-table-column>
-                        <el-table-column prop="paramCount" label="参数数量"></el-table-column>
-                        <el-table-column label="设置" fixed="right" width="200">
-                            <template slot-scope="scope">
-                                <el-button size="mini" @click="attr(scope.row)">属性列表</el-button>
-                                <el-button size="mini" @click="parameter(scope.row)">参数列表</el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="操作" fixed="right" width="250">
-                            <template slot-scope="scope">
-                                <el-button size="mini" @click="">编辑</el-button>
-                                <el-button size="mini" type="danger" @click.native.prevent="">删除</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </template>
-                <template>
-                    <div class="block" style="margin-bottom: 3.5rem;">
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
-                        :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
-                        </el-pagination>
-                    </div>
-                </template>
-            </div>
-        </el-card>
-    </div>
-</body>
+	<body>
+		<div id="container">
+			<el-dialog width="30%" title="商品类型添加" :visible.sync="visible" append-to-body>
+				<template>
+					<el-form ref="productAttributeCategoryData" :model="productAttributeCategoryData" label-width="100px">
+						<el-form-item label="类型名称：">
+							<el-input v-model="productAttributeCategoryData.name"></el-input>
+						</el-form-item>
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="visible = false">取 消</el-button>
+						<el-button type="primary" @click="productAttributeCategorySubmit">确定</el-button>
+					</div>
+				</template>
+			</el-dialog>
+			<el-dialog width="30%" title="商品类型修改" :visible.sync="visible1" append-to-body>
+				<template>
+					<el-form ref="productAttributeCategoryData" :model="productAttributeCategoryData" label-width="100px">
+						<el-form-item label="类型名称：">
+							<el-input v-model="productAttributeCategoryData.name"></el-input>
+						</el-form-item>
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="visible = false">取 消</el-button>
+						<el-button type="primary" @click="productAttributeCategorySubmit">确定</el-button>
+					</div>
+				</template>
+			</el-dialog>
+			<el-card class="box-card" :body-style="{ padding: '0px' }">
+				<div slot="header" class="clearfix">
+					<span><i class="el-icon-tickets"></i> 数据列表</span>
+					<el-button style="float: right;">添加</el-button>
+				</div>
+			</el-card>
+			<el-card class="box-card">
+				<div class="text item">
+					<template>
+						<el-table :data="tableData" height="550" border style="width: 100%">
+							<el-table-column prop="id" label="编号"></el-table-column>
+							<el-table-column prop="name" label="类型名称"></el-table-column>
+							<el-table-column prop="attributeCount" label="属性数量"></el-table-column>
+							<el-table-column prop="paramCount" label="参数数量"></el-table-column>
+							<el-table-column label="设置" fixed="right" width="200">
+								<template slot-scope="scope">
+									<el-button size="mini" @click="attr(scope.row)">属性列表</el-button>
+									<el-button size="mini" @click="parameter(scope.row)">参数列表</el-button>
+								</template>
+							</el-table-column>
+							<el-table-column label="操作" fixed="right" width="250">
+								<template slot-scope="scope">
+									<el-button size="mini" @click="Edit(scope.row)">编辑</el-button>
+									<el-button size="mini" type="danger" @click.native.prevent="productAttributeCategoryDel(scope.row)">删除</el-button>
+								</template>
+							</el-table-column>
+						</el-table>
+					</template>
+					<template>
+						<div class="block" style="margin-bottom: 3.5rem;">
+							<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
+							 :page-sizes="[5, 10, 20, 50]" :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
+							</el-pagination>
+						</div>
+					</template>
+				</div>
+			</el-card>
+		</div>
+	</body>
 	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
 	<!-- 引入组件库 -->
 	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript">
-        var vm = new Vue({
-            el:"#container",
-            data:{
-                tableData:[],
-                total:10,
-                currentPage4:1,
-                pageSize:5
-            },
-            beforeMount:function(){
-                var tokenStr = "";
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: "#container",
+			data: {
+				visible: false,
+				visible1: false,
+				tableData: [],
+				total: 10,
+				currentPage4: 1,
+				pageSize: 5,
+				productAttributeCategoryData: {
+					name: ""
+				}
+			},
+			beforeMount: function() {
+				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
-				for(var i=0;i<arr.length;i++){
+				for (var i = 0; i < arr.length; i++) {
 					var s = arr[i];
-					if(s.split("=")[0].trim() == "token"){
+					if (s.split("=")[0].trim() == "token") {
 						tokenStr = s.split("=")[1];
 						break;
 					}
@@ -98,96 +128,233 @@
 				if (tokenStr === "") {
 					top.location = "login.html";
 				}
-                axios({
-					method: 'get',
-					url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
-					params: {
-						page: 1,
-						pageSize: 5
-					},
-                    headers: {
-                        'token': tokenStr
-                    }
+				axios({
+						method: 'get',
+						url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
+						params: {
+							page: 1,
+							pageSize: 5
+						},
+						headers: {
+							'token': tokenStr
+						}
 					})
-					.then(function(res){
+					.then(function(res) {
 						console.log(res.data.data);
-                        vm.tableData = res.data.data.list;
-                        vm.total = res.data.data.total;
+						vm.tableData = res.data.data.list;
+						vm.total = res.data.data.total;
 					});
-            },
-            methods:{
-                next:function(){
-                    this.active++;
-                },
-                pre:function() {
-                    this.active--;
-                },
-                handleSizeChange:function(event){
-					console.log(event);
-                    vm.pageSize = event;
-                    var tokenStr = "";
-                        var str = document.cookie;
-                        var arr = str.split(";");
-                        for(var i=0;i<arr.length;i++){
-                            var s = arr[i];
-                            if(s.split("=")[0].trim() == "token"){
-                                tokenStr = s.split("=")[1];
-                                break;
-                            }
-                        }
-                        if (tokenStr === "") {
-                            top.location = "login.html";
-                        }
-                        axios({
-                            method: 'get',
-                            url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
-                            headers: {'token': tokenStr},
-                            params: {
-                                pageSize:vm.pageSize,
-                                page:1
-                            }
-                        }).then(function(res) {
-                            vm.tableData = res.data.data.list;
-                        });
+			},
+			methods: {
+				next: function() {
+					this.active++;
 				},
-                handleCurrentChange:function(event){
-					console.log(event);
-                    var tokenStr = "";
-                        var str = document.cookie;
-                        var arr = str.split(";");
-                        for(var i=0;i<arr.length;i++){
-                            var s = arr[i];
-                            if(s.split("=")[0].trim() == "token"){
-                                tokenStr = s.split("=")[1];
-                                break;
-                            }
-                        }
-                        if (tokenStr === "") {
-                            top.location = "login.html";
-                        }
-                        axios({
-                            method: 'get',
-                            url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
-                            headers: {'token': tokenStr},
-                            params: {
-                                pageSize:vm.pageSize,
-                                page:event
-                            }
-                        }).then(function(res) {
-                            vm.tableData = res.data.data.list;
-                        });
+				pre: function() {
+					this.active--;
 				},
-                attr:function(row){
-                    console.log(row);
-                    localStorage.setItem("id", row.id);
+				handleSizeChange: function(event) {
+					console.log(event);
+					vm.pageSize = event;
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							pageSize: vm.pageSize,
+							page: 1
+						}
+					}).then(function(res) {
+						vm.tableData = res.data.data.list;
+					});
+				},
+				handleCurrentChange: function(event) {
+					console.log(event);
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/productAttributeCategory/productAttributeCategory/list',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							pageSize: vm.pageSize,
+							page: event
+						}
+					}).then(function(res) {
+						vm.tableData = res.data.data.list;
+					});
+				},
+				attr: function(row) {
+					console.log(row);
+					localStorage.setItem("id", row.id);
 					location.href = "product-attribute.html";
-                },
-                parameter:function(row){
-                    console.log(row);
-                    localStorage.setItem("id", row.id);
+				},
+				parameter: function(row) {
+					console.log(row);
+					localStorage.setItem("id", row.id);
 					location.href = "product-parameter-list.html";
-                }
-            }
-        });
-    </script>
+				},
+				Edit: function(row) {
+					console.log(row);
+					vm.visible = true;
+					vm.productAttributeCategoryData.name = row.name;
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/productAttributeCategoryUd/productAttributeCategoryUd/update',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							name: vm.productAttributeCategoryData.name,
+							productAttributeCategoryId: row.id
+						}
+					}).then(function(res) {
+						if (res.data.code === 0) {
+							vm.$message({
+								message: '修改成功',
+								type: 'success'
+							});
+							setTimeout(function() {
+								location.href = "product-attribute-category-list.html";
+							});
+						} else {
+							vm.$message.error({
+								message: '修改失败，请联系管理员！'
+							});
+						}
+					});
+				},
+				productAttributeCategoryDel: function(row) {
+					this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for (var i = 0; i < arr.length; i++) {
+							var s = arr[i];
+							if (s.split("=")[0].trim() == "token") {
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'delete',
+							url: 'http://localhost:8766/productAttributeCategoryUd/productAttributeCategoryUd/del',
+							headers: {
+								'token': tokenStr
+							},
+							params: {
+								productAttributeCategoryId: row.id
+							}
+						}).then(function(res) {
+							console.log(res);
+							if (res.data.code === 0) {
+								vm.$message({
+									message: '删除成功',
+									type: 'success'
+								});
+								setTimeout(function() {
+									location.href = "product-attribute-category-list.html";
+								}, 2000);
+							} else {
+								vm.$message.error({
+									message: '删除失败'
+								});
+							}
+						});
+					}).catch(() => {
+						this.$message({
+							type: 'info',
+							message: '已取消删除'
+						});
+					});
+				},
+				productAttributeCategorySubmit: function() {
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/productAttributeCategoryAdd/productAttributeCategoryAdd/add',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							name: vm.productAttributeCategoryData.name
+						}
+					}).then(function(res) {
+						if (res.data.code === 0) {
+							vm.$message({
+								message: '添加成功',
+								type: 'success'
+							});
+							setTimeout(function() {
+								location.href = "product-attribute-category-list.html";
+							});
+						} else {
+							vm.$message.error({
+								message: '添加失败，请联系管理员！'
+							});
+						}
+					});
+				}
+			}
+		});
+	</script>
 </html>

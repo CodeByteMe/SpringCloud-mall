@@ -4,6 +4,9 @@ import com.mall.admin.product.sku.dao.ProductSkuDAO;
 import com.mall.admin.product.sku.service.ProductSkuService;
 import com.mall.common.pojo.SkuStock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,11 +30,13 @@ public class ProductSkuServiceImpl implements ProductSkuService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productSkuAdd(SkuStock skuStock) {
         return productSkuDAO.productSkuAdd(skuStock);
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productSkuDel(String skuId) {
         return productSkuDAO.productSkuDel(skuId);
     }
