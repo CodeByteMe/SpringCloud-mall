@@ -69,11 +69,11 @@ public class OrderServiceImpl implements OrderService {
                         orders = orderDAO.listOrderByCompanyId(companyId);
                         String jsonStr = mapper.writeValueAsString(orders);
                         stringRedisTemplate.boundHashOps("listOrderByCompanyId").put("companyId-"+companyId,jsonStr);
-                    } else {
-                        orders = mapper.readValue(s, new TypeReference<List<Order>>() {
-                        });
                     }
                 }
+            } else {
+                orders = mapper.readValue(s, new TypeReference<List<Order>>() {
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
