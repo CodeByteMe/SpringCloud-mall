@@ -23,14 +23,17 @@ public class OrderItem {
     @ApiModelProperty(value = "订单UUID" ,dataType = "string", required = true)
     private String orderId;
     @ApiModelProperty(value = "商品UUID" ,dataType = "string", required = true)
+    private String orderSn;
     private String productId;
     private String productPic;
     private String productName;
-    private String productPrice;
+    private String productSn;
+    private Double productPrice;
     @ApiModelProperty(value = "购买数量" ,dataType = "integer", required = true)
     private Integer productQuantity;
     @ApiModelProperty(value = "套餐UUID" ,dataType = "string", required = true)
     private String productSkuId;
+    private String productSkuCode;
     @ApiModelProperty(value = "商品分类ID" ,dataType = "integer", required = true)
     private Integer productCategoryId;
     @ApiModelProperty(value = "商品促销名称" ,dataType = "string", required = true)
@@ -39,5 +42,4 @@ public class OrderItem {
     private double promotionAmount;
     @ApiModelProperty(value = "商品销售属性" ,dataType = "integer", required = true)
     private String productAttr;
-
 }

@@ -436,7 +436,7 @@
 						top.location = "login.html";
 					}
 					// vm.jsonStr = JSON.stringify(vm.productList);
-					vm.jsonStr = "bhy";
+					// vm.jsonStr = "bhy";
 					console.log(vm.jsonStr);
 					axios({
 						method: 'post',
@@ -444,12 +444,16 @@
 						headers: {
 							'token': tokenStr
 						},
-						params: {
+						data: {
 							addressId: vm.addressId,
-							jsonStrList: vm.jsonStr
+							jsonStrList: vm.productList,
+							money: vm.money,
+							num: vm.num
 						}
 					}).then(function(res) {
-						console.log();
+						if(res.data.code === 0){
+							top.location = "order_list.html";
+						}
 					});
 				}
 			}
