@@ -156,4 +156,10 @@
         from oms_order_item
         where order_id = #{orderId}
     </select>
+
+    <update id="updateStatus">
+        update oms_order
+        set status = #{status},pay_type = #{payType}
+        where order_id = #{orderId}
+    </update>
 </mapper>

@@ -214,4 +214,10 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderItems;
     }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
+    @Override
+    public boolean updateStatus(String orderId, int status, int payType) {
+        return orderDAO.updateStatus(orderId, status, payType)>0;
+    }
 }

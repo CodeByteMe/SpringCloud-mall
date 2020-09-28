@@ -66,7 +66,7 @@ public class LoginFilter extends ZuulFilter {
                 if (token == null) {
                     if (uri.endsWith("/auth/adminLogin") || uri.endsWith("/auth/memberLogin")
                         || uri.endsWith("/auth/register")||uri.endsWith("/product/allList")
-                        ||uri.endsWith("/product/productDetail")) {
+                        ||uri.endsWith("/product/productDetail")||uri.indexOf("/webSocket/")>=0) {
                         // 放行
                         context.setSendZuulResponse(true);
                         context.setResponseStatusCode(200);
