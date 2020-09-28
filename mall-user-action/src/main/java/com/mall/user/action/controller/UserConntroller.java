@@ -1,6 +1,7 @@
 package com.mall.user.action.controller;
 
 import com.mall.common.pojo.AdminUser;
+import com.mall.common.util.JWTUtil;
 import com.mall.common.util.MD5Util;
 import com.mall.common.vo.ResultVO;
 import com.mall.user.action.service.UserService;
@@ -29,7 +30,7 @@ public class UserConntroller {
                             @RequestParam String note,
                             @RequestParam String status,
                             @RequestHeader(required = true) String token) {
-        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
         String companyId = jws.getBody().getId();
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String pwd = MD5Util.md5(password);
@@ -46,17 +47,17 @@ public class UserConntroller {
     }
     @RequestMapping(value = "/del", method = RequestMethod.GET)
     public ResultVO delUser(@RequestParam int id, @RequestHeader(required = true) String token) {
-        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
         int i = userService.delectUser(id);
         if (i >0) {
             return new ResultVO(0,"删除成功");
-        } else {
+        }else {
             return new ResultVO(1,"删除失败");
         }
     }
     @RequestMapping(value = "/grant", method = RequestMethod.POST)
     public ResultVO grant(@RequestParam int id, @RequestParam int rid,@RequestHeader(required = true) String token) {
-        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
         int i = userService.grantRole(id, rid);
         if (i >0) {
             return new ResultVO(0,"授予角色成功");
@@ -64,4 +65,41 @@ public class UserConntroller {
             return new ResultVO(1,"授予角色失败");
         }
     }
+    @RequestMapping(value = "/switch", method = RequestMethod.GET)
+    public ResultVO switchUser(@RequestParam int id,
+                               @RequestParam int status,@RequestHeader(required = true) String token) {
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        int i = userService.switchUser(id,status);
+        if (i >0) {
+            return new ResultVO(0,"启用成功");
+        } else {
+            return new ResultVO(1,"启用失败");
+        }
+    }
+    @RequestMapping(value = "/compile", method = RequestMethod.POST)
+    public ResultVO compileUser(@RequestParam String id,
+                                @RequestParam String username,
+                                @RequestParam String password,
+                                @RequestParam String email,
+                                @RequestParam String nickName,
+                                @RequestParam String note,
+                                @RequestParam String status,
+                          @RequestHeader(required = true) String token) {
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        AdminUser adminUser = new AdminUser();
+        adminUser.setId(Integer.parseInt(id));
+        adminUser.setUsername(username);
+        adminUser.setPassword(password);
+        adminUser.setEmail(email);
+        adminUser.setNickName(nickName);
+        adminUser.setNote(note);
+        adminUser.setStatus(Integer.parseInt(status));
+        int i = userService.updateUser(adminUser);
+        if (i >0) {
+            return new ResultVO(0,"修改成功");
+        } else {
+            return new ResultVO(1,"修改失败");
+        }
+    }
+
 }

@@ -32,4 +32,14 @@ public class UserServiceImpl implements UserService {
     public int grantRole(int id, int rid) {
         return userDAO.grantRole(id,rid);
     }
+
+    @Override
+    public int switchUser(int id, int status) {
+        return userDAO.switchUser(id,status);
+    }
+
+    @Override
+    public int updateUser(AdminUser adminUser) {
+        return userDAO.updateUser(adminUser);
+    }
 }

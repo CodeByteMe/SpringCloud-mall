@@ -22,4 +22,19 @@ public class RoleServiceImpl implements RoleService {
     public int insertRole(Role role) {
         return roleDAO.insertRole(role);
     }
+
+    @Override
+    public int compileRole(int id, String name, String description) {
+        return roleDAO.updateRole(id,name,description);
+    }
+
+    @Override
+    public int delRole(int id) {
+        return roleDAO.delRole(id);
+    }
+
+    @Override
+    public int switchRole(int id, int status) {
+        return roleDAO.switchRole(id,status);
+    }
 }
