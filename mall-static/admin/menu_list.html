@@ -120,7 +120,7 @@
 				<template>
                     <div class="block" style="margin-bottom: 3.5rem;">
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :current-page="currentPage4" :page-sizes="[10, 20, 30, 50]" 
                         :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
                         </el-pagination>
                     </div>
@@ -175,9 +175,12 @@
 					dialogTableVisible: false,
         			dialogFormVisible: false,
         			total: 100,
-					currentPage4:5,
+                	size: 1,
+                	pageSize: 10,
+					currentPage4:1,
 					formLabelWidth: '120px',
 					tableData: [],
+					mid:'',
 					menu:{
 					  id:'',
 					  title: '',
@@ -207,7 +210,7 @@
 					url: 'http://localhost:8766/menu/menu/list',
 					params: {
 						page: 1,
-						pageSize: 5
+						pageSize: 10
 					},
                     headers: {
                         'token': tokenStr
@@ -241,9 +244,10 @@
 	                    }
 						axios({
 							method: 'get',
-							url: 'http://localhost:8766/menu/menu/list',
+							url: 'http://localhost:8766/menu/menu/listChildren',
 							headers: {'token': tokenStr},
 							params: {
+								id:vm.mid,
 								page:1,
 								pageSize:vm.pageSize
 								
@@ -269,7 +273,7 @@
 	                    }
 						axios({
 							method: 'get',
-							url: 'http://localhost:8766/user/user/list',
+							url: 'http://localhost:8766/menu/menu/listChildren',
 							headers: {'token': tokenStr},
 							params: {
 								page:val,
@@ -282,6 +286,7 @@
 				    },
 				    children:function(row){
 				    	console.log(row);
+				    	vm.mid=row.id;
 				    	var tokenStr = "";
 						var str = document.cookie;
 						var arr = str.split(";");
@@ -301,7 +306,7 @@
 							params: {
 								id: row.id,
 								page: 1,
-								pageSize: 5
+								pageSize: 10
 							},
 		                    headers: {
 		                        'token': tokenStr

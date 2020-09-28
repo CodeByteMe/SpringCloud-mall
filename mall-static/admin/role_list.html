@@ -108,17 +108,18 @@
 				</el-dialog>
 				<el-dialog title="编辑" :visible.sync="dialogFormVisible">
 								  <el-form :model="role">
-								  	<el-form-item label="登录名" :label-width="formLabelWidth">
+								  	<el-form-item label="名称" :label-width="formLabelWidth">
 								      <el-input v-model="role.name" autocomplete="off" readonly="readonly"></el-input>
 								    </el-form-item>
-								    <el-form-item label="密码" :label-width="formLabelWidth">
+								    <el-form-item label="描述" :label-width="formLabelWidth">
 								      <el-input v-model="role.description" autocomplete="off"></el-input>
 								    </el-form-item>
+								    </el-form>
 								  <div slot="footer" class="dialog-footer">
 								    <el-button @click="dialogFormVisible = false">取 消</el-button>
 								    <el-button type="primary" @click="reSubmit">确 定</el-button>
 								  </div>
-								</el-dialog>
+							</el-dialog>
 			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
@@ -136,6 +137,7 @@
 					dialogVisible: false,
 					dialogFormVisible:false,
 					roleId:'',
+					currentid:5,
 					formLabelWidth: '120px',
 					checkedData: [],
 					tableData: [],
@@ -220,7 +222,7 @@
 								})
 								.then(function(res){
 									if(res.data.code==0){
-										vm.$message(res.data.msg);
+										vm.$message("操作成功");
 									}
 								});
 					},
@@ -265,6 +267,11 @@
 							});
 					},
 					grantmenu: function(row) {
+						if(row.id==5){
+							vm.dialogVisible1 = false;
+							vm.$message("不允许操作管理员用户"); 
+							return;
+						}
 						vm.dialogVisible1 = true;
 						var tokenStr = "";
 						var str = document.cookie;
@@ -355,9 +362,14 @@
 							});
 						},
 						redact:function(row){
+							if(row.id==5){
+							vm.dialogVisible1 = false;
+							vm.$message("不允许操作管理员用户"); 
+							return;
+						}
 							vm.role=row;
 							vm.roleId=row.id
-							vm.dialogFormVisible=ture;
+							vm.dialogFormVisible=true;
 						},
 						reSubmit:function(){
 							var tokenStr = "";
@@ -393,6 +405,11 @@
 								});
 						},
 						del:function(row){
+							if(row.id==5){
+							vm.dialogVisible1 = false;
+							vm.$message("不允许操作管理员用户"); 
+							return;
+						}
 							var tokenStr = "";
 							var str = document.cookie;
 							var arr = str.split(";");
@@ -407,8 +424,8 @@
 								top.location = "login.html";
 							}
 							axios({
-								method: 'post',
-								url: 'http://localhost:8766/userAction/userAction/del',
+								method: 'get',
+								url: 'http://localhost:8766/role/role/del',
 								params: {
 									id:row.id	
 								},
@@ -418,8 +435,11 @@
 								})
 								.then(function(res){
 									if(res.data.code==0){
-										vm.$message("修改角色成功");
+										vm.$message("删除角色成功");
 										vm.dialogFormVisible = false;
+										var int=self.setInterval(function(){
+									      location.reload();   
+									      },2000)  
 									}
 								});
 						},
