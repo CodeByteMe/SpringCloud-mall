@@ -62,14 +62,17 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = null;
         PageHelper.startPage(pageNum, pageSize);
         try {
-            String s = (String) stringRedisTemplate.boundHashOps("listOrderByCompanyId").get("companyId-" + companyId);
+            if (pageSize != 10) {
+                stringRedisTemplate.delete("listOrderByCompanyId");
+            }
+            String s = (String) stringRedisTemplate.boundHashOps("listOrderByCompanyId").get("companyId-" + companyId + "-pageNum-" + pageNum);
             if (s == null) {
                 synchronized (this) {
-                    s = (String) stringRedisTemplate.boundHashOps("listOrderByCompanyId").get("companyId-" + companyId);
+                    s = (String) stringRedisTemplate.boundHashOps("listOrderByCompanyId").get("companyId-" + companyId + "-pageNum-" + pageNum);
                     if (s == null) {
                         orders = orderDAO.listOrderByCompanyId(companyId);
                         String jsonStr = mapper.writeValueAsString(orders);
-                        stringRedisTemplate.boundHashOps("listOrderByCompanyId").put("companyId-"+companyId,jsonStr);
+                        stringRedisTemplate.boundHashOps("listOrderByCompanyId").put("companyId-"+companyId + "-pageNum-" + pageNum,jsonStr);
                     }
                 }
             } else {

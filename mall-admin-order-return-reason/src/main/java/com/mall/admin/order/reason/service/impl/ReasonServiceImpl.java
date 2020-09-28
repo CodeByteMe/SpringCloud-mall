@@ -40,14 +40,17 @@ public class ReasonServiceImpl implements ReasonService {
         List<OrderReturnReason> orderReturnReasons = null;
         PageHelper.startPage(pageNum, pageSize);
         try {
-            String s = (String) stringRedisTemplate.boundHashOps("listOrderReturnReason").get("listOrderReturnReason");
+            if (pageSize != 10) {
+                stringRedisTemplate.delete("listOrderReturnReason");
+            }
+            String s = (String) stringRedisTemplate.boundHashOps("listOrderReturnReason").get("listOrderReturnReason" + pageNum);
             if (s == null) {
                 synchronized (this) {
-                    s = (String) stringRedisTemplate.boundHashOps("listOrderReturnReason").get("listOrderReturnReason");
+                    s = (String) stringRedisTemplate.boundHashOps("listOrderReturnReason").get("listOrderReturnReason" + pageNum);
                     if (s == null) {
                         orderReturnReasons = reasonDAO.listOrderReturnReason();
                         String jsonStr = mapper.writeValueAsString(orderReturnReasons);
-                        stringRedisTemplate.boundHashOps("listOrderReturnReason").put("listOrderReturnReason",jsonStr);
+                        stringRedisTemplate.boundHashOps("listOrderReturnReason").put("listOrderReturnReason" + pageNum,jsonStr);
                     }
                 }
             } else {
