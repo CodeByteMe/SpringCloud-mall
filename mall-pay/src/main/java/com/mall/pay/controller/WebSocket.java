@@ -1,7 +1,6 @@
 package com.mall.pay.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnOpen;
@@ -11,8 +10,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
-@RestController
-@CrossOrigin
+@Component
 @ServerEndpoint("/webSocket/{orderId}")
 public class WebSocket {
 

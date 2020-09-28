@@ -25,12 +25,12 @@
 		qrcode.makeCode(payUrl);
 		
 		//与服务器建立websocket连接（用于接收支付状态的提示）
-		//与付款成功的回调接口建立websocket连接
-		var websocket = null;
-		if('websocket' in window){
-		    //请求建立websocket连接
-		    websocket = new WebSocket("ws://localhost:8766/pay/webSocket/"+orderId);
-		}
+				//与付款成功的回调接口建立websocket连接
+				var websocket = null;
+				if('websocket' in window){
+				    //请求建立websocket连接
+				    websocket = new WebSocket("ws://localhost:8550/webSocket/"+orderId);
+				}
 		
 		websocket.onmessage = function(event){
 		    console.log(event);
