@@ -39,14 +39,17 @@ public class ApplyServiceImpl implements ApplyService {
         List<OrderReturn> orderReturns = null;
         PageHelper.startPage(pageNum, pageSize);
         try {
-            String s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId);
+            if (pageSize != 10) {
+                stringRedisTemplate.delete("listOrderReturn");
+            }
+            String s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId + "-pageNum-" + pageNum);
             if (s == null) {
                 synchronized (this) {
-                    s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId);
+                    s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId + "-pageNum-" + pageNum);
                     if (s == null) {
                         orderReturns = applyDAO.listOrderReturn(adminId);
                         String jsonStr = mapper.writeValueAsString(orderReturns);
-                        stringRedisTemplate.boundHashOps("listOrderReturn").put("adminId-" + adminId,jsonStr);
+                        stringRedisTemplate.boundHashOps("listOrderReturn").put("adminId-" + adminId + "-pageNum-" + pageNum,jsonStr);
                     }
                 }
             } else {
