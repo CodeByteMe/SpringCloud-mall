@@ -211,6 +211,7 @@
         			dialogFormVisible: false,
 					formLabelWidth: '120px',
 					rid:0,
+					aid:'',
 					adminUser:{
 						username:"",
 						password:"",
@@ -280,6 +281,35 @@
 					},
 					change:function(row){
 						console.log(row)
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/userAction/userAction/switch',
+							params: {
+								id:row.id,
+								status:adminUser.status
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("启用成功");
+								}
+							});
 					},
 					add:function(){
 						console.log("add"),
@@ -353,11 +383,46 @@
 					},
 					redact:function(row){
 					console.log(row);
+					vm.aid=row.id;
 					vm.adminUser=row;
 					this. dialogFormVisible = true;
 					},
 					reSubmit:function(){
-											
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/userAction/userAction/compile',
+							params: {
+								id:vm.aid,
+								username:vm.adminUser.username,
+								password:vm.adminUser.password,
+								email:vm.adminUser.email,
+								nickName:vm.adminUser.nickName,
+								note:vm.adminUser.note,
+								status:vm.adminUser.status
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("角色修改成功");
+									vm.dialogFormVisible1 = false;
+								}
+							});
 					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);

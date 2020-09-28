@@ -39,5 +39,21 @@
         insert into ums_admin_role_relation (admin_id,role_id)
         values (#{id},#{rid})
     </insert>
-
+<!--    public int switchUser(@Param("id") int id,@Param("status")int status);-->
+    <update id="switchUser">
+        update ums_admin set
+        status=#{status}
+        where id = #{id}
+    </update>
+<!--    public int updateUser(AdminUser adminUser);-->
+    <update id="updateUser">
+        update ums_admin set
+        username=#{username},
+		password=#{password},
+		email=#{email},
+		nick_name=#{nickName},
+		note=#{note},
+        status=#{status}
+        where id = #{id}
+    </update>
 </mapper>
