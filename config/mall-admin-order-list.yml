@@ -21,17 +21,17 @@ spring:
       time-between-eviction-runs-millis: 60000
       # 配置一个连接在池中最小生存的时间，单位是毫秒
       min-evictable-idle-time-millis: 300000
-    redis:
-      host: 47.100.38.50
-      port: 6379
-      password: Redis@666
-      jedis:
-        pool:
-          min-idle: 30
-          max-wait: 1000
-          max-active: 8
-      database: 0
-      timeout: 100
+  redis:
+    host: 47.100.38.50
+    port: 6379
+    password: Redis@666
+    jedis:
+      pool:
+        min-idle: 30
+        max-wait: 1000
+        max-active: 8
+    database: 0
+    timeout: 100
 eureka:
   client:
     service-url:

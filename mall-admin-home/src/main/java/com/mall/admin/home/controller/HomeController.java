@@ -58,6 +58,7 @@ public class HomeController {
                     List<Menu> children = menuService.listMenuChildren(i, id);
                     menu.setChildren(children);
                 }
+                System.out.println(menus);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
