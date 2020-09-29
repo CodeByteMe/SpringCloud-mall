@@ -62,9 +62,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = null;
         PageHelper.startPage(pageNum, pageSize);
         try {
-            if (pageSize != 10) {
-                stringRedisTemplate.delete("listOrderByCompanyId");
-            }
+            stringRedisTemplate.delete("listOrderByCompanyId");
             String s = (String) stringRedisTemplate.boundHashOps("listOrderByCompanyId").get("companyId-" + companyId + "-pageNum-" + pageNum);
             if (s == null) {
                 synchronized (this) {

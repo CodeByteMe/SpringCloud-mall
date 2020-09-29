@@ -39,9 +39,7 @@ public class ApplyServiceImpl implements ApplyService {
         List<OrderReturn> orderReturns = null;
         PageHelper.startPage(pageNum, pageSize);
         try {
-            if (pageSize != 10) {
-                stringRedisTemplate.delete("listOrderReturn");
-            }
+            stringRedisTemplate.delete("listOrderReturn");
             String s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId + "-pageNum-" + pageNum);
             if (s == null) {
                 synchronized (this) {
