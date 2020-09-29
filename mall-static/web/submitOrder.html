@@ -331,10 +331,13 @@
 				s1: "",
 				str: "",
 				jsonStr: ""
+				
 			},
 			beforeMount: function() {
 				this.productList = JSON.parse(localStorage.getItem("productList"))
 				console.log(localStorage.getItem("productList"));
+				// this.productList = JSON.parse(localStorage.getItem("hotproduct"))
+				// console.log(localStorage.getItem("hotproduct"));
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
@@ -436,7 +439,7 @@
 						top.location = "login.html";
 					}
 					// vm.jsonStr = JSON.stringify(vm.productList);
-					vm.jsonStr = "bhy";
+					// vm.jsonStr = "bhy";
 					console.log(vm.jsonStr);
 					axios({
 						method: 'post',
@@ -444,13 +447,18 @@
 						headers: {
 							'token': tokenStr
 						},
-						params: {
+						data: {
 							addressId: vm.addressId,
-							jsonStrList: vm.jsonStr
+							jsonStrList: vm.productList,
+							money: vm.money,
+							num: vm.num
 						}
 					}).then(function(res) {
-						console.log();
+						if(res.data.code === 0){
+							top.location = "order_list.html";
+						}
 					});
+					localStorage.removeItem('productList');
 				}
 			}
 		})

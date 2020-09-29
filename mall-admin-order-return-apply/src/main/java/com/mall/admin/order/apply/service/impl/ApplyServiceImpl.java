@@ -1,11 +1,14 @@
 package com.mall.admin.order.apply.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mall.admin.order.apply.dao.ApplyDAO;
 import com.mall.admin.order.apply.service.ApplyService;
 import com.mall.common.pojo.OrderReturn;
 import com.mall.common.pojo.OrderReturnReason;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,10 +29,34 @@ public class ApplyServiceImpl implements ApplyService {
     @Resource
     private ApplyDAO applyDAO;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Override
     public PageInfo listOrderReturn(int pageNum, int pageSize,String adminId) {
+        List<OrderReturn> orderReturns = null;
         PageHelper.startPage(pageNum, pageSize);
-        List<OrderReturn> orderReturns = applyDAO.listOrderReturn(adminId);
+        try {
+            stringRedisTemplate.delete("listOrderReturn");
+            String s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId + "-pageNum-" + pageNum);
+            if (s == null) {
+                synchronized (this) {
+                    s = (String) stringRedisTemplate.boundHashOps("listOrderReturn").get("adminId-" + adminId + "-pageNum-" + pageNum);
+                    if (s == null) {
+                        orderReturns = applyDAO.listOrderReturn(adminId);
+                        String jsonStr = mapper.writeValueAsString(orderReturns);
+                        stringRedisTemplate.boundHashOps("listOrderReturn").put("adminId-" + adminId + "-pageNum-" + pageNum,jsonStr);
+                    }
+                }
+            } else {
+                orderReturns = mapper.readValue(s, new TypeReference<List<OrderReturn>>() {
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         PageInfo pageInfo = new PageInfo(orderReturns);
         return pageInfo;
     }
@@ -37,12 +64,22 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean deleteOrderReturn(Integer id) {
-        return applyDAO.deleteOrderReturn(id) > 0;
+        int i = applyDAO.deleteOrderReturn(id);
+        if (i>0) {
+            stringRedisTemplate.delete("listOrderReturn");
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean updateApplyStatus(Integer id, Integer status) {
-        return applyDAO.updateApplyStatus(id, status) > 0;
+        int i = applyDAO.updateApplyStatus(id, status);
+        if (i>0) {
+            stringRedisTemplate.delete("listOrderReturn");
+            return true;
+        }
+        return false;
     }
 }

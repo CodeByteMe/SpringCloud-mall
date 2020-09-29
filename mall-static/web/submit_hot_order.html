@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="yes" name="apple-touch-fullscreen">
+		<title>巢庭万家</title>
+		<link rel="stylesheet" href="../assets/css/global.css">
+		<link rel="stylesheet" href="../assets/css/order.css">
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../assets/css/animate.min.css">
+		<link rel="stylesheet" href="css/magnific-popup.css">
+		<link href="https://s1.pstatp.com/cdn/expire-1-M/font-awesome/5.8.1/css/all.min.css" type="text/css" rel="stylesheet" />
+		<link rel="stylesheet" href="../assets/css/dripicons.css">
+		<link rel="stylesheet" href="../assets/css/slick.css">
+		<link rel="stylesheet" href="../assets/css/default.css">
+		<link rel="stylesheet" href="../assets/css/style.css">
+		<link rel="stylesheet" href="../assets/css/responsive.css">
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: "microsoft yahei";
+			}
+
+			html,
+			body {
+				background: #f3f3f3;
+			}
+
+			ul {
+				list-style: none;
+			}
+
+			a {
+				text-decoration: none;
+				color: #555;
+			}
+
+			.pro_recommend {
+				width: 1200px;
+				height: auto;
+				margin: 0 auto;
+			}
+
+			.pro_recommend h2 {
+				font-size: 20px;
+				color: #555;
+				font-weight: bold;
+				margin-bottom: 20px;
+			}
+
+			.pro_recommend ul {
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				background: #fff;
+			}
+
+			.pro_recommend ul li {
+				float: left;
+				position: relative;
+				overflow: hidden;
+				transition: all 0.3s ease 0s;
+				width: 319px;
+				height: 219px;
+				border-right: 1px solid #ebebeb;
+				border-bottom: 1px solid #ebebeb;
+			}
+
+			.pro_recommend ul li:first-child {
+				border: none;
+				width: 279px;
+				height: 440px;
+				border-right: 1px solid #ebebeb;
+			}
+
+			.pro_recommend ul li:nth-child(2) {
+				float: right;
+				border: none;
+				width: 280px;
+				height: 440px;
+			}
+
+			.pro_recommend ul li a {
+				display: block;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+
+			.pro_recommend ul li img {
+				position: absolute;
+				width: 180px;
+				height: 180px;
+				bottom: 0;
+				right: -40px;
+				transition: all 0.3s ease 0s;
+				vertical-align: middle;
+			}
+
+			.pro_recommend ul li:first-child img {
+				width: 240px;
+				height: 240px;
+			}
+
+			.pro_recommend ul li:nth-child(2) img {
+				width: 240px;
+				height: 240px;
+			}
+
+			.pro_recommend ul li .item-text {
+				position: absolute;
+				top: 30px;
+				left: 30px;
+			}
+
+			.pro_recommend ul li .item-text strong {
+				display: block;
+				font-size: 18px;
+				font-weight: normal;
+				margin-bottom: 10px;
+			}
+
+			.pro_recommend ul li .item-text p {
+				font-size: 14px;
+				margin-bottom: 30px;
+			}
+
+			.pro_recommend ul li .item-text span {
+				display: inline-block;
+				height: 28px;
+				line-height: 28px;
+				border: 1px solid #fc6451;
+				color: #fc6451;
+				font-size: 14px;
+				padding: 0 20px;
+				border-radius: 2px;
+				text-align: center;
+				transition: all 0.3s ease 0s;
+			}
+
+			.pro_recommend ul li .i-p-hot {
+				display: block;
+				width: 60px;
+				height: 60px;
+				background: url(../images/icon_bg.png) no-repeat 0 -280px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+
+			.pro_recommend ul li .i-p-new {
+				display: block;
+				width: 60px;
+				height: 60px;
+				background: url(../images/icon_bg.png) no-repeat -80px -280px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+
+			.pro_recommend ul li .i-p-free {
+				display: block;
+				width: 60px;
+				height: 60px;
+				background: url(../images/icon_bg.png) no-repeat -160px -280px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+
+			.pro_recommend ul li a:hover .item-img {
+				right: -20px;
+			}
+
+			.item-img {
+				border-width: 0px;
+			}
+
+			.pro_recommend ul li a:hover .item-text span {
+				background: #fc6451;
+				border: 1px solid #fc6451;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="dongyang">
+			<!-- header -->
+			<header class="header-area">
+				<div id="header-sticky" class="menu-area">
+					<div class="container">
+						<div class="second-menu">
+							<div class="row align-items-center">
+								<div class="col-xl-2 col-lg-2">
+									<div class="logo">
+										<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+									</div>
+								</div>
+								<div class="col-xl-8 col-lg-9">
+									<div class="responsive"><i class="icon dripicons-align-right"></i></div>
+									<div class="main-menu text-right text-xl-center">
+										<nav id="mobile-menu">
+											<ul>
+												<li class="has-sub">
+													<a href="#home">消息管理</a>
+												</li>
+												<li class="has-sub"><a href="#">个人中心</a>
+													<ul>
+														<li><a href="cart.html">购物车</a></li>
+														<li><a href="order_list.html">我的订单</a></li>
+														<li><a href="address_list.html">地址管理</a></li>
+													</ul>
+												</li>
+												<li><a href="register.html">送货上门</a></li>
+												<li class="has-sub"><a href="web/product_list.html">所有商品</a>
+												</li>
+											</ul>
+										</nav>
+									</div>
+								</div>
+								<div class="col-xl-2 text-right d-none d-xl-block">
+									<div class="header-btn second-header-btn">
+										<a href="login.html" class="btn">登录</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<div style="width: 70%;margin-left: 300px;margin-top: 100px;">
+				<h5>确认订单信息</h3>
+			</div>
+			<div id="" style="margin-top: 40px;" style="width: 70%;margin: auto;">
+				<el-form label-width="200px" style="width: 70%;margin: auto;">
+
+					<el-form-item label="选择收货地址">
+						<el-select v-model="addressId" placeholder="请选择收货地址">
+							<el-option v-for="item in tableData" :key="item.addressId" :label="item.name+' '+item.province+' '+item.city+' '+item.region+' '+item.detailAddress+' '+item.phoneNumber"
+							 :value="item.addressId"></el-option>
+						</el-select>
+					</el-form-item>
+				</el-form>
+
+				<div class="page-shopping-cart" id="shopping-cart">
+					<div class="cart-product clearfix" style="width:70%;margin: auto;">
+						<table>
+							<thead>
+								<tr class="cart-product-title">
+
+									<th class="td-product">商品</th>
+									<th class="td-num">数量</th>
+									<th class="td-price">单价(元)</th>
+									<th class="td-total">金额(元)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+
+									<td class="td-product"><img :src="productList.pic" width="98" height="98">
+										<div class="product-info">
+											<p>{{productList.name}}</p>
+											<p>品牌：{{productList.title}}</p>
+										</div>
+										<div class="clearfix"></div>
+									</td>
+									<td class="td-num">
+										<div class="">
+											<p>{{num}}</p>
+										</div>
+									</td>
+									<td class="td-price">
+										<p class="red-text">￥<span class="price-text">{{productList.flashPromotionPrice}}</span></p>
+									</td>
+									<td class="td-total">
+										<p class="red-text">￥<span class="total-text">{{(productList.flashPromotionPrice*num)}}</span></p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="cart-product-info">
+						<a class="btn-buy fr" @click="addOrder">提交订单</a>
+						<p class="fr product-total">￥<span>{{money}}</span></p>
+						<p class="fr check-num"><span>{{num}}</span>件商品总计（不含运费）：</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="../assets/js/vendor/modernizr-3.5.0.min.js"></script>
+	<script src="../assets/js/vendor/jquery-1.12.4.min.js"></script>
+	<script src="../assets/js/popper.min.js"></script>
+	<script src="../assets/js/bootstrap.min.js"></script>
+	<script src="../assets/js/one-page-nav-min.js"></script>
+	<script src="../assets/js/slick.min.js"></script>
+	<script src="../assets/js/ajax-form.js"></script>
+	<script src="../assets/js/paroller.js"></script>
+	<script src="../assets/js/wow.min.js"></script>
+	<script src="../assets/js/js_isotope.pkgd.min.js"></script>
+	<script src="../assets/js/imagesloaded.min.js"></script>
+	<script src="../assets/js/parallax.min.js"></script>
+	<script src="../assets/js/jquery.waypoints.min.js"></script>
+	<script src="../assets/js/jquery.counterup.min.js"></script>
+	<script src="../assets/js/jquery.scrollUp.min.js"></script>
+	<script src="../assets/js/parallax-scroll.js"></script>
+	<script src="../assets/js/jquery.magnific-popup.min.js"></script>
+	<script src="../assets/js/element-in-view.js"></script>
+	<script src="../assets/js/main.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: '#dongyang',
+			data: {
+				tableData: [],
+				productList: [],
+				addressId: '',
+				money: 0,
+				num: 1
+			},
+			beforeMount: function() {
+				this.productList = JSON.parse(localStorage.getItem("hotproduct"))
+				console.log(localStorage.getItem("hotproduct"));
+				var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for (var i = 0; i < arr.length; i++) {
+					var s = arr[i];
+					if (s.split("=")[0].trim() == "token") {
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
+				axios({
+					method: 'get',
+					url: 'http://localhost:8766/address/address/list',
+					headers: {
+						'token': tokenStr,
+					}
+				}).then(function(res) {
+					vm.tableData = res.data.data;
+					console.log(vm.tableData);
+
+					vm.money = vm.productList.flashPromotionPrice * 1;
+					vm.num = 1;
+				})
+			},
+			methods: {
+				updatesubmit: function(event) {
+					vm.dialogVisible = false;
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/address/address/update',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							addressId: vm.updaterow.addressId,
+							name: vm.updaterow.name,
+							phoneNumber: vm.updaterow.phoneNumber,
+							postCode: vm.updaterow.postCode,
+							province: vm.updaterow.province,
+							city: vm.updaterow.city,
+							region: vm.updaterow.region,
+							detailAddress: vm.updaterow.detailAddress
+						}
+					}).then(function(res) {
+						if (res.data.code === 1) {
+							vm.$message('更新失败');
+						}
+						if (res.data.code == 0) {
+							vm.$message('更新成功');
+							setTimeout(function() {
+								location.href = "address_list.html";
+							}, 2000);
+						}
+					});
+				},
+				updateStatus: function(row) {
+					console.log(row.addressId)
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/address/address/updateStatus',
+						headers: {
+							'token': vm.token
+						},
+						params: {
+							addressId: row.addressId
+						}
+					}).then(function(res) {
+						if (res.data.code === 1) {
+							vm.$message('更新失败');
+						}
+						if (res.data.code == 0) {
+							vm.$message('更新成功');
+							setTimeout(function() {
+								location.href = "address_list.html";
+							}, 2000);
+						}
+					});
+				},
+				addOrder: function() {
+					console.log(vm.addressId);
+					console.log(vm.productList);
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/spike/spike/add',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							relationId: vm.productList.id,
+							companyId: vm.productList.companyId,
+							addressId: vm.addressId,
+							productPic: vm.productList.pic,
+							productId: vm.productList.productId,
+							productName: vm.productList.name,
+							money: vm.money,
+							num: vm.num,
+							title: vm.productList.title
+						}
+					}).then(function(res) {
+						if (res.data.code === 0) {
+							top.location = "order_list.html";
+						}
+					});
+					localStorage.removeItem('hotproduct');
+				}
+			}
+		})
+	</script>
+</html>

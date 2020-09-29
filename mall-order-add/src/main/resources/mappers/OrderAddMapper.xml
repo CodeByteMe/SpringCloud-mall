@@ -10,4 +10,31 @@
         values (#{orderId},#{memberId},#{createTime},#{memberUsername},#{totalAmount},#{payAmount},#{promotionAmount},
         #{payType},#{status},#{orderType},#{addressId},#{autoConfirmDay},#{promotionInfo},#{note},#{confirmStatus},#{paymentTime},#{deliveryTime},#{receiveTime},#{modifyTime},#{companyId})
     </insert>
+
+    <insert id="addOrderItem">
+        insert into oms_order_item(order_id,order_sn,product_id,product_pic,product_name,product_sn,product_price,product_quantity,product_sku_id,product_sku_code,product_category_id,promotion_name,promotion_amount,product_attr)
+        values
+            (#{orderId},#{orderSn},#{productId},#{productPic},#{productName},
+            #{productSn},#{productPrice},#{productQuantity},#{productSkuId},
+            #{productSkuCode},#{productCategoryId},#{promotionName},#{promotionAmount},
+            #{productAttr})
+    </insert>
+<!--    public int getStock(String skuId);-->
+    <select id="getStock" resultType="int">
+        select stock
+        from pms_sku_stock
+        where sku_id = #{skuId}
+    </select>
+<!--    public int updateStock(String skuId);-->
+    <update id="updateStock">
+        update pms_sku_stock
+        set stock = stock - 1
+        where sku_id = #{skuId}
+    </update>
+<!--    public String getCompanyId(String productId);-->
+    <select id="getCompanyId" resultType="String">
+        select company_id
+        from pms_product
+        where product_id = #{productId}
+    </select>
 </mapper>

@@ -11,7 +11,9 @@ import java.util.List;
  */
 public interface ProductListDAO {
 
-    public List<Product> productList();
+    public List<Product> productList(String adminId);
+
+    public List<Product> productAllList();
 
     /**
      * 根据商品id查询商品套餐详情

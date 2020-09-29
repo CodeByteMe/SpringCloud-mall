@@ -134,10 +134,11 @@
 			<template>
                     <div class="block" style="margin-bottom: 3.5rem;">
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-                        :current-page="currentPage4" :page-sizes="[5, 10, 20, 50]" 
+                        :current-page="currentPage4" :page-sizes="[10, 20, 50, 100]" 
                         :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="total">
                         </el-pagination>
                     </div>
+                    <div style="height: 100px;"></div>
                 </template>
 			    
 			    
@@ -184,8 +185,8 @@
 								      <el-input v-model="adminUser.note" autocomplete="off"></el-input>
 								    </el-form-item>
 									<el-form-item label="是否启用" :label-width="formLabelWidth">
-										<el-radio v-model="adminUser.status" label="0">启用</el-radio>
-										<el-radio v-model="adminUser.status" label="1">关闭</el-radio>
+										<el-radio v-model="adminUser.status" label="0">关闭</el-radio>
+										<el-radio v-model="adminUser.status" label="1">启用</el-radio>
 									</el-form-item>
 								  </el-form>
 								  <div slot="footer" class="dialog-footer">
@@ -204,13 +205,16 @@
 				,data:{
 					token:"",
                 	total: 100,
+                	size: 1,
+                	pageSize: 10,
 					keyword:"",
-					currentPage4:5,
+					currentPage4:1,
 					dialogVisible: false,
 					dialogFormVisible1: false,
         			dialogFormVisible: false,
 					formLabelWidth: '120px',
 					rid:0,
+					aid:'',
 					adminUser:{
 						username:"",
 						password:"",
@@ -246,7 +250,7 @@
 					url: 'http://localhost:8766/user/user/list',
 					params: {
 						page: 1,
-						pageSize: 5
+						pageSize: 10
 					},
                     headers: {
                         'token': tokenStr
@@ -255,6 +259,7 @@
 					.then(function(res){
 						console.log(res.data.data);
                         vm.tableData = res.data.data.list;
+                        console.log(vm.tableData);
                         vm.total = res.data.data.total;
 					});
             }
@@ -280,6 +285,35 @@
 					},
 					change:function(row){
 						console.log(row)
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'get',
+							url: 'http://localhost:8766/userAction/userAction/switch',
+							params: {
+								id:row.id,
+								status:vm.adminUser.status
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("操作成功");
+								}
+							});
 					},
 					add:function(){
 						console.log("add"),
@@ -353,11 +387,50 @@
 					},
 					redact:function(row){
 					console.log(row);
+					vm.aid=row.id;
 					vm.adminUser=row;
 					this. dialogFormVisible = true;
 					},
 					reSubmit:function(){
-											
+						var tokenStr = "";
+						var str = document.cookie;
+						var arr = str.split(";");
+						for(var i=0;i<arr.length;i++){
+							var s = arr[i];
+							if(s.split("=")[0].trim() == "token"){
+								tokenStr = s.split("=")[1];
+								break;
+							}
+						}
+						if (tokenStr === "") {
+							top.location = "login.html";
+						}
+						axios({
+							method: 'post',
+							url: 'http://localhost:8766/userAction/userAction/compile',
+							params: {
+								id:vm.aid,
+								username:vm.adminUser.username,
+								password:vm.adminUser.password,
+								email:vm.adminUser.email,
+								nickName:vm.adminUser.nickName,
+								note:vm.adminUser.note,
+								status:vm.adminUser.status
+							},
+		                    headers: {
+		                        'token': tokenStr
+		                    }
+							})
+							.then(function(res){
+								if(res.data.code==0){
+									vm.$message("角色修改成功");
+									vm.dialogFormVisible1 = false;
+									var int=self.setInterval(function(){
+									      location.reload();   
+									      },1000)
+								
+								}
+							});
 					},
 					handleSizeChange:function(val) {
 				        console.log(`每页 ${val} 条`);
@@ -380,8 +453,8 @@
 							url: 'http://localhost:8766/user/user/list',
 							headers: {'token': tokenStr},
 							params: {
-								page:1,
-								pageSize:vm.pageSize
+								page:vm.size,
+								pageSize:val
 								
 							}
 						}).then(function(res) {
@@ -450,6 +523,9 @@
 								if(res.data.code==0){
 									vm.$message("添加成功");
 									vm.dialogVisible = false;
+									var int=self.setInterval(function(){
+									      location.reload();   
+									      },2000)
 								}
 							});
 					},
@@ -488,7 +564,9 @@
 							.then(function(res){
 								if(res.data.code==0){
 									vm.$message("删除成功");
-									vm.dialogVisible = false;
+									var int=self.setInterval(function(){
+									      location.reload();   
+									      },1000)
 								}
 							});
 					}

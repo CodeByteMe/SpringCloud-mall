@@ -12,7 +12,8 @@ public interface MenuDAO {
      */
     public List<Menu> selectMenu();
     public List<Menu> listMenuChildren(@Param("parentId") int parentId);
-    public int addMenu(Menu menu);
-    public int delMenu(int id);
-    public int updateMenu(Menu menu);
+    public boolean addMenu(Menu menu);
+    public boolean delMenu(int id);
+    public boolean updateMenu(Menu menu);
+    public boolean switchMenu(@Param("id") int id,@Param("hidden")int hidden);
 }

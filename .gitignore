@@ -21,8 +21,14 @@ mall-admin-home/*.iml
 mall-admin-product-add/target
 mall-admin-product-add/*.iml
 
+mall-admin-product-attribute-category-add/target
+mall-admin-product-attribute-category-add/*.iml
+
 mall-admin-product-attribute-category-list/target
 mall-admin-product-attribute-category-list/*.iml
+
+mall-admin-product-attribute-category-ud/target
+mall-admin-product-attribute-category-ud/*.iml
 
 mall-admin-product-category-add/target
 mall-admin-product-category-add/*.iml
@@ -54,8 +60,11 @@ mall-eureka/*.iml
 mall-menu-list/target
 mall-menu-list/*.iml
 
-mall-order-add-ud/target
-mall-order-add-ud/*.iml
+mall-order-add/target
+mall-order-add/*.iml
+
+mall-pay/target
+mall-pay/*.iml
 
 mall-product-list/target
 mall-product-list/*.iml

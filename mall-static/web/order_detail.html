@@ -11,6 +11,8 @@
 		<!-- Place favicon.ico in the root directory -->
 
 		<!-- CSS here -->
+		<link rel="stylesheet" href="../assets/css/global.css">
+		<link rel="stylesheet" href="../assets/css/order.css">
 		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../assets/css/animate.min.css">
 		<link rel="stylesheet" href="css/magnific-popup.css">
@@ -260,17 +262,56 @@
 							</el-table-column>
 						</el-table>
 					</template>
+				</div>
 
+				<div style="width: 70%;margin-left: 300px;margin-top: 20px;">
+					<h5>商品信息</h3>
+				</div>
+				<div class="page-shopping-cart" id="shopping-cart">
+					<div class="cart-product clearfix" style="width:70%;margin: auto;">
+						<table>
+							<thead>
+								<tr class="cart-product-title">
+				
+									<th class="td-product">商品</th>
+									<th class="td-num">数量</th>
+									<th class="td-price">单价(元)</th>
+									<th class="td-total">金额(元)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(item,index) in productList" :key="index">
+				
+									<td class="td-product"><img :src="item.productPic" width="98" height="98">
+										<div class="product-info">
+											<p>{{item.productName}}</p>
+										</div>
+										<div class="clearfix"></div>
+									</td>
+									<td class="td-num">
+										<div class="">
+											<p>{{item.productQuantity}}</p>
+										</div>
+									</td>
+									<td class="td-price">
+										<p class="red-text">￥<span class="price-text">{{item.productPrice}}</span></p>
+									</td>
+									<td class="td-total">
+										<p class="red-text">￥<span class="total-text">{{(item.productPrice*item.productQuantity)}}</span></p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 
 				<div style="width: 70%;margin-left: 300px;margin-top: 20px;">
 					<h5>订单信息</h3>
 				</div>
-
 				<div id="" style="margin-top: 20px;">
 					<template>
-						<el-table :data="tableData" style="width: 70%;margin: auto;">
-							<el-table-column prop="orderId" label="订单编号">
+						<el-table :data="tableData" style="width: 70%;margin: auto;" >
+							<el-table-column prop="orderId" label="订单编号" width="280">
 							</el-table-column>
 							<el-table-column prop="payType" label="支付方式">
 								<template slot-scope="scope">
@@ -306,8 +347,6 @@
 							</el-table-column>
 						</el-table>
 					</template>
-
-
 
 					<!-- footer -->
 					<footer class="footer-bg footer-p pt-100 pb-80 " style="margin-top: 200px;">
@@ -432,7 +471,8 @@
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				tableData: []
+				tableData: [],
+				productList:[]
 			},
 			beforeMount: function() {
 				console.log(JSON.parse(localStorage.getItem("row")).orderId)
@@ -463,6 +503,20 @@
 					vm.tableData = res.data.data;
 					console.log("1");
 					console.log(vm.tableData);
+				});
+				axios({
+					method: 'get',
+					url: 'http://localhost:8766/order/order/orderItemDetail',
+					headers: {
+						'token': tokenStr,
+					},
+					params: {
+						orderId: JSON.parse(localStorage.getItem("row")).orderId
+					}
+				}).then(function(res) {
+					vm.productList = res.data.data;
+					console.log("p-d")
+					console.log(vm.productList);
 				});
 			},
 			methods: {

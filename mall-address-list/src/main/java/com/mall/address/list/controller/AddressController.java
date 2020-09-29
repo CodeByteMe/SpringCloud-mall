@@ -68,14 +68,14 @@ public class AddressController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ApiOperation(value = "前台用户地址添加接口", notes = "用户新增地址的接口")
     @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
-    public ResultVO insertAddress(@RequestParam String province,
-                                  @RequestParam String city,
-                                  @RequestParam String region,
-                                  @RequestParam String name,
+    public ResultVO insertAddress(@RequestParam String name,
                                   @RequestParam String phoneNumber,
                                   @RequestParam String postCode,
+                                  @RequestParam String province,
+                                  @RequestParam String city,
+                                  @RequestParam String region,
                                   @RequestParam String detailAddress,
-                                  @RequestParam @RequestHeader(required = true) String token) {
+                                  @RequestHeader(required = true) String token) {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等

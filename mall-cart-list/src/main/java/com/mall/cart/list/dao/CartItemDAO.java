@@ -19,4 +19,12 @@ public interface CartItemDAO {
      * @return
      */
     public int deleteCart(int id);
+
+    /**
+     * 新增购物车记录
+     * @param cartItem
+     * @return
+     */
+    public int addCart(CartItem cartItem);
+
 }

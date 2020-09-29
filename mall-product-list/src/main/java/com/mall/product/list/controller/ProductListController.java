@@ -44,9 +44,9 @@ public class ProductListController {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
-//       String adminId = jws.getBody().getId();
+       String adminId = jws.getBody().getId();
 
-        PageInfo pageInfo = productListService.productList(page, pageSize);
+        PageInfo pageInfo = productListService.productList(page, pageSize,adminId);
         return new ResultVO(0,"success",pageInfo);
     }
 
@@ -57,7 +57,7 @@ public class ProductListController {
             @ApiImplicitParam(name = "pageSize", value = "一页显示多少数据",required = true, dataType = "int")
     })
     public ResultVO productAllList(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        PageInfo pageInfo = productListService.productList(page, pageSize);
+        PageInfo pageInfo = productListService.producAlltList(page, pageSize);
         return new ResultVO(0,"success",pageInfo);
     }
 
@@ -69,8 +69,11 @@ public class ProductListController {
     public ResultVO productDetail(@RequestParam("productId") String productId) {
         Product product = productListService.productDetailByProductId(productId);
         List<SkuStock> skuStock = productListService.getSkuStockByProductId(productId);
-        product.setSkuStock(skuStock);
-        return new ResultVO(0,"success",product);
+        if(skuStock!=null){
+            product.setSkuStock(skuStock);
+            return new ResultVO(0,"success",product);
+        }
+        return new ResultVO(0,"fail",product);
     }
 
 }

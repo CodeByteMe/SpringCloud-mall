@@ -1,6 +1,7 @@
 package com.mall.role.list.controller;
 
 import com.mall.common.pojo.Role;
+import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
 import com.mall.role.list.service.RoleService;
 import io.jsonwebtoken.Claims;
@@ -27,7 +28,7 @@ public class RoleController {
             @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     })
     public ResultVO listRole( @RequestHeader(required = true) String token) {
-        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
         List<Role> roles = roleService.selectAllRole();
         return new ResultVO(0,"success",roles);
     }
@@ -35,7 +36,7 @@ public class RoleController {
     public ResultVO adduser(@RequestParam String name ,
                             @RequestParam String description,
                             @RequestHeader(required = true) String token) {
-        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
         Role role = new Role();
         role.setName(name);
         role.setDescription(description);
@@ -43,12 +44,47 @@ public class RoleController {
         role.setCreateTime(new Date());
         role.setStatus(0);
         role.setSort(1);
-        int i = roleService.insertRole(role);
-        if (i >0) {
+        boolean b= roleService.insertRole(role);
+        if (b) {
             return new ResultVO(0,"添加成功");
         } else {
             return new ResultVO(1,"添加失败");
         }
     }
-
+    @RequestMapping(value = "/compile", method = RequestMethod.POST)
+    public ResultVO compileRole(@RequestParam String id ,
+                            @RequestParam String name ,
+                            @RequestParam String description,
+                            @RequestHeader(required = true) String token) {
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        boolean b =roleService.compileRole(Integer.parseInt(id),name,description);
+        if (b) {
+            return new ResultVO(0,"修改成功");
+        } else {
+            return new ResultVO(1,"修改失败");
+        }
+    }
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    public ResultVO delRole(@RequestParam String id ,
+                            @RequestHeader(required = true) String token) {
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        boolean b =roleService.delRole(Integer.parseInt(id));
+        if (b) {
+            return new ResultVO(0,"删除成功");
+        } else {
+            return new ResultVO(1,"删除失败");
+        }
+    }
+    @RequestMapping(value = "/switch", method = RequestMethod.GET)
+    public ResultVO delRole(@RequestParam String id ,
+                            @RequestParam String status ,
+                            @RequestHeader(required = true) String token) {
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        boolean b = roleService.switchRole(Integer.parseInt(id), Integer.parseInt(status));
+        if (b) {
+            return new ResultVO(0,"启用成功");
+        } else {
+            return new ResultVO(1,"启用失败");
+        }
+    }
 }

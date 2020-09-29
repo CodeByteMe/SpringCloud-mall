@@ -52,7 +52,6 @@
 					}
 
 				})
-				//�������ٲ���
 				$("#min").click(function() {
 					t.val(parseInt(t.val()) - 1);
 					if (parseInt(t.val()) == 1) {
@@ -148,7 +147,7 @@
 						<h3>{{product.name}}</h3>
 					</div>
 					<div class="txt">
-						<span class="nowprice">￥<a href="">{{product.price}}</a></span>
+						<span class="nowprice">￥<a href="">{{changePrice}}</a></span>
 						<div class="cumulative">
 							<span class="number ty1">销量<br /><em id="add_sell_num_363">{{product.sale}}</em></span>
 						</div>
@@ -157,16 +156,16 @@
 
 					<div class="gcIpt">
 						<span class="guT">数量</span>
-						<input id="min" name="" type="button" value="-" />
-						<input id="text_box" name="" type="text" value="1" style="width:30px; text-align: center; color: #0F0F0F;" />
-						<input id="add" name="" type="button" value="+" />
+						<template>
+						  <el-input-number v-model="num"  :min="1" label="描述文字"></el-input-number>
+						</template>
 						<span class="Hgt">库存{{product.stock}}</span>
 					</div>
 					<div id="" style="margin: auto;">
-						颜色类型：<br><el-button plain v-for="item in skuData">{{item.color}}+{{item.size}}</el-button>
+						颜色类型：<br><el-button plain v-for="item in skuData" @click="skuChange(item)">{{item.color}}+{{item.size}}</el-button>
 					</div>
 					<div class="nobdr-btns">
-						<button class="addcart hu"><img src="../assets/img/shop.png" width="25" height="25" / @click="goCart">加入购物车</button>
+						<button class="addcart hu" @click="goCart" ><img src="../assets/img/shop.png" width="25" height="25">加入购物车</button>
 						<button class="addcart yh"><img src="../assets/img/ht.png" width="25" height="25" />立即购买</button>
 					</div>
 					<div class="guarantee">
@@ -191,7 +190,10 @@
 			el: "#dongyang",
 			data: {
 				skuData:[],
-				product:[]
+				product:[],
+				num:"",
+				changePrice: '',
+				changeSkuId:''
 			},
 			beforeMount: function() {
 				console.log(JSON.parse(localStorage.getItem("item")).productId)
@@ -203,14 +205,62 @@
 						}
 					})
 					.then(function(res) {
-						console.log(res.data.data);
-						vm.product = res.data.data
-						vm.skuData = res.data.data.skuStock
+						vm.product = res.data.data;
+						vm.skuData = res.data.data.skuStock;
+						vm.changePrice = vm.product.price;
+						console.log(vm.product);
 					});
 			},
 			methods:{
 				goCart:function(){
-					
+					// console.log(vm.num);
+					// console.log(vm.changePrice);
+					// console.log(vm.product.productId);
+					// console.log(vm.product.name)
+					// console.log(vm.changeSkuId);
+					// console.log(vm.product.pic);
+					// console.log(vm.product.note);
+					// console.log(vm.product.productAttributeCategoryId);
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/cart/cart/add',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							changeSkuId: vm.changeSkuId,
+							pic: vm.product.pic,
+							note: vm.product.note,
+							productAttributeCategoryId: vm.product.productAttributeCategoryId,
+							num: vm.num,
+							changePrice: vm.changePrice,
+							productId: vm.product.productId,
+							name: vm.product.name
+						}
+					}).then(function(res) {
+						if(res.data.code === 0){
+							top.location = "cart.html";
+						}
+					});
+				},
+				skuChange:function(item){
+					console.log("item");
+					console.log(item);
+					vm.changePrice = item.price;
+					vm.changeSkuId = item.skuId;
 				}
 			}
 		});

@@ -33,4 +33,11 @@
     <delete id="deleteCart">
         delete from oms_cart_item where id = #{id}
     </delete>
+
+    <insert id="addCart">
+        insert into oms_cart_item(product_id,product_sku_id,member_id,quantity,price,product_pic,product_name,product_sub_title,member_nickname,create_date
+        ,modify_date,product_category_id,product_brand,product_attr)
+        values (#{productId},#{productSkuId},#{memberId},#{quantity},#{price},#{productPic},#{productName},#{productSubTitle},#{memberNickname},#{createDate},#{modifyDate},#{productCategoryId},#{productBrand},#{productAttr})
+
+    </insert>
 </mapper>

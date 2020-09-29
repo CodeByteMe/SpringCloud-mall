@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @CrossOrigin
 @RequestMapping("/rolemenu")
@@ -44,16 +45,12 @@ public class RmenuController {
     public ResultVO addMenu(@RequestParam Integer roleId,
                             @RequestParam String str,
                             @RequestHeader(required = true) String token) {
-        try {
-            List<Menu> menus = mapper.readValue(str, new TypeReference<List<Menu>>() {
-            });
-            for (Menu m:menus
-                 ) {
-                boolean b =rmenuService.insertById(roleId,m.getId());
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        String a[]=str.split(",");
+        boolean b = rmenuService.insertById(roleId, a);
+        if (b=true){
+            return new ResultVO(0,"success");
+        }else {
+            return null;
         }
-        return null;
     }
 }

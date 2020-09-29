@@ -66,19 +66,19 @@ public class MenuController {
                             @RequestHeader(required = true) String token) {
         Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
         Menu menu = new Menu(null,Integer.parseInt(id),new Date(),title,0,Integer.parseInt(sort),url,"el-icon-star-off",Integer.parseInt(hidden));
-        int i = menuService.addMenu(menu);
-        if ( i>0) {
+        boolean b = menuService.addMenu(menu);
+        if (b) {
             return new ResultVO(0,"添加成功");
         } else {
             return new ResultVO(1,"添加失败");
         }
     }
-    @RequestMapping(value = "/del", method = RequestMethod.DELETE)
-    public ResultVO addMenu(@RequestParam String id ,
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    public ResultVO delMenu(@RequestParam String id ,
                             @RequestHeader(required = true) String token) {
         Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
-        int i = menuService.delMenu(Integer.parseInt(id));
-        if ( i>0) {
+        boolean b = menuService.delMenu(Integer.parseInt(id));
+        if (b) {
             return new ResultVO(0,"删除成功");
         } else {
             return new ResultVO(1,"删除失败");
@@ -100,8 +100,20 @@ public class MenuController {
         menu.setSort(Integer.parseInt(sort));
         menu.setUrl(url);
         menu.setHidden(Integer.parseInt(hidden));
-        int i = menuService.updateMenu(menu);
-        if ( i>0) {
+        boolean b = menuService.updateMenu(menu);
+        if (b) {
+            return new ResultVO(0,"修改成功");
+        } else {
+            return new ResultVO(1,"修改失败");
+        }
+    }
+    @RequestMapping(value = "/switch", method = RequestMethod.GET)
+    public ResultVO switchMenu(@RequestParam int id ,
+                               @RequestParam int hidden ,
+                            @RequestHeader(required = true) String token) {
+        Jws<Claims> jws = Jwts.parser().setSigningKey("fadj@Jq4$fka").parseClaimsJws(token);
+        boolean b = menuService.switchMenu(id,hidden);
+        if (b) {
             return new ResultVO(0,"修改成功");
         } else {
             return new ResultVO(1,"修改失败");

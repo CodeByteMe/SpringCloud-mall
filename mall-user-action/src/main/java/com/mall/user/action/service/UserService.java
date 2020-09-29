@@ -9,4 +9,6 @@ public interface UserService {
     public int addUser(AdminUser adminUser);
     public String getCompanyId(String adminId);
     public int grantRole(int id,int rid);
+    public int switchUser( int id,int status);
+    public int updateUser(AdminUser adminUser);
 }

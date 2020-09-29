@@ -30,4 +30,24 @@
         insert into ums_role (name ,description,admin_count,create_time,status,sort)
         values (#{name},#{description},#{adminCount},#{createTime},#{status},#{sort})
     </insert>
+
+<!--    public int updateRole(@Param("id") int id, @Param("name") String name, @Param("description") String description);-->
+    <update id="updateRole">
+         update ums_role set
+        name = #{name},
+        description = #{description}
+        where id = #{id}
+    </update>
+
+<!--    public int delRole(int id);-->
+    <delete id="delRole">
+        delete from ums_role
+        where id = #{id}
+    </delete>
+<!--    public int switchRole(@Param("id") int id,@Param("status")int status);-->
+    <update id="switchRole">
+         update ums_role set
+        status = #{status}
+        where id = #{id}
+    </update>
 </mapper>

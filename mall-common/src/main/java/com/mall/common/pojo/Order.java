@@ -62,4 +62,27 @@ public class Order {
     private Date modifyTime;
     @ApiModelProperty(value = "公司id" ,dataType = "String", required = true)
     private String companyId;
+
+    public Order(String orderId, String memberId, Date createTime, String memberUsername, double totalAmount, double payAmount, double promotionAmount, Integer payType, Integer status, Integer orderType, String addressId, Integer autoConfirmDay, String promotionInfo, String note, Integer confirmStatus, Date paymentTime, Date deliveryTime, Date receiveTime, Date modifyTime, String companyId) {
+        this.orderId = orderId;
+        this.memberId = memberId;
+        this.createTime = createTime;
+        this.memberUsername = memberUsername;
+        this.totalAmount = totalAmount;
+        this.payAmount = payAmount;
+        this.promotionAmount = promotionAmount;
+        this.payType = payType;
+        this.status = status;
+        this.orderType = orderType;
+        this.addressId = addressId;
+        this.autoConfirmDay = autoConfirmDay;
+        this.promotionInfo = promotionInfo;
+        this.note = note;
+        this.confirmStatus = confirmStatus;
+        this.paymentTime = paymentTime;
+        this.deliveryTime = deliveryTime;
+        this.receiveTime = receiveTime;
+        this.modifyTime = modifyTime;
+        this.companyId = companyId;
+    }
 }

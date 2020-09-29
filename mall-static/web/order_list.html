@@ -273,7 +273,7 @@
 							</el-table-column>
 							<el-table-column prop="status" label="操作" width="220">
 								<template slot-scope="scope">
-									<el-button type="success" size="mini" v-if="scope.row.status=='0'">立即支付</el-button>
+									<el-button type="success" size="mini" v-if="scope.row.status=='0'" @click="submitPay(scope.$index, scope.row)">立即支付</el-button>
 									<el-button type="warning" size="mini" v-if="scope.row.status=='1'" >取消订单</el-button>
 									<el-button type="danger" size="mini" v-if="scope.row.status=='2'">退货</el-button>
 									<el-button type="warning" size="mini" v-if="scope.row.status=='3'" >取消订单</el-button>
@@ -412,8 +412,6 @@
 				dialogVisible: false,
 				dialogVisibleUpdate: false,
 				tableData: [],
-				page: 1,
-				pageSize: 5,
 				addressData: []
 			},
 			beforeMount: function() {
@@ -447,6 +445,39 @@
 					console.log(row.orderId)
 					localStorage.setItem("row", JSON.stringify(row));
 					location.href = "order_detail.html";
+				},
+				submitPay:function(index,row){
+					console.log(row.orderId);
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for(var i=0;i<arr.length;i++){
+						var s = arr[i];
+						if(s.split("=")[0].trim() == "token"){
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "../login.html";
+					}
+					axios({
+						method:"POST",
+						url:"http://localhost:8550/pay/wxdlj",
+						headers: {'token': tokenStr},
+						params:{
+							orderId:row.orderId
+						}
+					}).then(function(res){
+						console.log(res);
+						if(res.data.code==0){
+							localStorage.setItem("payUrl",res.data.msg);
+							console.log(res.data.msg)
+							localStorage.setItem("orderId",res.data.data);
+							console.log(res.data.data)
+							location.href="pay.html";
+						}
+					});
 				}
 			}
 		});
