@@ -40,9 +40,7 @@ public class ReasonServiceImpl implements ReasonService {
         List<OrderReturnReason> orderReturnReasons = null;
         PageHelper.startPage(pageNum, pageSize);
         try {
-            if (pageSize != 10) {
-                stringRedisTemplate.delete("listOrderReturnReason");
-            }
+            stringRedisTemplate.delete("listOrderReturnReason");
             String s = (String) stringRedisTemplate.boundHashOps("listOrderReturnReason").get("listOrderReturnReason" + pageNum);
             if (s == null) {
                 synchronized (this) {
