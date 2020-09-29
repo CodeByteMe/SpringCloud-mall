@@ -1,10 +1,9 @@
 package com.mall.admin.spike.dao;
 
-import com.mall.common.pojo.FlashPromotion;
-import com.mall.common.pojo.FlashPromotionProductRelation;
-import com.mall.common.pojo.Product;
+import com.mall.common.pojo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * SpikeDAO
@@ -47,4 +46,24 @@ public interface SpikeDAO {
      * @return
      */
     public int deleteFlashPromotion(Integer id);
+
+    /**
+     * 查询所有秒杀活动信息
+     * @return
+     */
+    public List<Map> getFlashPromotion();
+
+    /**
+     * 商品秒杀录单服务
+     * @param order
+     * @return
+     */
+    public int addOrder(Order order);
+
+    /**
+     * 添加订单商品属性
+     * @param list
+     * @return
+     */
+    public int addOrderItem(OrderItem list);
 }

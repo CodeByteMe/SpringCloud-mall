@@ -1,10 +1,7 @@
 package com.mall.admin.spike.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mall.admin.spike.service.SpikeService;
-import com.mall.common.pojo.FlashPromotion;
-import com.mall.common.pojo.FlashPromotionProductRelation;
-import com.mall.common.pojo.Product;
+import com.mall.common.pojo.*;
 import com.mall.common.util.DateUtil;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
@@ -17,10 +14,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * SpikeController
@@ -138,6 +135,59 @@ public class SpikeController {
             }
         } else {
             return new ResultVO(1,"没有权限，请联系管理员",null);
+        }
+    }
+
+    @RequestMapping(value = "/allList",method = RequestMethod.GET)
+    @ApiOperation(value = "秒杀活动列表查询接口" , notes = "秒杀活动列表查询接口")
+    @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    public ResultVO allListSpike(@RequestHeader(required = true) String token) {
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            List<Map> flashPromotion = spikeService.getFlashPromotion();
+            if (flashPromotion != null) {
+                return new ResultVO(0,"success",flashPromotion);
+            } else {
+                return new ResultVO(1,"fail",null);
+            }
+        } else {
+            return new ResultVO(1,"没有权限，请联系管理员",null);
+        }
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation(value = "前台用户秒杀录单接口", notes = "用户秒杀录单的接口")
+    @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    public ResultVO addOrder(@RequestParam("companyId") String companyId ,
+                             @RequestParam("addressId") String addressId,
+                             @RequestParam("productPic") String productPic,
+                             @RequestParam("productId") String productId,
+                             @RequestParam("productName") String productName,
+                             @RequestParam("money") String money,
+                             @RequestParam("num") String num,
+                             @RequestParam("title") String title,
+                             @RequestHeader(required = true) String token) {
+        // 验证token
+        Jws<Claims> jws = JWTUtil.Decrypt(token);
+        // 获取解析的token中的用户名、id等
+        String memberId = jws.getBody().getId();
+        String issuer = jws.getBody().getIssuer();
+        if ("member".equals(issuer)) {
+            String orderId = UUID.randomUUID().toString().replace("-", "");
+            double m1 = Double.parseDouble(money);
+            System.out.println(m1);
+            int i = Integer.parseInt(num);
+            boolean b = spikeService.addOrder(new Order(0,orderId,memberId,new Date(),"lisi",m1,m1,0,0,0,0,addressId,7,null,null,0,null,null,null,null,companyId),
+                                              new OrderItem(0,orderId,orderId,productId,productPic,productName,null,m1,i,null,null,null,title,0.00,null));
+            if (b) {
+                return new ResultVO(0, "添加成功");
+            } else {
+                return new ResultVO(1, "添加失败");
+            }
+        }else {
+            return new ResultVO(1, "权限校验未通过");
         }
     }
 }

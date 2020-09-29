@@ -261,25 +261,25 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(item,index) in productList" :key="index">
+								<tr>
 
-									<td class="td-product"><img :src="item.productPic" width="98" height="98">
+									<td class="td-product"><img :src="productList.pic" width="98" height="98">
 										<div class="product-info">
-											<p>{{item.productName}}</p>
-											<p>品牌：{{item.productBrand}}</p>
+											<p>{{productList.name}}</p>
+											<p>品牌：{{productList.title}}</p>
 										</div>
 										<div class="clearfix"></div>
 									</td>
 									<td class="td-num">
 										<div class="">
-											<p>{{item.quantity}}</p>
+											<p>{{num}}</p>
 										</div>
 									</td>
 									<td class="td-price">
-										<p class="red-text">￥<span class="price-text">{{item.price}}</span></p>
+										<p class="red-text">￥<span class="price-text">{{productList.flashPromotionPrice}}</span></p>
 									</td>
 									<td class="td-total">
-										<p class="red-text">￥<span class="total-text">{{(item.price*item.quantity)}}</span></p>
+										<p class="red-text">￥<span class="total-text">{{(productList.flashPromotionPrice*num)}}</span></p>
 									</td>
 								</tr>
 							</tbody>
@@ -324,20 +324,14 @@
 			el: '#dongyang',
 			data: {
 				tableData: [],
-				productlist: [],
+				productList: [],
 				addressId: '',
 				money: 0,
-				num: 0,
-				s1: "",
-				str: "",
-				jsonStr: ""
-				
+				num: 1
 			},
 			beforeMount: function() {
-				this.productList = JSON.parse(localStorage.getItem("productList"))
-				console.log(localStorage.getItem("productList"));
-				// this.productList = JSON.parse(localStorage.getItem("hotproduct"))
-				// console.log(localStorage.getItem("hotproduct"));
+				this.productList = JSON.parse(localStorage.getItem("hotproduct"))
+				console.log(localStorage.getItem("hotproduct"));
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
@@ -360,13 +354,10 @@
 				}).then(function(res) {
 					vm.tableData = res.data.data;
 					console.log(vm.tableData);
-					vm.productList.forEach((item, index) => {
-						vm.money += item.price * item.quantity;
-					});
-					vm.productList.forEach((item, index) => {
-						vm.num += item.quantity;
-					});
-				});
+
+					vm.money = vm.productList.flashPromotionPrice * 1;
+					vm.num = 1;
+				})
 			},
 			methods: {
 				updatesubmit: function(event) {
@@ -438,27 +429,29 @@
 					if (tokenStr === "") {
 						top.location = "login.html";
 					}
-					// vm.jsonStr = JSON.stringify(vm.productList);
-					// vm.jsonStr = "bhy";
-					console.log(vm.jsonStr);
+					
 					axios({
 						method: 'post',
-						url: 'http://localhost:8766/addOrder/addOrder/add',
+						url: 'http://localhost:8766/spike/spike/add',
 						headers: {
 							'token': tokenStr
 						},
-						data: {
+						params: {
+							companyId: vm.productList.companyId,
 							addressId: vm.addressId,
-							jsonStrList: vm.productList,
+							productPic: vm.productList.pic,
+							productId: vm.productList.productId,
+							productName: vm.productList.name,
 							money: vm.money,
-							num: vm.num
+							num: vm.num,
+							title: vm.productList.title
 						}
 					}).then(function(res) {
-						if(res.data.code === 0){
+						if (res.data.code === 0) {
 							top.location = "order_list.html";
 						}
 					});
-					localStorage.removeItem('productList');
+					localStorage.removeItem('hotproduct');
 				}
 			}
 		})
