@@ -20,4 +20,5 @@ public interface OrderService {
     public List<Order> getOrderListByMemberId(String memberId);
     public List<OrderDTO> getOrderByOrderId(String orderId);
     public List<OrderItem> getOrderItemByOrderId(String orderId);
+    public boolean updateStatus(String orderId, int status, int payType);
 }
