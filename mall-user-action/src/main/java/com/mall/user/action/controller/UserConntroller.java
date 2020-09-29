@@ -9,6 +9,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +27,14 @@ public class UserConntroller {
     @Resource
     private UserService userService;
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation(value = "添加用户接口", notes = "需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "email", value = "邮箱",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "note", value = "备注",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "status", value = "状态",required = true, dataType = "int")
+    })
     public ResultVO adduser(@RequestParam String username ,
                             @RequestParam String password,
                             @RequestParam String email,
@@ -45,8 +56,15 @@ public class UserConntroller {
             return new ResultVO(1,"添加失败");
         }
     }
+
     @RequestMapping(value = "/del", method = RequestMethod.GET)
-    public ResultVO delUser(@RequestParam int id, @RequestHeader(required = true) String token) {
+    @ApiOperation(value = "后台商品列表接口", notes = "需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
+    })
+    public ResultVO delUser(@RequestParam int id,
+                            @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         int i = userService.delectUser(id);
         if (i >0) {
@@ -56,7 +74,14 @@ public class UserConntroller {
         }
     }
     @RequestMapping(value = "/grant", method = RequestMethod.POST)
-    public ResultVO grant(@RequestParam int id, @RequestParam int rid,@RequestHeader(required = true) String token) {
+    @ApiOperation(value = "用户授予角色接口", notes = "需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "rid", value = "角色id",required = true, dataType = "int")
+    })
+    public ResultVO grant(@RequestParam int id,
+                          @RequestParam int rid,
+                          @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         int i = userService.grantRole(id, rid);
         if (i >0) {
@@ -66,6 +91,11 @@ public class UserConntroller {
         }
     }
     @RequestMapping(value = "/switch", method = RequestMethod.GET)
+    @ApiOperation(value = "用户启用接口", notes = "需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "status", value = "状态",required = true, dataType = "int")
+    })
     public ResultVO switchUser(@RequestParam int id,
                                @RequestParam int status,@RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
@@ -77,23 +107,33 @@ public class UserConntroller {
         }
     }
     @RequestMapping(value = "/compile", method = RequestMethod.POST)
-    public ResultVO compileUser(@RequestParam String id,
+    @ApiOperation(value = "修改用户接口", notes = "需要携带token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "username", value = "用户名",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "email", value = "邮箱",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "nickName", value = "昵称",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "note", value = "备注",required = true, dataType = "int"),
+            @ApiImplicitParam(name = "status", value = "状态",required = true, dataType = "int")
+    })
+    public ResultVO compileUser(@RequestParam Integer id,
                                 @RequestParam String username,
                                 @RequestParam String password,
                                 @RequestParam String email,
                                 @RequestParam String nickName,
                                 @RequestParam String note,
-                                @RequestParam String status,
+                                @RequestParam Integer status,
                           @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         AdminUser adminUser = new AdminUser();
-        adminUser.setId(Integer.parseInt(id));
+        adminUser.setId(id);
         adminUser.setUsername(username);
         adminUser.setPassword(password);
         adminUser.setEmail(email);
         adminUser.setNickName(nickName);
         adminUser.setNote(note);
-        adminUser.setStatus(Integer.parseInt(status));
+        adminUser.setStatus(status);
         int i = userService.updateUser(adminUser);
         if (i >0) {
             return new ResultVO(0,"修改成功");

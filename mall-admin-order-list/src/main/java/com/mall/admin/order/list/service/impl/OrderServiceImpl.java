@@ -45,10 +45,10 @@ public class OrderServiceImpl implements OrderService {
                         companyId = orderDAO.getCompanyId(id);
                         String jsonStr = mapper.writeValueAsString(companyId);
                         stringRedisTemplate.boundHashOps("getCompanyId").put("id-"+id,jsonStr);
-                    } else {
-                        companyId = mapper.readValue(getCompanyId, String.class);
                     }
                 }
+            } else {
+                companyId = mapper.readValue(getCompanyId, String.class);
             }
         } catch (Exception e) {
             e.printStackTrace();
