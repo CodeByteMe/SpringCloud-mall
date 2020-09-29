@@ -41,10 +41,6 @@
     <select id="listFlashPromotion" resultSets="java.util.List" resultMap="flashPromotionMap">
         select sms_flash_promotion.id,sms_flash_promotion.title,sms_flash_promotion.start_date,sms_flash_promotion.end_date,sms_flash_promotion.status,sms_flash_promotion.create_time
         from sms_flash_promotion
---         inner join sms_flash_promotion_product_relation on sms_flash_promotion.id = sms_flash_promotion_product_relation.flash_promotion_id
---         inner join pms_product on sms_flash_promotion_product_relation.product_id = pms_product.product_id
---         inner join ums_admin on pms_product.company_id = ums_admin.company_id
---         where ums_admin.admin_id = #{adminId}
     </select>
 <!--    public int deleteFlashPromotion(Integer id);-->
     <delete id="deleteFlashPromotion">
@@ -52,7 +48,7 @@
     </delete>
 
     <select id="getFlashPromotion" resultType="java.util.Map">
-        select pms.product_id productId,pms.pic,pms.name,pms.company_id companyId,sfpr.flash_promotion_price flashPromotionPrice,
+        select sfpr.id relationId,pms.product_id productId,pms.pic,pms.name,pms.company_id companyId,sfpr.flash_promotion_price flashPromotionPrice,
         sfp.id,sfp.title,sfp.start_date startDate,sfp.end_date endDate,sfp.status,sfpr.flash_promotion_count flashPromotionCount
         from pms_product pms
         inner join sms_flash_promotion_product_relation sfpr  on pms.product_id = sfpr.product_id
@@ -74,16 +70,16 @@
             #{productSkuCode},#{productCategoryId},#{promotionName},#{promotionAmount},
             #{productAttr})
     </insert>
-<!--    public int getFlashPromotionCount(String productId);-->
+<!--    public int getFlashPromotionCount(String relationId);-->
     <select id="getFlashPromotionCount" resultType="int">
         select flash_promotion_count
         from sms_flash_promotion_product_relation
-        where product_id = #{productId}
+        where id = #{relationId}
     </select>
-<!--    public int updateFlashPromotionCount(String productId);-->
+<!--    public int updateFlashPromotionCount(String relationId);-->
     <update id="updateFlashPromotionCount">
         update sms_flash_promotion_product_relation
         set flash_promotion_count = flash_promotion_count - 1
-        where product_id = #{productId}
+        where id = #{relationId}
     </update>
 </mapper>

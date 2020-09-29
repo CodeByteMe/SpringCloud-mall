@@ -79,7 +79,7 @@ public class SpikeServiceImpl implements SpikeService {
         if (i > 0) {
             int j = spikeDAO.addOrderItem(orderItem);
             if (j > 0) {
-                int k = spikeDAO.updateFlashPromotionCount(orderItem.getProductId());
+                int k = spikeDAO.updateFlashPromotionCount(orderItem.getId());
                 if (k > 0) {
                     stringRedisTemplate.delete("listOrderByCompanyId");
                     stringRedisTemplate.delete("getOrderListByMemberId");
@@ -93,7 +93,7 @@ public class SpikeServiceImpl implements SpikeService {
     }
 
     @Override
-    public int getFlashPromotionCount(String productId) {
-        return spikeDAO.getFlashPromotionCount(productId);
+    public int getFlashPromotionCount(Integer relationId) {
+        return spikeDAO.getFlashPromotionCount(relationId);
     }
 }
