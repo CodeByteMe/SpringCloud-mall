@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RmenuService {
     public List<String> selectById(int roleId);
-    public boolean insertById( int roleId, int menuId);
+    public boolean insertById( int roleId,String a[]);
 }

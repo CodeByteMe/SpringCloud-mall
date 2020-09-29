@@ -45,28 +45,12 @@ public class RmenuController {
     public ResultVO addMenu(@RequestParam Integer roleId,
                             @RequestParam String str,
                             @RequestHeader(required = true) String token) {
-        boolean b;
         String a[]=str.split(",");
-        for (int i=0; i<a.length; i++) {
-            int n = Integer.parseInt(a[i]);
-             b = rmenuService.insertById(roleId, n);
-        }
+        boolean b = rmenuService.insertById(roleId, a);
         if (b=true){
             return new ResultVO(0,"success");
         }else {
             return null;
         }
-//        System.out.println(str);
-//        try {
-//            List<Menu> menus = mapper.readValue(str, new TypeReference<List<Menu>>() {
-//            });
-//            for (Menu m:menus
-//                 ) {
-//                boolean b =rmenuService.insertById(roleId,m.getId());
-//            }
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
 }
