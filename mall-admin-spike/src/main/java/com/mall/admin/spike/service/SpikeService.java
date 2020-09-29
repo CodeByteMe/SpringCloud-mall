@@ -23,6 +23,6 @@ public interface SpikeService {
     public List<FlashPromotion> listFlashPromotion(String adminId);
     public boolean deleteFlashPromotion(Integer id);
     public List<Map> getFlashPromotion();
-
     public boolean addOrder(Order order,OrderItem orderItem);
+    public int getFlashPromotionCount(String productId);
 }

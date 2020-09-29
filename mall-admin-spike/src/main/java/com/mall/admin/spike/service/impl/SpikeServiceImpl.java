@@ -72,18 +72,28 @@ public class SpikeServiceImpl implements SpikeService {
         return spikeDAO.getFlashPromotion();
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
     public boolean addOrder(Order order,OrderItem orderItem) {
         int i = spikeDAO.addOrder(order);
-        if (i>0) {
-            int i1 = spikeDAO.addOrderItem(orderItem);
-            stringRedisTemplate.delete("listOrderByCompanyId");
-            stringRedisTemplate.delete("getOrderListByMemberId");
-            stringRedisTemplate.delete("getOrderByOrderId");
-            stringRedisTemplate.delete("getOrderItemByOrderId");
-            return true;
+        if (i > 0) {
+            int j = spikeDAO.addOrderItem(orderItem);
+            if (j > 0) {
+                int k = spikeDAO.updateFlashPromotionCount(orderItem.getProductId());
+                if (k > 0) {
+                    stringRedisTemplate.delete("listOrderByCompanyId");
+                    stringRedisTemplate.delete("getOrderListByMemberId");
+                    stringRedisTemplate.delete("getOrderByOrderId");
+                    stringRedisTemplate.delete("getOrderItemByOrderId");
+                    return true;
+                }
+            }
         }
         return false;
+    }
+
+    @Override
+    public int getFlashPromotionCount(String productId) {
+        return spikeDAO.getFlashPromotionCount(productId);
     }
 }

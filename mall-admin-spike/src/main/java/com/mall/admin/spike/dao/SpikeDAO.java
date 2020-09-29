@@ -66,4 +66,18 @@ public interface SpikeDAO {
      * @return
      */
     public int addOrderItem(OrderItem list);
+
+    /**
+     * 根据商品id，在秒杀活动中查询该商品的库存
+     * @param productId
+     * @return
+     */
+    public int getFlashPromotionCount(String productId);
+
+    /**
+     * 秒杀录单修改库存
+     * @param productId
+     * @return
+     */
+    public int updateFlashPromotionCount(String productId);
 }
