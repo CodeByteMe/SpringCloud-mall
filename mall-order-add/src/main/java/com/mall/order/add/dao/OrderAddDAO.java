@@ -18,4 +18,25 @@ public interface OrderAddDAO {
      * @return
      */
     public int addOrderItem(OrderItem list);
+
+    /**
+     * 根据商品的套餐id查询商品库存
+     * @param skuId
+     * @return
+     */
+    public int getStock(String skuId);
+
+    /**
+     * 根据商品的套餐id修改库存
+     * @param skuId
+     * @return
+     */
+    public int updateStock(String skuId);
+
+    /**
+     * 根据商品id查询公司id
+     * @param productId
+     * @return
+     */
+    public String getCompanyId(String productId);
 }

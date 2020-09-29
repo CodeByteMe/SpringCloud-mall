@@ -74,4 +74,16 @@
             #{productSkuCode},#{productCategoryId},#{promotionName},#{promotionAmount},
             #{productAttr})
     </insert>
+<!--    public int getFlashPromotionCount(String productId);-->
+    <select id="getFlashPromotionCount" resultType="int">
+        select flash_promotion_count
+        from sms_flash_promotion_product_relation
+        where product_id = #{productId}
+    </select>
+<!--    public int updateFlashPromotionCount(String productId);-->
+    <update id="updateFlashPromotionCount">
+        update sms_flash_promotion_product_relation
+        set flash_promotion_count = flash_promotion_count - 1
+        where product_id = #{productId}
+    </update>
 </mapper>

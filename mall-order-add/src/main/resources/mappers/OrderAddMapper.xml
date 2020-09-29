@@ -19,4 +19,22 @@
             #{productSkuCode},#{productCategoryId},#{promotionName},#{promotionAmount},
             #{productAttr})
     </insert>
+<!--    public int getStock(String skuId);-->
+    <select id="getStock" resultType="int">
+        select stock
+        from pms_sku_stock
+        where sku_id = #{skuId}
+    </select>
+<!--    public int updateStock(String skuId);-->
+    <update id="updateStock">
+        update pms_sku_stock
+        set stock = stock - 1
+        where sku_id = #{skuId}
+    </update>
+<!--    public String getCompanyId(String productId);-->
+    <select id="getCompanyId" resultType="String">
+        select company_id
+        from pms_product
+        where product_id = #{productId}
+    </select>
 </mapper>
