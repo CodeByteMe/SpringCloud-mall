@@ -50,4 +50,28 @@
     <delete id="deleteFlashPromotion">
         delete from sms_flash_promotion where id = #{id}
     </delete>
+
+    <select id="getFlashPromotion" resultType="java.util.Map">
+        select pms.product_id productId,pms.pic,pms.name,pms.company_id companyId,sfpr.flash_promotion_price flashPromotionPrice,
+        sfp.id,sfp.title,sfp.start_date startDate,sfp.end_date endDate,sfp.status,sfpr.flash_promotion_count flashPromotionCount
+        from pms_product pms
+        inner join sms_flash_promotion_product_relation sfpr  on pms.product_id = sfpr.product_id
+        inner join sms_flash_promotion sfp on sfp.id = sfpr.id
+        where sfp.status = 1
+    </select>
+
+    <insert id="addOrder">
+        insert into oms_order(order_id,member_id,create_time,member_username,total_amount,pay_amount,promotion_amount,pay_type,status,order_type,address_id,auto_confirm_day,promotion_info,note,confirm_status,payment_time,delivery_time,receive_time,modify_time,company_id)
+        values (#{orderId},#{memberId},#{createTime},#{memberUsername},#{totalAmount},#{payAmount},#{promotionAmount},
+        #{payType},#{status},#{orderType},#{addressId},#{autoConfirmDay},#{promotionInfo},#{note},#{confirmStatus},#{paymentTime},#{deliveryTime},#{receiveTime},#{modifyTime},#{companyId})
+    </insert>
+
+    <insert id="addOrderItem">
+        insert into oms_order_item(order_id,order_sn,product_id,product_pic,product_name,product_sn,product_price,product_quantity,product_sku_id,product_sku_code,product_category_id,promotion_name,promotion_amount,product_attr)
+        values
+            (#{orderId},#{orderSn},#{productId},#{productPic},#{productName},
+            #{productSn},#{productPrice},#{productQuantity},#{productSkuId},
+            #{productSkuCode},#{productCategoryId},#{promotionName},#{promotionAmount},
+            #{productAttr})
+    </insert>
 </mapper>

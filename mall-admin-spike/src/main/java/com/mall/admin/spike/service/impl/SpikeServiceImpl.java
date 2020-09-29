@@ -1,10 +1,10 @@
 package com.mall.admin.spike.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mall.admin.spike.dao.SpikeDAO;
 import com.mall.admin.spike.service.SpikeService;
-import com.mall.common.pojo.FlashPromotion;
-import com.mall.common.pojo.FlashPromotionProductRelation;
-import com.mall.common.pojo.Product;
+import com.mall.common.pojo.*;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SpikeServiceImpl
@@ -24,6 +25,11 @@ public class SpikeServiceImpl implements SpikeService {
 
     @Resource
     private SpikeDAO spikeDAO;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 新增秒杀（事务）
@@ -59,5 +65,25 @@ public class SpikeServiceImpl implements SpikeService {
     @Override
     public boolean deleteFlashPromotion(Integer id) {
         return spikeDAO.deleteFlashPromotion(id) > 0;
+    }
+
+    @Override
+    public List<Map> getFlashPromotion() {
+        return spikeDAO.getFlashPromotion();
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
+    @Override
+    public boolean addOrder(Order order,OrderItem orderItem) {
+        int i = spikeDAO.addOrder(order);
+        if (i>0) {
+            int i1 = spikeDAO.addOrderItem(orderItem);
+            stringRedisTemplate.delete("listOrderByCompanyId");
+            stringRedisTemplate.delete("getOrderListByMemberId");
+            stringRedisTemplate.delete("getOrderByOrderId");
+            stringRedisTemplate.delete("getOrderItemByOrderId");
+            return true;
+        }
+        return false;
     }
 }

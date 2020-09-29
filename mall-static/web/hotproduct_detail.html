@@ -144,7 +144,7 @@
 				<!--left -->
 				<div class="showbot">
 					<div id="showbox" >
-						<img src="../assets/img/a.jpg" width="400" height="400" />
+						<img :src="product.pic" width="400" height="400" />
 					</div>
 				</div>
 				<!--conet -->
@@ -153,9 +153,9 @@
 						<h3>{{product.name}}</h3>
 					</div>
 					<div class="txt">
-						<span class="nowprice">￥<a href="">{{changePrice}}</a></span>
+						<span class="nowprice">￥<a href="">{{product.flashPromotionPrice}}</a></span>
 						<div class="cumulative">
-							<span class="number ty1">销量<br /><em id="add_sell_num_363">{{product.sale}}</em></span>
+							<span class="number ty1">销量<br /><em id="add_sell_num_363">1546</em></span>
 						</div>
 					</div>
 
@@ -163,16 +163,21 @@
 					<div class="gcIpt">
 						<span class="guT">数量</span>
 						<template>
-						  <el-input-number v-model="num"  :min="1" label="描述文字"></el-input-number>
+						  <el-input-number v-model="num"  :min="1" label="描述文字" :disabled="true"></el-input-number>
 						</template>
-						<span class="Hgt">库存{{product.stock}}</span>
+						<span class="Hgt">库存{{product.flashPromotionCount}}</span>
 					</div>
 					<div id="" style="margin: auto;">
-						颜色类型：<br><el-button plain v-for="item in skuData" @click="skuChange(item)">{{item.color}}+{{item.size}}</el-button>
+						<label style="font-size: 30px; color: red;">距离商品开售：</label>
+						<label style="font-size: 20px; color: red;">{{aaaa}}</label>
 					</div>
-					<div class="nobdr-btns">
-						<button class="addcart hu" @click="goCart" ><img src="../assets/img/shop.png" width="25" height="25">加入购物车</button>
-						<button class="addcart yh"><img src="../assets/img/ht.png" width="25" height="25" />立即购买</button>
+					<div class="nobdr-btns" style="margin-left: 400px;">
+						<span v-if="button == false">
+							<el-button type="info" plain disabled>立即购买</el-button>
+						</span>
+						<span v-if="button == true">
+							<el-button type="success" @click="goSubmitOrder">立即购买</el-button>
+						</span>
 					</div>
 					<div class="guarantee">
 						<span>邮费：包邮&nbsp;&nbsp;支持货到付款</span>
@@ -192,81 +197,62 @@
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script src="../assets/js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+		function timeFmt(value) {
+			
+		};
+	</script>
+	<script type="text/javascript">
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				skuData:[],
 				product:[],
 				num:"",
-				changePrice: '',
-				changeSkuId:''
+				aaaa:'',
+				button: false
 			},
-			beforeMount: function() {
-				console.log(JSON.parse(localStorage.getItem("item")).productId)
-				axios({
-						method: 'get',
-						url: 'http://localhost:8766/product/product/productDetail',
-						params: {
-							productId:JSON.parse(localStorage.getItem("item")).productId
-						}
-					})
-					.then(function(res) {
-						vm.product = res.data.data;
-						vm.skuData = res.data.data.skuStock;
-						vm.changePrice = vm.product.price;
+			mounted: function() {
+				var product = JSON.parse(localStorage.getItem("item"));
+				this.product = product;
+				// localStorage.removeItem('item')
+			},
+			watch:{
+				product: function () {
+					// console.log("进来了");
+					//递归每秒调用countTime方法，显示动态时间效果
+					setInterval(function() {
+						// console.log("进行中");
 						console.log(vm.product);
-					});
+						//获取当前时间
+						var date = new Date()
+						var now = date.getTime()
+						//设置开始时间
+						var endDate = new Date(vm.product.startDate);
+						var end = endDate.getTime()
+						//时间差
+						var leftTime = end - now
+						// console.log(leftTime);
+						//定义变量 d,h,m,s保存倒计时的时间
+						if (leftTime > 0) {
+							vm.aaaa = Math.floor(leftTime / 1000 / 60 / 60 / 24) + ':' + Math.floor((leftTime / 1000 / 60 / 60) % 24) +
+								':' + Math.floor((leftTime / 1000 / 60) % 60) + ':' + Math.floor((leftTime / 1000) % 60);
+							// console.log("vm.aaaa");
+						} else {
+							vm.button = true;
+						}
+					},1000);
+					// setTimeout(this.setTimeout(), 1000);
+					console.log("出去了");
+				}
 			},
 			methods:{
-				goCart:function(){
-					// console.log(vm.num);
-					// console.log(vm.changePrice);
-					// console.log(vm.product.productId);
-					// console.log(vm.product.name)
-					// console.log(vm.changeSkuId);
-					// console.log(vm.product.pic);
-					// console.log(vm.product.note);
-					// console.log(vm.product.productAttributeCategoryId);
-					var tokenStr = "";
-					var str = document.cookie;
-					var arr = str.split(";");
-					for (var i = 0; i < arr.length; i++) {
-						var s = arr[i];
-						if (s.split("=")[0].trim() == "token") {
-							tokenStr = s.split("=")[1];
-							break;
-						}
-					}
-					if (tokenStr === "") {
-						top.location = "login.html";
-					}
-					axios({
-						method: 'post',
-						url: 'http://localhost:8766/cart/cart/add',
-						headers: {
-							'token': tokenStr
-						},
-						params: {
-							changeSkuId: vm.changeSkuId,
-							pic: vm.product.pic,
-							note: vm.product.note,
-							productAttributeCategoryId: vm.product.productAttributeCategoryId,
-							num: vm.num,
-							changePrice: vm.changePrice,
-							productId: vm.product.productId,
-							name: vm.product.name
-						}
-					}).then(function(res) {
-						if(res.data.code === 0){
-							top.location = "cart.html";
-						}
-					});
+				setTime:function(){
+					console.log(vm.product);
 				},
-				skuChange:function(item){
-					console.log("item");
-					console.log(item);
-					vm.changePrice = item.price;
-					vm.changeSkuId = item.skuId;
+				goSubmitOrder:function(){
+					let str = JSON.stringify(vm.product);
+					console.log(str);
+					localStorage.setItem("hotproduct", str);
+					location.href = "submit_hot_order.html";
 				}
 			}
 		});

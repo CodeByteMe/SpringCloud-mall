@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="../assets/css/default.css">
 		<link rel="stylesheet" href="../assets/css/style.css">
 		<link rel="stylesheet" href="../assets/css/responsive.css">
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -193,6 +194,7 @@
 		<div style="width: 80%;margin: auto;">
 			<div id="dongyang">
 				<!-- header -->
+
 				<header class="header-area">
 					<div id="header-sticky" class="menu-area">
 						<div class="container">
@@ -239,12 +241,12 @@
 				<div class="pro_recommend">
 					<h2 style="margin-top: 50px;">商品列表</h2>
 					<ul>
-						<li v-for="item in product" >
-							<a  @click="productDetail(item)" class="goods-li-a">
+						<li v-for="item in product">
+							<a @click="productDetail(item)" class="goods-li-a">
 								<img class="item-img" :src="item.pic">
 								<div class="item-text">
 									<strong>{{item.name}}</strong>
-									<p>{{item.description}}<br>{{item.subTitle}}</p>
+									<p>商品发售时间<br>{{item.startDate}}</p>
 									<span>查看详情</span>
 								</div>
 								<i class="i-p-hot"></i>
@@ -372,40 +374,115 @@
 	<script src="../assets/js/jquery.magnific-popup.min.js"></script>
 	<script src="../assets/js/element-in-view.js"></script>
 	<script src="../assets/js/main.js"></script>
+
+
 	<script type="text/javascript">
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
 				total: 100,
-				currentPage4:1,
-				pageValue:true,
-				page:1,
-				pageSize:5,
-				product:[],
-				total:[]
+				currentPage4: 1,
+				pageValue: true,
+				page: 1,
+				pageSize: 5,
+				product: [],
+				total: [],
+				aaaa: ''
 			},
 			beforeMount: function() {
-
+				var tokenStr = "";
+				var str = document.cookie;
+				var arr = str.split(";");
+				for (var i = 0; i < arr.length; i++) {
+					var s = arr[i];
+					if (s.split("=")[0].trim() == "token") {
+						tokenStr = s.split("=")[1];
+						break;
+					}
+				}
+				if (tokenStr === "") {
+					top.location = "login.html";
+				}
 				axios({
 						method: 'get',
-						url: 'http://localhost:8766/product/product/allList',
+						url: 'http://localhost:8766/spike/spike/allList',
+						headers: {
+							'token': tokenStr,
+						},
 						params: {
 							page: 1,
 							pageSize: 6
 						}
 					})
 					.then(function(res) {
-						console.log(res.data.data);
-						vm.product = res.data.data.list;
-						vm.total = res.data.data.total;
+						console.log(res.data);
+						vm.product = res.data.data;
+						// vm.total = res.data.data.total;
+						vm.product.forEach((item, index) => {
+
+						});
 					});
 			},
-			methods:{
+			// created() {
+			// 	this.countTime()
+			// },
+			methods: {
 				productDetail:function(item){
+					console.log(item);
 					localStorage.setItem("item", JSON.stringify(item));
 					location.href = "hotproduct_detail.html";
 				}
+				// countTime: function() {
+				// 	//获取当前时间
+				// 	var date = new Date()
+				// 	var now = date.getTime()
+				// 	//设置截止时间
+				// 	var endDate = new Date('2020-10-22 23:23:23')
+				// 	var end = endDate.getTime()
+				// 	//时间差
+				// 	var leftTime = end - now
+				// 	//定义变量 d,h,m,s保存倒计时的时间
+				// 	if (leftTime >= 0) {
+				// 		this.aaaa = Math.floor(leftTime / 1000 / 60 / 60 / 24) + ':' + Math.floor((leftTime / 1000 / 60 / 60) % 24) +
+				// 			':' + Math.floor((leftTime / 1000 / 60) % 60) + ':' + Math.floor((leftTime / 1000) % 60)
+				// 	}
+				// 	//递归每秒调用countTime方法，显示动态时间效果
+				// 	setTimeout(this.countTime, 1000)
+				// },
+				// productDetail: function(item) {
+				// 	localStorage.setItem("item", JSON.stringify(item));
+				// 	location.href = "product_detail.html";
+				// },
 			}
 		});
 	</script>
+
+	<!-- <script type="text/javascript">
+		var timer = null;
+		$(function(){
+			//定义倒计时的时间(倒计时1分钟10秒)
+			console.log("执行了")
+			var minutes = 1;
+			var seconds = 10;
+	
+			function show() {
+				//判断时间到了没
+				if (seconds == 0 && minutes == 0) {
+						clearInterval(timer); //清除定时器
+						$(".goods-li-a").attr("disabled",false);
+						return;
+					}
+					seconds--;
+					if (seconds < 0) {
+						seconds = 59;
+						minutes--;
+					}
+					minutes = (minutes + "").length == 1 ? "0" + minutes : minutes; //(minutes+"")是将其数据类型转换成字符串类型
+					seconds = (seconds + "").length == 1 ? "0" + seconds : seconds;
+					document.getElementById("spanTime").innerHTML = minutes + ":" + seconds;
+				}
+				//开启定时器
+				timer = setInterval(show, 1000);
+		})
+	</script> -->
 </html>
