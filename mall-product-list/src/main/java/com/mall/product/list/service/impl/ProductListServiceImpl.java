@@ -87,26 +87,7 @@ public class ProductListServiceImpl implements ProductListService {
 
     @Override
     public List<SkuStock> getSkuStockByProductId(String productId) {
-        List<SkuStock> skuStocks = null;
-        try {
-            String s = (String) stringRedisTemplate.boundHashOps("getSkuStockByProductId").get("getSkuStockByProductId-" + productId);
-            if (s == null) {
-                synchronized (this) {
-                    s = (String) stringRedisTemplate.boundHashOps("getSkuStockByProductId").get("getSkuStockByProductId-" + productId);
-                    if (s == null) {
-                        productListDAO.getSkuStockByProductId(productId);
-                        String jsonStr = mapper.writeValueAsString(skuStocks);
-                        stringRedisTemplate.boundHashOps("getSkuStockByProductId").put("getSkuStockByProductId-" + productId, jsonStr);
-                    }
-                }
-            } else {
-                skuStocks = mapper.readValue(s, new TypeReference<List<SkuStock>>() {
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return skuStocks;
+        return productListDAO.getSkuStockByProductId(productId);
     }
 
     @Override

@@ -165,6 +165,7 @@ public class SpikeController {
     @ApiOperation(value = "前台用户秒杀录单接口", notes = "用户秒杀录单的接口")
     @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
     public ResultVO addOrder(@RequestParam("companyId") String companyId ,
+                             @RequestParam("relationId") Integer relationId,
                              @RequestParam("addressId") String addressId,
                              @RequestParam("productPic") String productPic,
                              @RequestParam("productId") String productId,
@@ -187,10 +188,10 @@ public class SpikeController {
             RLock lock = redissonClient.getLock(lockKey);
             lock.lock();
             try {
-                int flashPromotionCount = spikeService.getFlashPromotionCount(productId);
+                int flashPromotionCount = spikeService.getFlashPromotionCount(relationId);
                 if (flashPromotionCount > 1) {
                     boolean b = spikeService.addOrder(new Order(0,orderId,memberId,new Date(),"lisi",m1,m1,0,0,0,0,addressId,7,null,null,0,null,null,null,null,companyId),
-                            new OrderItem(0,orderId,orderId,productId,productPic,productName,null,m1,i,null,null,null,title,0.00,null));
+                            new OrderItem(relationId,orderId,orderId,productId,productPic,productName,null,m1,i,null,null,null,title,0.00,null));
                     if (b) {
                         return new ResultVO(0, "下单成功");
                     } else {
