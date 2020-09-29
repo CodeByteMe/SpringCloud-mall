@@ -12,7 +12,9 @@ import java.util.List;
  */
 public interface ProductListService {
 
-    public PageInfo productList(int pageNum,int pageSize);
+    public PageInfo productList(int pageNum,int pageSize,String adminId);
     public Product productDetailByProductId(String productId);
     public List<SkuStock> getSkuStockByProductId(String productId);
+
+    PageInfo producAlltList(Integer page, Integer pageSize);
 }

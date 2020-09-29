@@ -3,6 +3,7 @@ package com.mall.admin.product.category.ud.service.impl;
 import com.mall.admin.product.category.ud.dao.ProductCategoryDAO;
 import com.mall.admin.product.category.ud.service.ProductCategoryService;
 import com.mall.common.pojo.ProductCategory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,10 +26,19 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         this.productCategoryDAO = productCategoryDAO;
     }
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productCategoryDel(Integer productCategoryId) {
-        return productCategoryDAO.productCategoryDel(productCategoryId);
+        boolean b = productCategoryDAO.productCategoryDel(productCategoryId);
+        if (b){
+            stringRedisTemplate.delete("productCategoryList");
+            stringRedisTemplate.delete("productCategoryListByParentId");
+            stringRedisTemplate.delete("productCategoryOptions");
+        }
+        return b;
     }
 
     @Override
@@ -38,6 +48,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         }else {
             productCategory.setLevel(1);
         }
-        return productCategoryDAO.productCategoryUpdate(productCategory);
+        boolean b = productCategoryDAO.productCategoryUpdate(productCategory);
+        if (b){
+            stringRedisTemplate.delete("productCategoryList");
+            stringRedisTemplate.delete("productCategoryListByParentId");
+            stringRedisTemplate.delete("productCategoryOptions");
+        }
+        return b;
     }
 }

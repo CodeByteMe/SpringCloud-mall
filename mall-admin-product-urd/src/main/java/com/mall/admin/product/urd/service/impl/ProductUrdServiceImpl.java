@@ -3,6 +3,7 @@ package com.mall.admin.product.urd.service.impl;
 import com.mall.admin.product.urd.dao.ProductUrdDAO;
 import com.mall.admin.product.urd.service.ProductUrdService;
 import com.mall.common.pojo.Product;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,21 +24,45 @@ public class ProductUrdServiceImpl implements ProductUrdService {
         this.productUrdDAO = productUrdDAO;
     }
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productUpdate(Product product) {
+        boolean b = productUrdDAO.productUpdate(product);
+        if (b){
+            stringRedisTemplate.delete("productList");
+            stringRedisTemplate.delete("productDetailByProductId");
+            stringRedisTemplate.delete("getSkuStockByProductId");
+            stringRedisTemplate.delete("producAlltList");
+        }
         return productUrdDAO.productUpdate(product);
     }
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productDel(String productId) {
-        return productUrdDAO.productDel(productId);
+        boolean b = productUrdDAO.productDel(productId);
+        if (b){
+            stringRedisTemplate.delete("productList");
+            stringRedisTemplate.delete("productDetailByProductId");
+            stringRedisTemplate.delete("getSkuStockByProductId");
+            stringRedisTemplate.delete("producAlltList");
+        }
+        return b;
     }
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productStatus(String productId, Integer publishStatus) {
-        return productUrdDAO.productStatus(productId, publishStatus);
+        boolean b = productUrdDAO.productStatus(productId, publishStatus);
+        if (b){
+            stringRedisTemplate.delete("productList");
+            stringRedisTemplate.delete("productDetailByProductId");
+            stringRedisTemplate.delete("getSkuStockByProductId");
+            stringRedisTemplate.delete("producAlltList");
+        }
+        return b;
     }
 }
