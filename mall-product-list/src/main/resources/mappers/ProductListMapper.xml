@@ -37,12 +37,19 @@
         <result column="promotion_type" property="promotionType"/>
     </resultMap>
 
-<!--    public List<Product> productList();-->
+<!--    public List<Product> productList(String adminId);-->
     <select id="productList" resultMap="productListMap">
-        select id,product_id,product_category_id,product_category_name,product_attribute_category_id,name,pic,publish_status,
-               sort,sale,price,promotion_price,sub_title,description,original_price,stock,low_stock,unit,weight,preview_status,
-               keywords,note,detail_title,detail_desc,detail_html,promotion_start_time,promotion_end_time,promotion_per_limit,promotion_type
-        from pms_product order by sort desc
+        select pp.id,pp.product_id,pp.product_category_id,pp.product_category_name,
+               pp.product_attribute_category_id,pp.name,pp.pic,pp.publish_status,
+               pp.sort,pp.sale,pp.price,pp.promotion_price,pp.sub_title,pp.description,
+               pp.original_price,pp.stock,pp.low_stock,pp.unit,pp.weight,pp.preview_status,
+               pp.keywords,pp.note,pp.detail_title,pp.detail_desc,pp.detail_html,pp.promotion_start_time,
+               pp.promotion_end_time,pp.promotion_per_limit,pp.promotion_type,ua.company_id,ua.company_name
+        from pms_product pp
+        INNER JOIN  ums_admin ua
+        ON pp.company_id = ua.company_id
+        AND ua.admin_id = #{adminId}
+        order by sort desc
     </select>
 
     <select id="productDetailByProductId" resultMap="productListMap">

@@ -1,8 +1,10 @@
 package com.mall.admin.product.add.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mall.admin.product.add.dao.ProductAddDAO;
 import com.mall.admin.product.add.service.ProductAddService;
 import com.mall.common.pojo.Product;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,14 +25,41 @@ public class ProductAddServiceImpl implements ProductAddService {
         this.productAddDAO = productAddDAO;
     }
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED)
     public boolean productAdd(Product product) {
-        return productAddDAO.productAdd(product);
+        boolean b = productAddDAO.productAdd(product);
+        if (b){
+            stringRedisTemplate.delete("productList");
+            stringRedisTemplate.delete("producAlltList");
+        }
+        return b;
     }
 
     @Override
     public String searchCompanyIdByAdminUUID(String adminId) {
-        return productAddDAO.searchCompanyIdByAdminUUID(adminId);
+        String companyId = "";
+        try {
+            String s = (String) stringRedisTemplate.boundHashOps("searchCompanyIdByAdminUUID").get("adminId-" + adminId);
+            if (s == null) {
+                synchronized (this) {
+                    s = (String) stringRedisTemplate.boundHashOps("searchCompanyIdByAdminUUID").get("adminId-" + adminId);
+                    if (s == null) {
+                        companyId = productAddDAO.searchCompanyIdByAdminUUID(adminId);
+                        String jsonStr = mapper.writeValueAsString(companyId);
+                        stringRedisTemplate.boundHashOps("searchCompanyIdByAdminUUID").put("adminId-"+adminId,jsonStr);
+                    }
+                }
+            }else {
+                companyId = mapper.readValue(s, String.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return companyId;
     }
 }
