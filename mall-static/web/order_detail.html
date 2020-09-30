@@ -212,12 +212,12 @@
 											<nav id="mobile-menu">
 												<ul>
 													<li class="has-sub">
-														<a href="#home">消息管理</a>
+														<a href="hotproduct_list.html">秒杀活动</a>
 													</li>
 													<li class="has-sub"><a href="#">个人中心</a>
 														<ul>
 															<li><a href="cart.html">购物车</a></li>
-															<li><a href="#">我的订单</a></li>
+															<li><a href="order_list.html">我的订单</a></li>
 															<li><a href="address_list.html">地址管理</a></li>
 														</ul>
 													</li>
@@ -230,7 +230,7 @@
 									</div>
 									<div class="col-xl-2 text-right d-none d-xl-block">
 										<div class="header-btn second-header-btn">
-											<a href="login.html" class="btn">登录</a>
+											<a href="" class="btn">{{username}}</a>
 										</div>
 									</div>
 								</div>
@@ -472,11 +472,12 @@
 			el: "#dongyang",
 			data: {
 				tableData: [],
-				productList:[]
+				productList:[],
+				username:""
 			},
 			beforeMount: function() {
 				console.log(JSON.parse(localStorage.getItem("row")).orderId)
-				
+				this.username = JSON.parse(localStorage.getItem("username"))
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
