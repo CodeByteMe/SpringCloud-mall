@@ -207,7 +207,7 @@
 										<nav id="mobile-menu">
 											<ul>
 												<li class="has-sub">
-													<a href="#home">消息管理</a>
+													<a href="hotproduct_list.html">秒杀活动</a>
 												</li>
 												<li class="has-sub"><a href="#">个人中心</a>
 													<ul>
@@ -217,7 +217,7 @@
 													</ul>
 												</li>
 												<li><a href="register.html">送货上门</a></li>
-												<li class="has-sub"><a href="web/product_list.html">所有商品</a>
+												<li class="has-sub"><a href="product_list.html">所有商品</a>
 												</li>
 											</ul>
 										</nav>
@@ -225,7 +225,7 @@
 								</div>
 								<div class="col-xl-2 text-right d-none d-xl-block">
 									<div class="header-btn second-header-btn">
-										<a href="login.html" class="btn">登录</a>
+										<a href="" class="btn">{{username}}</a>
 									</div>
 								</div>
 							</div>
@@ -326,9 +326,11 @@
 				productList: [],
 				tableData: [],
 				money:0,
-				num:0
+				num:0,
+				username:""
 			},
 			beforeMount: function() {
+				this.username = JSON.parse(localStorage.getItem("username"))
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
