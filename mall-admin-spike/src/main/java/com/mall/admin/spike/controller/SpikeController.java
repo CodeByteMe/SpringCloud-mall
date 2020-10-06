@@ -1,10 +1,13 @@
 package com.mall.admin.spike.controller;
 
 import com.mall.admin.spike.service.SpikeService;
+import com.mall.admin.spike.util.ConnectionUtil;
 import com.mall.common.pojo.*;
 import com.mall.common.util.DateUtil;
 import com.mall.common.util.JWTUtil;
 import com.mall.common.vo.ResultVO;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.swagger.annotations.Api;
@@ -16,10 +19,12 @@ import org.redisson.api.RedissonClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 /**
  * SpikeController
@@ -173,7 +178,7 @@ public class SpikeController {
                              @RequestParam("money") String money,
                              @RequestParam("num") String num,
                              @RequestParam("title") String title,
-                             @RequestHeader(required = true) String token) {
+                             @RequestHeader(required = true) String token) throws IOException, TimeoutException {
         // 验证token
         Jws<Claims> jws = JWTUtil.Decrypt(token);
         // 获取解析的token中的用户名、id等
@@ -193,6 +198,14 @@ public class SpikeController {
                     boolean b = spikeService.addOrder(new Order(0,orderId,memberId,new Date(),"lisi",m1,m1,0,0,0,0,addressId,7,null,null,0,null,null,null,null,companyId),
                             new OrderItem(relationId,orderId,orderId,productId,productPic,productName,null,m1,i,null,null,null,title,0.00,null));
                     if (b) {
+//                        String msg = "已下单!";
+//                        Connection connection = ConnectionUtil.getConnection();
+//                        Channel channel = connection.createChannel();
+//                        channel.queueDeclare("queue1",false,false,false,null);
+//                        channel.basicPublish("","queue1",null,msg.getBytes());
+//                        System.out.println("发送：" + msg);
+//                        channel.close();
+//                        connection.close();
                         return new ResultVO(0, "下单成功");
                     } else {
                         return new ResultVO(1, "下单失败");
