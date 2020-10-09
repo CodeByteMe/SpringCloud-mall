@@ -3,7 +3,7 @@ Vue.component("rightnavtop",{
 					<el-card shadow="hover">
 						<el-breadcrumb separator="/" style="float: left;">
 							<el-breadcrumb-item><a href="home.html">首页</a></el-breadcrumb-item>
-							<el-breadcrumb-item>活动管理</el-breadcrumb-item>
+							<el-breadcrumb-item>管理</el-breadcrumb-item>
 							
 						</el-breadcrumb>
 						<el-dropdown trigger="click" style="margin-left: 76%;">
