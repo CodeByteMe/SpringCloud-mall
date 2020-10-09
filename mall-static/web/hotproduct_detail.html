@@ -7,7 +7,7 @@
 		<meta name="description" content="首页" />
 		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 		<link rel="stylesheet" type="text/css" href="../assets/css/normalize.css" />
-		
+
 		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../assets/css/animate.min.css">
 		<link rel="stylesheet" href="css/magnific-popup.css">
@@ -17,7 +17,7 @@
 		<link rel="stylesheet" href="../assets/css/default.css">
 		<link rel="stylesheet" href="../assets/css/style.css">
 		<link rel="stylesheet" href="../assets/css/responsive.css">
-		
+
 		<script type="text/javascript" src="../assets/js/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -103,7 +103,7 @@
 						<div class="row align-items-center">
 							<div class="col-xl-2 col-lg-2">
 								<div class="logo">
-									<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+									<a href="../index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 								</div>
 							</div>
 							<div class="col-xl-8 col-lg-9">
@@ -112,7 +112,7 @@
 									<nav id="mobile-menu">
 										<ul>
 											<li class="has-sub">
-												<a href="#home">消息管理</a>
+												<a href="hotproduct_list.html">秒杀活动</a>
 											</li>
 											<li class="has-sub"><a href="#">个人中心</a>
 												<ul>
@@ -122,7 +122,7 @@
 												</ul>
 											</li>
 											<li><a href="register.html">送货上门</a></li>
-											<li class="has-sub"><a href="web/product_list.html">所有商品</a>
+											<li class="has-sub"><a href="product_list.html">所有商品</a>
 											</li>
 										</ul>
 									</nav>
@@ -130,7 +130,7 @@
 							</div>
 							<div class="col-xl-2 text-right d-none d-xl-block">
 								<div class="header-btn second-header-btn">
-									<a href="web/login.html" class="btn">登录</a>
+									<a href="" class="btn">{{username}}</a>
 								</div>
 							</div>
 						</div>
@@ -138,12 +138,12 @@
 				</div>
 			</div>
 		</header>
-		
+
 		<div id="dongyang" style="width: 70%;margin: auto;">
-			<div class="showall" >
+			<div class="showall">
 				<!--left -->
 				<div class="showbot">
-					<div id="showbox" >
+					<div id="showbox">
 						<img :src="product.pic" width="400" height="400" />
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 					<div class="gcIpt">
 						<span class="guT">数量</span>
 						<template>
-						  <el-input-number v-model="num"  :min="1" label="描述文字" :disabled="true"></el-input-number>
+							<el-input-number v-model="num" :min="1" label="描述文字" :disabled="true"></el-input-number>
 						</template>
 						<span class="Hgt">库存{{product.flashPromotionCount}}</span>
 					</div>
@@ -198,25 +198,27 @@
 	<script src="../assets/js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		function timeFmt(value) {
-			
+
 		};
 	</script>
 	<script type="text/javascript">
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-				product:[],
-				num:"",
-				aaaa:'',
-				button: false
+				product: [],
+				num: "",
+				aaaa: '',
+				button: false,
+				username: ""
 			},
 			mounted: function() {
+				this.username = JSON.parse(localStorage.getItem("username"))
 				var product = JSON.parse(localStorage.getItem("item"));
 				this.product = product;
 				// localStorage.removeItem('item')
 			},
-			watch:{
-				product: function () {
+			watch: {
+				product: function() {
 					// console.log("进来了");
 					//递归每秒调用countTime方法，显示动态时间效果
 					setInterval(function() {
@@ -226,7 +228,7 @@
 						var date = new Date()
 						var now = date.getTime()
 						//设置开始时间
-						var endDate = new Date("2020-09-29 21:25:00");
+						var endDate = new Date(vm.product.startDate);
 						var end = endDate.getTime()
 						//时间差
 						var leftTime = end - now
@@ -239,16 +241,16 @@
 						} else {
 							vm.button = true;
 						}
-					},1000);
+					}, 1000);
 					// setTimeout(this.setTimeout(), 1000);
 					console.log("出去了");
 				}
 			},
-			methods:{
-				setTime:function(){
+			methods: {
+				setTime: function() {
 					console.log(vm.product);
 				},
-				goSubmitOrder:function(){
+				goSubmitOrder: function() {
 					let str = JSON.stringify(vm.product);
 					console.log(str);
 					localStorage.setItem("hotproduct", str);

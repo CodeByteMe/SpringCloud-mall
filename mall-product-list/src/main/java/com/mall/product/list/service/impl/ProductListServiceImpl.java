@@ -95,6 +95,7 @@ public class ProductListServiceImpl implements ProductListService {
         List<Product> products = null;
         PageHelper.startPage(page, pageSize);
         try {
+            stringRedisTemplate.delete("producAlltList");
             String s = (String) stringRedisTemplate.boundHashOps("producAlltList").get("producAlltList-"+page);
             if (s == null) {
                 synchronized (this) {

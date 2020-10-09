@@ -204,6 +204,7 @@ public class OrderController {
     @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, type = "String")
     public String updateStatus(@RequestBody String orderId){
         boolean b = orderService.updateStatus(orderId,1,2);
+        System.out.println(orderId);
         if (b) {
             return "true";
         } else {

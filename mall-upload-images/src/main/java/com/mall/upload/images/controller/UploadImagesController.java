@@ -16,8 +16,8 @@ import java.io.InputStream;
  *   作者：官宣轩
  *   日期：2020-09-25
  */
-@CrossOrigin
 @RequestMapping("/uploadImages")
+@CrossOrigin
 @RestController
 public class UploadImagesController {
 

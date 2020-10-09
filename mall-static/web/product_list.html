@@ -10,6 +10,7 @@
 		<!-- Place favicon.ico in the root directory -->
 
 		<!-- CSS here -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
 		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../assets/css/animate.min.css">
 		<link rel="stylesheet" href="css/magnific-popup.css">
@@ -200,7 +201,7 @@
 								<div class="row align-items-center">
 									<div class="col-xl-2 col-lg-2">
 										<div class="logo">
-											<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+											<a href="../index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 										</div>
 									</div>
 									<div class="col-xl-8 col-lg-9">
@@ -209,17 +210,17 @@
 											<nav id="mobile-menu">
 												<ul>
 													<li class="has-sub">
-														<a href="#home">消息管理</a>
+														<a href="hotproduct_list.html">秒杀活动</a>
 													</li>
 													<li class="has-sub"><a href="#">个人中心</a>
 														<ul>
-															<li><a href="#pricing">购物车</a></li>
-															<li><a href="#team">我的订单</a></li>
+															<li><a href="cart.html">购物车</a></li>
+															<li><a href="order_list.html">我的订单</a></li>
 															<li><a href="address_list.html">地址管理</a></li>
 														</ul>
 													</li>
 													<li><a href="#">送货上门</a></li>
-													<li class="has-sub"><a href="#">所有商品</a>
+													<li class="has-sub"><a href="product_list.html">所有商品</a>
 													</li>
 												</ul>
 											</nav>
@@ -227,7 +228,12 @@
 									</div>
 									<div class="col-xl-2 text-right d-none d-xl-block">
 										<div class="header-btn second-header-btn">
-											<a href="login.html" class="btn">登录</a>
+											<span v-if="username == null">
+												<a href="login.html" class="btn">登录</a>
+											</span>
+											<span v-if="username != null">
+												<a href="#" class="btn">{{username}}</a>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -236,22 +242,36 @@
 					</div>
 				</header>
 				<!-- body -->
-				<div class="pro_recommend">
-					<h2 style="margin-top: 50px;">商品列表</h2>
-					<ul>
-						<li v-for="item in product" >
-							<a  @click="productDetail(item)" class="goods-li-a">
-								<img class="item-img" :src="item.pic">
-								<div class="item-text">
-									<strong>{{item.name}}</strong>
-									<p>{{item.description}}<br>{{item.subTitle}}</p>
-									<span>查看详情</span>
-								</div>
-								<i class="i-p-hot"></i>
-							</a>
-						</li>
-					</ul>
+				<div id="">
+					<div class="pro_recommend">
+						<h2 style="margin-top: 50px;">商品列表</h2>
+						<ul>
+							<li v-for="item in product">
+								<a @click="productDetail(item)" class="goods-li-a">
+									<img class="item-img" :src="item.pic">
+									<div class="item-text">
+										<strong>{{item.name}}</strong>
+										<p>{{item.description}}<br>{{item.subTitle}}</p>
+										<span>查看详情</span>
+									</div>
+									<i class="i-p-hot"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div id="" style="margin-top: 100px;">
+						<template>
+							<div class="block" style="margin-bottom: 3.5rem;">
+								<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
+								 :page-sizes="[6, 12, 18, 24]" :page-size="6" layout="total, sizes, prev, pager, next, jumper" :total="total">
+								</el-pagination>
+							</div>
+						</template>
+					</div>
+
 				</div>
+
+
 				<!-- body-end -->
 			</div>
 			<!-- header-end -->
@@ -377,15 +397,16 @@
 			el: "#dongyang",
 			data: {
 				total: 100,
-				currentPage4:1,
-				pageValue:true,
-				page:1,
-				pageSize:5,
-				product:[],
-				total:[]
+				currentPage4: 1,
+				pageValue: true,
+				page: 1,
+				pageSize: 6,
+				product: [],
+				username: ""
 			},
 			beforeMount: function() {
-
+				console.log(JSON.parse(localStorage.getItem("username")));
+				this.username = JSON.parse(localStorage.getItem("username"));
 				axios({
 						method: 'get',
 						url: 'http://localhost:8766/product/product/allList',
@@ -400,10 +421,44 @@
 						vm.total = res.data.data.total;
 					});
 			},
-			methods:{
-				productDetail:function(item){
+			methods: {
+				productDetail: function(item) {
 					localStorage.setItem("item", JSON.stringify(item));
 					location.href = "product_detail.html";
+				},
+				handleSizeChange: function(event) {
+					console.log(event)
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/product/product/allList',
+						params: {
+							pageSize: event,
+							page: 1
+						}
+					}).then(function(res) {
+						vm.product = res.data.data.list;
+					});
+				},
+				handleCurrentChange: function(event) {
+					axios({
+						method: 'get',
+						url: 'http://localhost:8766/product/product/allList',
+						params: {
+							pageSize: vm.pageSize,
+							page: event
+						}
+					}).then(function(res) {
+						vm.product = res.data.data.list;
+					});
+				},
+				next: function() {
+					this.active++;
+				},
+				pre: function() {
+					this.active--;
+				},
+				submit: function() {
+					console.log("111");
 				}
 			}
 		});

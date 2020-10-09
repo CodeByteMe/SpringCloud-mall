@@ -97,7 +97,7 @@
 						<div class="row align-items-center">
 							<div class="col-xl-2 col-lg-2">
 								<div class="logo">
-									<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+									<a href="../index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 								</div>
 							</div>
 							<div class="col-xl-8 col-lg-9">
@@ -106,7 +106,7 @@
 									<nav id="mobile-menu">
 										<ul>
 											<li class="has-sub">
-												<a href="#home">消息管理</a>
+												<a href="hotproduct_list.html">秒杀活动</a>
 											</li>
 											<li class="has-sub"><a href="#">个人中心</a>
 												<ul>
@@ -116,7 +116,7 @@
 												</ul>
 											</li>
 											<li><a href="register.html">送货上门</a></li>
-											<li class="has-sub"><a href="web/product_list.html">所有商品</a>
+											<li class="has-sub"><a href="product_list.html">所有商品</a>
 											</li>
 										</ul>
 									</nav>
@@ -124,7 +124,12 @@
 							</div>
 							<div class="col-xl-2 text-right d-none d-xl-block">
 								<div class="header-btn second-header-btn">
-									<a href="web/login.html" class="btn">登录</a>
+									<span v-if="username == null">
+										<a href="login.html" class="btn">lisi</a>
+									</span>
+									<!-- <span v-if="username != null">
+										<a href="#" class="btn">{{username}}</a>
+									</span> -->
 								</div>
 							</div>
 						</div>
@@ -138,7 +143,7 @@
 				<!--left -->
 				<div class="showbot">
 					<div id="showbox" >
-						<img src="../assets/img/a.jpg" width="400" height="400" />
+						<img src="../assets/img/c.png" width="400" height="400" />
 					</div>
 				</div>
 				<!--conet -->
@@ -193,9 +198,11 @@
 				product:[],
 				num:"",
 				changePrice: '',
-				changeSkuId:''
+				changeSkuId:'',
+				username:""
 			},
 			beforeMount: function() {
+				this.username = JSON.parse(localStorage.getItem("username"))
 				console.log(JSON.parse(localStorage.getItem("item")).productId)
 				axios({
 						method: 'get',
