@@ -63,6 +63,9 @@ mall-menu-list/*.iml
 mall-order-add/target
 mall-order-add/*.iml
 
+mall-pay/target
+mall-pay/*.iml
+
 mall-product-list/target
 mall-product-list/*.iml
 

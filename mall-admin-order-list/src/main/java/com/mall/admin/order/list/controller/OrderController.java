@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * OrderController
@@ -179,11 +178,6 @@ public class OrderController {
         }
     }
 
-    public static void main(String[] args) {
-        String s = UUID.randomUUID().toString().replace("-", "");
-        System.out.println(s);
-    }
-
     @RequestMapping(value = "/orderItemDetail",method = RequestMethod.GET)
     @ApiOperation(value = "查询订单详情查询接口" , notes = "根据订单id查询当订单详细信息")
     @ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "token验证信息", required = true, type = "String")
@@ -202,6 +196,18 @@ public class OrderController {
             }
         } else {
             return new ResultVO(1,"权限认证未通过，请先登录",null);
+        }
+    }
+
+    @RequestMapping(value = "/updateStatus",method = RequestMethod.POST)
+    @ApiOperation(value = "修改订单支付状态接口" , notes = "根据订单id修改订单支付状态接口")
+    @ApiImplicitParam(name = "orderId", value = "订单ID", required = true, type = "String")
+    public String updateStatus(@RequestBody String orderId){
+        boolean b = orderService.updateStatus(orderId,1,2);
+        if (b) {
+            return "true";
+        } else {
+            return "false";
         }
     }
 }

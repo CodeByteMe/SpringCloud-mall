@@ -32,6 +32,12 @@ spring:
         max-active: 8
     database: 0
     timeout: 100
+redisson:
+  addr:
+    singleAddr:
+      host: redis://47.100.38.50:6379
+      password: Redis@666
+      database: 0
 eureka:
   client:
     service-url:

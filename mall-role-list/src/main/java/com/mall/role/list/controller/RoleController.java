@@ -44,8 +44,8 @@ public class RoleController {
         role.setCreateTime(new Date());
         role.setStatus(0);
         role.setSort(1);
-        int i = roleService.insertRole(role);
-        if (i >0) {
+        boolean b= roleService.insertRole(role);
+        if (b) {
             return new ResultVO(0,"添加成功");
         } else {
             return new ResultVO(1,"添加失败");
@@ -57,8 +57,8 @@ public class RoleController {
                             @RequestParam String description,
                             @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
-        int i =roleService.compileRole(Integer.parseInt(id),name,description);
-        if (i >0) {
+        boolean b =roleService.compileRole(Integer.parseInt(id),name,description);
+        if (b) {
             return new ResultVO(0,"修改成功");
         } else {
             return new ResultVO(1,"修改失败");
@@ -68,8 +68,8 @@ public class RoleController {
     public ResultVO delRole(@RequestParam String id ,
                             @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
-        int i =roleService.delRole(Integer.parseInt(id));
-        if (i >0) {
+        boolean b =roleService.delRole(Integer.parseInt(id));
+        if (b) {
             return new ResultVO(0,"删除成功");
         } else {
             return new ResultVO(1,"删除失败");
@@ -80,8 +80,8 @@ public class RoleController {
                             @RequestParam String status ,
                             @RequestHeader(required = true) String token) {
         Jws<Claims> jws = JWTUtil.Decrypt(token);
-        int i = roleService.switchRole(Integer.parseInt(id), Integer.parseInt(status));
-        if (i >0) {
+        boolean b = roleService.switchRole(Integer.parseInt(id), Integer.parseInt(status));
+        if (b) {
             return new ResultVO(0,"启用成功");
         } else {
             return new ResultVO(1,"启用失败");

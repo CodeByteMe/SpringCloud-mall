@@ -303,7 +303,7 @@
 							url: 'http://localhost:8766/userAction/userAction/switch',
 							params: {
 								id:row.id,
-								status:adminUser.status
+								status:vm.adminUser.status
 							},
 		                    headers: {
 		                        'token': tokenStr
@@ -311,7 +311,7 @@
 							})
 							.then(function(res){
 								if(res.data.code==0){
-									vm.$message("启用成功");
+									vm.$message("操作成功");
 								}
 							});
 					},
@@ -425,6 +425,10 @@
 								if(res.data.code==0){
 									vm.$message("角色修改成功");
 									vm.dialogFormVisible1 = false;
+									var int=self.setInterval(function(){
+									      location.reload();   
+									      },1000)
+								
 								}
 							});
 					},

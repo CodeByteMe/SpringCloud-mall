@@ -198,7 +198,7 @@
 							<div class="row align-items-center">
 								<div class="col-xl-2 col-lg-2">
 									<div class="logo">
-										<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+										<a href="../index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 									</div>
 								</div>
 								<div class="col-xl-8 col-lg-9">
@@ -207,7 +207,7 @@
 										<nav id="mobile-menu">
 											<ul>
 												<li class="has-sub">
-													<a href="#home">消息管理</a>
+													<a href="hotproduct_list.html">秒杀活动</a>
 												</li>
 												<li class="has-sub"><a href="#">个人中心</a>
 													<ul>
@@ -216,8 +216,8 @@
 														<li><a href="address_list.html">地址管理</a></li>
 													</ul>
 												</li>
-												<li><a href="register.html">送货上门</a></li>
-												<li class="has-sub"><a href="web/product_list.html">所有商品</a>
+												<li><a href="">送货上门</a></li>
+												<li class="has-sub"><a href="product_list.html">所有商品</a>
 												</li>
 											</ul>
 										</nav>
@@ -225,7 +225,7 @@
 								</div>
 								<div class="col-xl-2 text-right d-none d-xl-block">
 									<div class="header-btn second-header-btn">
-										<a href="login.html" class="btn">登录</a>
+										<a href="" class="btn">{{username}}</a>
 									</div>
 								</div>
 							</div>
@@ -330,11 +330,15 @@
 				num: 0,
 				s1: "",
 				str: "",
-				jsonStr: ""
+				jsonStr: "",
+				username: ""
 			},
 			beforeMount: function() {
+				this.username = JSON.parse(localStorage.getItem("username"));
 				this.productList = JSON.parse(localStorage.getItem("productList"))
 				console.log(localStorage.getItem("productList"));
+				// this.productList = JSON.parse(localStorage.getItem("hotproduct"))
+				// console.log(localStorage.getItem("hotproduct"));
 				var tokenStr = "";
 				var str = document.cookie;
 				var arr = str.split(";");
@@ -451,10 +455,11 @@
 							num: vm.num
 						}
 					}).then(function(res) {
-						if(res.data.code === 0){
+						if (res.data.code === 0) {
 							top.location = "order_list.html";
 						}
 					});
+					localStorage.removeItem('productList');
 				}
 			}
 		})

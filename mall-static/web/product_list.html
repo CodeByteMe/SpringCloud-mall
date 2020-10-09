@@ -200,7 +200,7 @@
 								<div class="row align-items-center">
 									<div class="col-xl-2 col-lg-2">
 										<div class="logo">
-											<a href="index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+											<a href="../index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
 										</div>
 									</div>
 									<div class="col-xl-8 col-lg-9">
@@ -209,17 +209,17 @@
 											<nav id="mobile-menu">
 												<ul>
 													<li class="has-sub">
-														<a href="#home">消息管理</a>
+														<a href="hotproduct_list.html">秒杀活动</a>
 													</li>
 													<li class="has-sub"><a href="#">个人中心</a>
 														<ul>
-															<li><a href="#pricing">购物车</a></li>
-															<li><a href="#team">我的订单</a></li>
+															<li><a href="cart.html">购物车</a></li>
+															<li><a href="order_list.html">我的订单</a></li>
 															<li><a href="address_list.html">地址管理</a></li>
 														</ul>
 													</li>
 													<li><a href="#">送货上门</a></li>
-													<li class="has-sub"><a href="#">所有商品</a>
+													<li class="has-sub"><a href="product_list.html">所有商品</a>
 													</li>
 												</ul>
 											</nav>
@@ -227,7 +227,12 @@
 									</div>
 									<div class="col-xl-2 text-right d-none d-xl-block">
 										<div class="header-btn second-header-btn">
-											<a href="login.html" class="btn">登录</a>
+											<span v-if="username == null">
+												<a href="login.html" class="btn">登录</a>
+											</span>
+											<span v-if="username != null">
+												<a href="#" class="btn">{{username}}</a>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -382,10 +387,12 @@
 				page:1,
 				pageSize:5,
 				product:[],
-				total:[]
+				total:[],
+				username:""
 			},
 			beforeMount: function() {
-
+				console.log(JSON.parse(localStorage.getItem("username")));
+				this.username = JSON.parse(localStorage.getItem("username"));
 				axios({
 						method: 'get',
 						url: 'http://localhost:8766/product/product/allList',

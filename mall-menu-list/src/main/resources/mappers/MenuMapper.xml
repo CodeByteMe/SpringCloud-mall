@@ -29,14 +29,11 @@
     <!--    public List<Menu> listMenuChildren(@Param("adminId") int adminId,
             @Param("parentId") int parentId);-->
     <select id="listMenuChildren" resultSets="java.util.List" resultMap="menuMap">
-        select
-        DISTINCT ums_menu.id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
+          select
+        id,ums_menu.parent_id,ums_menu.create_time,ums_menu.title,
         ums_menu.level,ums_menu.sort,ums_menu.url,ums_menu.icon,ums_menu.hidden
-        from ums_admin inner join ums_admin_role_relation on ums_admin.id = ums_admin_role_relation.admin_id
-        inner join ums_role on ums_admin_role_relation.role_id = ums_role.id
-        inner join ums_role_menu_relation on ums_role.id = ums_role_menu_relation.role_id
-        inner join ums_menu on ums_role_menu_relation.menu_id = ums_menu.id
-        where ums_menu.level = 1 and ums_menu.parent_id = #{parentId}
+        from ums_menu
+        where ums_menu.parent_id = #{parentId}
     </select>
 
     <!--    public int addMenu(Menu menu);-->
@@ -56,6 +53,12 @@
         title=#{title},
         sort=#{sort},
         url=#{url},
+        hidden=#{hidden}
+        where id = #{id}
+    </update>
+<!--    public boolean switchMenu(@Param("id") int id,@Param("hidden")int hidden);-->
+    <update id="switchMenu">
+        update ums_menu set
         hidden=#{hidden}
         where id = #{id}
     </update>

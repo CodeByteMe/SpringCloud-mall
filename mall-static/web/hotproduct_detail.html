@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商品详情</title>
+		<meta name="keywords" content="首页" />
+		<meta name="description" content="首页" />
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
+		<link rel="stylesheet" type="text/css" href="../assets/css/normalize.css" />
+		
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../assets/css/animate.min.css">
+		<link rel="stylesheet" href="css/magnific-popup.css">
+		<link href="https://s1.pstatp.com/cdn/expire-1-M/font-awesome/5.8.1/css/all.min.css" type="text/css" rel="stylesheet" />
+		<link rel="stylesheet" href="../assets/css/dripicons.css">
+		<link rel="stylesheet" href="../assets/css/slick.css">
+		<link rel="stylesheet" href="../assets/css/default.css">
+		<link rel="stylesheet" href="../assets/css/style.css">
+		<link rel="stylesheet" href="../assets/css/responsive.css">
+		
+		<script type="text/javascript" src="../assets/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var showproduct = {
+					"boxid": "showbox",
+					"sumid": "showsum",
+					"boxw": 400, //宽度,该版本中请把宽高填写成一样
+					"boxh": 400, //高度,该版本中请把宽高填写成一样
+					"sumw": 60, //列表每个宽度,该版本中请把宽高填写成一样
+					"sumh": 60, //列表每个高度,该版本中请把宽高填写成一样
+					"sumi": 7, //列表间隔
+					"sums": 5, //列表显示个数
+					"sumsel": "sel",
+					"sumborder": 1, //列表边框，没有边框填写0，边框在css中修改
+					"lastid": "showlast",
+					"nextid": "shownext"
+				}; //参数定义	  
+				$.ljsGlasses.pcGlasses(showproduct); //方法调用，务必在加载完后执行
+			});
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				//����ı������
+				var t = $("#text_box");
+				//��ʼ������Ϊ1,��ʧЧ��
+				$('#min').attr('disabled', true);
+				//�������Ӳ���
+				$("#add").click(function() {
+					t.val(parseInt(t.val()) + 1)
+					if (parseInt(t.val()) != 1) {
+						$('#min').attr('disabled', false);
+					}
+
+				})
+				//�������ٲ���
+				$("#min").click(function() {
+					t.val(parseInt(t.val()) - 1);
+					if (parseInt(t.val()) == 1) {
+						$('#min').attr('disabled', true);
+					}
+
+				})
+			});
+		</script>
+		<script type="text/javascript">
+			var detail = document.querySelector('.detail');
+			// var origOffsetY = detail.offsetTop;
+
+			function onScroll(e) {
+				window.scrollY >= origOffsetY ? detail.classList.add('sticky') :
+					detail.classList.remove('sticky');
+			}
+			document.addEventListener('scroll', onScroll);
+		</script>
+		<script>
+			$(function() {
+				window.onload = function() {
+					var $li = $('#tab li');
+					var $ul = $('#content ul');
+		
+					$li.mouseover(function() {
+						var $this = $(this);
+						var $t = $this.index();
+						$li.removeClass();
+						$this.addClass('act_active');
+						$ul.css('display', 'none');
+						$ul.eq($t).css('display', 'block');
+					})
+				}
+			});
+		</script>
+		<style>
+			.el-input-number{
+				z-index: -1;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header-area">
+			<div id="header-sticky" class="menu-area">
+				<div class="container">
+					<div class="second-menu">
+						<div class="row align-items-center">
+							<div class="col-xl-2 col-lg-2">
+								<div class="logo">
+									<a href="../index.html"><img src="../assets/img/logo/巢庭万家.png" alt="logo" style="width: 100px;height: 100px;"></a>
+								</div>
+							</div>
+							<div class="col-xl-8 col-lg-9">
+								<div class="responsive"><i class="icon dripicons-align-right"></i></div>
+								<div class="main-menu text-right text-xl-center">
+									<nav id="mobile-menu">
+										<ul>
+											<li class="has-sub">
+												<a href="hotproduct_list.html">秒杀活动</a>
+											</li>
+											<li class="has-sub"><a href="#">个人中心</a>
+												<ul>
+													<li><a href="cart.html">购物车</a></li>
+													<li><a href="order_list.html">我的订单</a></li>
+													<li><a href="address_list.html">地址管理</a></li>
+												</ul>
+											</li>
+											<li><a href="register.html">送货上门</a></li>
+											<li class="has-sub"><a href="product_list.html">所有商品</a>
+											</li>
+										</ul>
+									</nav>
+								</div>
+							</div>
+							<div class="col-xl-2 text-right d-none d-xl-block">
+								<div class="header-btn second-header-btn">
+									<a href="" class="btn">{{username}}</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		
+		<div id="dongyang" style="width: 70%;margin: auto;">
+			<div class="showall" >
+				<!--left -->
+				<div class="showbot">
+					<div id="showbox" >
+						<img :src="product.pic" width="400" height="400" />
+					</div>
+				</div>
+				<!--conet -->
+				<div class="tb-property" style="margin-left: 100px;">
+					<div class="tr-nobdr">
+						<h3>{{product.name}}</h3>
+					</div>
+					<div class="txt">
+						<span class="nowprice">￥<a href="">{{product.flashPromotionPrice}}</a></span>
+						<div class="cumulative">
+							<span class="number ty1">销量<br /><em id="add_sell_num_363">1546</em></span>
+						</div>
+					</div>
+
+
+					<div class="gcIpt">
+						<span class="guT">数量</span>
+						<template>
+						  <el-input-number v-model="num"  :min="1" label="描述文字" :disabled="true"></el-input-number>
+						</template>
+						<span class="Hgt">库存{{product.flashPromotionCount}}</span>
+					</div>
+					<div id="" style="margin: auto;">
+						<label style="font-size: 30px; color: red;">距离商品开售：</label>
+						<label style="font-size: 20px; color: red;">{{aaaa}}</label>
+					</div>
+					<div class="nobdr-btns" style="margin-left: 400px;">
+						<span v-if="button == false">
+							<el-button type="info" plain disabled>立即购买</el-button>
+						</span>
+						<span v-if="button == true">
+							<el-button type="success" @click="goSubmitOrder">立即购买</el-button>
+						</span>
+					</div>
+					<div class="guarantee">
+						<span>邮费：包邮&nbsp;&nbsp;支持货到付款</span>
+					</div>
+				</div>
+			</div>
+			<div class="gdetail">
+				<div class="detail">
+				</div>
+			</div>
+		</div>
+	</body>
+	<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@2.13.2/lib/index.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="../assets/js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		function timeFmt(value) {
+			
+		};
+	</script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: "#dongyang",
+			data: {
+				product:[],
+				num:"",
+				aaaa:'',
+				button: false,
+				username:""
+			},
+			mounted: function() {
+				this.username = JSON.parse(localStorage.getItem("username"))
+				var product = JSON.parse(localStorage.getItem("item"));
+				this.product = product;
+				// localStorage.removeItem('item')
+			},
+			watch:{
+				product: function () {
+					// console.log("进来了");
+					//递归每秒调用countTime方法，显示动态时间效果
+					setInterval(function() {
+						// console.log("进行中");
+						console.log(vm.product);
+						//获取当前时间
+						var date = new Date()
+						var now = date.getTime()
+						//设置开始时间
+						var endDate = new Date("2020-09-29 21:25:00");
+						var end = endDate.getTime()
+						//时间差
+						var leftTime = end - now
+						// console.log(leftTime);
+						//定义变量 d,h,m,s保存倒计时的时间
+						if (leftTime > 0) {
+							vm.aaaa = Math.floor(leftTime / 1000 / 60 / 60 / 24) + ':' + Math.floor((leftTime / 1000 / 60 / 60) % 24) +
+								':' + Math.floor((leftTime / 1000 / 60) % 60) + ':' + Math.floor((leftTime / 1000) % 60);
+							// console.log("vm.aaaa");
+						} else {
+							vm.button = true;
+						}
+					},1000);
+					// setTimeout(this.setTimeout(), 1000);
+					console.log("出去了");
+				}
+			},
+			methods:{
+				setTime:function(){
+					console.log(vm.product);
+				},
+				goSubmitOrder:function(){
+					let str = JSON.stringify(vm.product);
+					console.log(str);
+					localStorage.setItem("hotproduct", str);
+					location.href = "submit_hot_order.html";
+				}
+			}
+		});
+	</script>
+</html>

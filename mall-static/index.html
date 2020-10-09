@@ -40,7 +40,7 @@
 											<nav id="mobile-menu">
 												<ul>
 													<li class="has-sub">
-														<a href="#home">消息管理</a>
+														<a href="web/hotproduct_list.html">秒杀活动</a>
 													</li>
 													<li class="has-sub"><a href="#">个人中心</a>
 														<ul>
@@ -58,7 +58,13 @@
 									</div>
 									<div class="col-xl-2 text-right d-none d-xl-block">
 										<div class="header-btn second-header-btn">
-											<a href="web/login.html" class="btn">登录</a>
+											<span v-if="username == null">
+												<a href="web/login.html" class="btn">登录</a>
+											</span>
+											<span v-if="username != null">
+												<a href="#" class="btn">{{username}}</a>
+											</span>
+											
 										</div>
 									</div>
 								</div>
@@ -229,11 +235,7 @@
 								</div>
 
 							</div>
-							<div class="col-lg-4 text-right">
-								<div class="cta-btn s-cta-btn wow fadeInRight animated" data-animation="fadeInDown animated" data-delay=".2s">
-									<a href="#" class="btn">Contact Us</a>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 				</section>
@@ -288,7 +290,7 @@
 												<li><a href="#">自助服务</a></li>
 												<li><a href="#">官方微信</a></li>
 												<li><a href="#">服务网点</a></li>
-												<li><a href="#">上门维修</a></li>
+												<li><a href="admin/login.html">管理登录</a></li>
 											</ul>
 										</div>
 									</div>
@@ -360,7 +362,11 @@
 		var vm = new Vue({
 			el: "#dongyang",
 			data: {
-
+				username:""
+			},
+			beforeMount: function() {
+				console.log(JSON.parse(localStorage.getItem("username")));
+				this.username = JSON.parse(localStorage.getItem("username"));
 			}
 		});
 	</script>
