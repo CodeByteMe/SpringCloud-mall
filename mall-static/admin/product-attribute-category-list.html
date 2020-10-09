@@ -52,14 +52,14 @@
 					</el-form>
 					<div slot="footer" class="dialog-footer">
 						<el-button @click="visible = false">取 消</el-button>
-						<el-button type="primary" @click="productAttributeCategorySubmit">确定</el-button>
+						<el-button type="primary" @click="productAttributeCategoryUpdate">确定</el-button>
 					</div>
 				</template>
 			</el-dialog>
 			<el-card class="box-card" :body-style="{ padding: '0px' }">
 				<div slot="header" class="clearfix">
 					<span><i class="el-icon-tickets"></i> 数据列表</span>
-					<el-button style="float: right;">添加</el-button>
+					<el-button style="float: right;" @click="visible = true">添加</el-button>
 				</div>
 			</el-card>
 			<el-card class="box-card">
@@ -111,7 +111,8 @@
 				currentPage4: 1,
 				pageSize: 5,
 				productAttributeCategoryData: {
-					name: ""
+					name: "",
+					productAttributeCategoryId:""
 				}
 			},
 			beforeMount: function() {
@@ -223,46 +224,10 @@
 				},
 				Edit: function(row) {
 					console.log(row);
-					vm.visible = true;
+					vm.visible1 = true;
 					vm.productAttributeCategoryData.name = row.name;
-					var tokenStr = "";
-					var str = document.cookie;
-					var arr = str.split(";");
-					for (var i = 0; i < arr.length; i++) {
-						var s = arr[i];
-						if (s.split("=")[0].trim() == "token") {
-							tokenStr = s.split("=")[1];
-							break;
-						}
-					}
-					if (tokenStr === "") {
-						top.location = "login.html";
-					}
-					axios({
-						method: 'post',
-						url: 'http://localhost:8766/productAttributeCategoryUd/productAttributeCategoryUd/update',
-						headers: {
-							'token': tokenStr
-						},
-						params: {
-							name: vm.productAttributeCategoryData.name,
-							productAttributeCategoryId: row.id
-						}
-					}).then(function(res) {
-						if (res.data.code === 0) {
-							vm.$message({
-								message: '修改成功',
-								type: 'success'
-							});
-							setTimeout(function() {
-								location.href = "product-attribute-category-list.html";
-							});
-						} else {
-							vm.$message.error({
-								message: '修改失败，请联系管理员！'
-							});
-						}
-					});
+					vm.productAttributeCategoryId = row.id;
+					
 				},
 				productAttributeCategoryDel: function(row) {
 					this.$confirm('此操作将永久删除, 是否继续?', '提示', {
@@ -350,6 +315,46 @@
 						} else {
 							vm.$message.error({
 								message: '添加失败，请联系管理员！'
+							});
+						}
+					});
+				},
+				productAttributeCategoryUpdate:function(){
+					var tokenStr = "";
+					var str = document.cookie;
+					var arr = str.split(";");
+					for (var i = 0; i < arr.length; i++) {
+						var s = arr[i];
+						if (s.split("=")[0].trim() == "token") {
+							tokenStr = s.split("=")[1];
+							break;
+						}
+					}
+					if (tokenStr === "") {
+						top.location = "login.html";
+					}
+					axios({
+						method: 'post',
+						url: 'http://localhost:8766/productAttributeCategoryUd/productAttributeCategoryUd/update',
+						headers: {
+							'token': tokenStr
+						},
+						params: {
+							name: vm.productAttributeCategoryData.name,
+							productAttributeCategoryId: vm.productAttributeCategoryId
+						}
+					}).then(function(res) {
+						if (res.data.code === 0) {
+							vm.$message({
+								message: '修改成功',
+								type: 'success'
+							});
+							setTimeout(function() {
+								location.href = "product-attribute-category-list.html";
+							});
+						} else {
+							vm.$message.error({
+								message: '修改失败，请联系管理员！'
 							});
 						}
 					});
