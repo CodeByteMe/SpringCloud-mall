@@ -71,8 +71,8 @@
 								<el-input v-model="adminUser.note" autocomplete="off"></el-input>
 							</el-form-item>
 							<el-form-item label="是否启用" :label-width="formLabelWidth">
-								<el-radio v-model="adminUser.status" label="0">启用</el-radio>
-								<el-radio v-model="adminUser.status" label="1">关闭</el-radio>
+								<el-radio v-model="adminUser.status" label="0">关闭</el-radio>
+								<el-radio v-model="adminUser.status" label="1">启用</el-radio>
 							</el-form-item>
 						</el-form>
 						<span slot="footer" class="dialog-footer">
@@ -148,7 +148,7 @@
 								      <el-input v-model="adminRole.id" autocomplete="off" readonly="readonly"></el-input>
 								    </el-form-item>
 								    <el-form-item label="昵称" :label-width="formLabelWidth">
-								      <el-input v-model="adminRole.nickName" autocomplete="off"></el-input>
+								      <el-input v-model="adminRole.nickName" autocomplete="off" readonly="readonly"></el-input>
 								    </el-form-item>
 								    <el-form-item label="选择角色" :label-width="formLabelWidth">
 								     <template>
@@ -185,8 +185,12 @@
 								      <el-input v-model="adminUser.note" autocomplete="off"></el-input>
 								    </el-form-item>
 									<el-form-item label="是否启用" :label-width="formLabelWidth">
-										<el-radio v-model="adminUser.status" label="0">关闭</el-radio>
-										<el-radio v-model="adminUser.status" label="1">启用</el-radio>
+										<el-switch 
+											v-model="adminUser.status"
+										     :active-value="1"
+										     :inactive-value="0"
+										     >
+										</el-switch>
 									</el-form-item>
 								  </el-form>
 								  <div slot="footer" class="dialog-footer">
@@ -272,7 +276,7 @@
 							params:{
 								keyword:vm.keyword,
 								page:1,
-								limit:5
+								limit:10
 							},
 							headers:{
 								'token':tokenStr

@@ -149,11 +149,17 @@
 		        							<el-option label="权限" value="21"></el-option>
 										  </el-select>
 										</template>
-										<el-form-item label="是否启用" :label-width="formLabelWidth">
-											<el-radio v-model="menu.hidden" label="0">启用</el-radio>
-											<el-radio v-model="menu.hidden" label="1">关闭</el-radio>
-										</el-form-item>
 								    </el-form-item>
+								    <el-form-item label="是否启用" :label-width="formLabelWidth">
+											 <el-switch
+			                                    on-color="#5B7BFA"
+			                                    off-color="#dadde5"
+			                                    :active-value="0"
+										     	:inactive-value="1"
+			                                    v-model="menu.hidden"               
+			                                >
+			                                </el-switch>
+									</el-form-item>
 								  </el-form>
 								  <div slot="footer" class="dialog-footer">
 								    <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -452,7 +458,15 @@
 							});
 					},
 					reSubmit:function(){
-						console.log(vm.menu.id);
+						console.log(vm.menu.hidden);
+						if(vm.menu.id==1||vm.menu.id==7||vm.menu.id==12||vm.menu.id==21&&vm.menu.hidden==1){
+							vm.$message("不允许关闭根菜单"); 
+							vm.menu.hidden=0;
+							setTimeout(function() {
+									location.reload();  
+								}, 500);
+							return;
+						}
 						var tokenStr = "";
 						var str = document.cookie;
 						var arr = str.split(";");
