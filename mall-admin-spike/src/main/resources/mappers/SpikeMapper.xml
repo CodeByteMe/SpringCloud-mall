@@ -52,7 +52,7 @@
         sfp.id,sfp.title,sfp.start_date startDate,sfp.end_date endDate,sfp.status,sfpr.flash_promotion_count flashPromotionCount
         from pms_product pms
         inner join sms_flash_promotion_product_relation sfpr  on pms.product_id = sfpr.product_id
-        inner join sms_flash_promotion sfp on sfp.id = sfpr.id
+        inner join sms_flash_promotion sfp on sfp.id = sfpr.flash_promotion_id
         where sfp.status = 1
     </select>
 
