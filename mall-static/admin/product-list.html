@@ -76,15 +76,17 @@
             <div class="text item">
                 <div class="demo-input-size">
                     <span class="demonstration">输入搜索：</span>
-                    <el-input v-model="name" placeholder="商品名称" style="width: 200px;"></el-input>
+                    <el-input v-model="name" placeholder="商品名称" style="width: 200px;"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="demonstration">商品货号：</span>
-                    <el-input v-model="productId" placeholder="商品货号" style="width: 200px;"></el-input>
+                    <el-input v-model="productId" placeholder="商品货号" style="width: 200px;"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="demonstration">商品分类：</span>
-                    <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader>
+                    <el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="demonstration">商品品牌：</span>
                     <el-select v-model="value1" placeholder="请选择">
                         <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
+					</br>
+					</br>
                     <span class="demonstration">上架状态：</span>
                     <el-select v-model="state" placeholder="请选择">
                         <el-option label="未上架" :value="0"></el-option>
@@ -110,7 +112,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column :show-overflow-tooltip="true" prop="name" label="商品名称"></el-table-column>
-                        <el-table-column prop="promoteDesc" label="价格/货号"></el-table-column>
+                        <el-table-column prop="price" label="价格"></el-table-column>
                         <el-table-column label="套餐" fixed="right" width=80>
                             <template slot-scope="scope">
                                 <el-button type="primary" icon="el-icon-edit" circle @click="productSku(scope.row)"></el-button>
@@ -130,8 +132,7 @@
                                 </template>
                         </el-table-column>
                         <el-table-column prop="sort" label="排序"></el-table-column>
-                        <el-table-column prop="sellNum" label="库存"></el-table-column>
-                        <el-table-column prop="sale" label="销量"></el-table-column>
+                        <el-table-column prop="stock" label="库存"></el-table-column>
                         <el-table-column label="操作" fixed="right" width="250">
                             <template slot-scope="scope">
                                 <el-button size="mini" @click="handleClick(scope.row)">详情</el-button>
