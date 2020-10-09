@@ -38,6 +38,9 @@
 		        $("#d1").html("<label style='color:green;font-size: 25px;'>支付成功！</label>");
 		    }
 		    websocket.close();
+			setTimeout(function () {
+				location.href="order_list.html";
+			},2000);
 		}
 	</script>
 </html>
