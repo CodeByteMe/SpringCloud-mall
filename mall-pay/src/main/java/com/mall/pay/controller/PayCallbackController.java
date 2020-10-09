@@ -38,6 +38,7 @@ public class PayCallbackController {
         if(map.get("result_code").equalsIgnoreCase("success")) {
             //2.修改数据库订单状态为已支付
             String orderId = map.get("out_trade_no");
+            System.out.println(orderId);
             String s = orderService.updateStatus(orderId);
             if (s.equals("true")) {
                 //3. 推送消息到付款页面

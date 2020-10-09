@@ -219,6 +219,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
     @Override
     public boolean updateStatus(String orderId, int status, int payType) {
+        stringRedisTemplate.delete("getOrderListByMemberId");
         return orderDAO.updateStatus(orderId, status, payType)>0;
     }
 }
