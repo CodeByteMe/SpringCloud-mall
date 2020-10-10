@@ -16,7 +16,7 @@
 
 ![](SpringCloud-mall.png)
 
-## 组织结构（未完善，开发中）
+## 组织结构（服务太多，不想细写了）
 
 ``` lua
 mall
@@ -31,9 +31,7 @@ mall
 	├── mall-admin-auth -- 统一验证模块
 ├── mall-search -- 基于Elasticsearch的商品搜索系统服务
 ├── mall-web -- Web商城系统服务（按实际情况更改，--根文件夹，不用写出来）
-	├── mall-web-security -- 前台购物车模块
-	├── mall-web-security -- 前台订单模块
-	├── mall-web-security -- 前台其它模块
+	├── mall-web-*** -- 前台***模块
 └── config -- 配置中心存储的配置
 ```
 
